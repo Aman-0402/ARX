@@ -20,8 +20,7 @@ backend/    Django 5 + Django REST Framework
   monitoring dashboard (live uptime, response time) rather than generic
   stat cards, since that's literally what the company sells.
 
-Pages: Home, About, Services, Contact (working form → Django API), Verify
-(certificate/record lookup by code → Django API).
+Pages: Home, About, Services, Contact (working form → Django API).
 
 ## Running locally
 
@@ -58,8 +57,10 @@ your local backend with no extra config.
 
 - `POST /api/contact/` — `{ name, email, phone, message }` → creates a
   `ContactSubmission`, visible in `/admin/`.
-- `GET /api/verify/<code>/` — looks up a `VerificationRecord` by code,
-  `404` if not found. Add records via `/admin/` or the Django shell.
+
+Note: the backend still exposes `GET /api/verify/<code>/` and the
+`VerificationRecord` model — only the frontend Verify page/nav link was
+removed. Remove the backend route too if it's no longer needed.
 
 ## What's not built yet
 
