@@ -38,10 +38,10 @@ export default function Navbar() {
             </NavLink>
           ))}
           <NavLink
-            to="/contact"
+            to="/login"
             className="rounded-sm bg-ink px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-graphite"
           >
-            Get a consultation
+            Login
           </NavLink>
         </nav>
 
