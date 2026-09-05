@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 const links = [
-  { to: '/', label: 'Home' },
-  { to: '/about', label: 'About' },
-  { to: '/services', label: 'Services' },
-  { to: '/blog', label: 'Blog' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/', label: 'Home', accent: 'bg-amber' },
+  { to: '/about', label: 'About', accent: 'bg-coral' },
+  { to: '/services', label: 'Services', accent: 'bg-mint' },
+  { to: '/blog', label: 'Blog', accent: 'bg-sunbeam' },
+  { to: '/contact', label: 'Contact', accent: 'bg-grape' },
 ]
 
 export default function Navbar() {
@@ -62,7 +62,7 @@ export default function Navbar() {
                   <>
                     {link.label}
                     <span
-                      className={`pointer-events-none absolute inset-x-3 -bottom-[1px] h-0.5 origin-left scale-x-0 bg-amber transition-transform duration-300 ease-out group-hover:scale-x-100 ${
+                      className={`pointer-events-none absolute inset-x-3 -bottom-[1px] h-0.5 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 ${link.accent} ${
                         isActive ? 'scale-x-100' : ''
                       }`}
                     />

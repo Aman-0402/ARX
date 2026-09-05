@@ -18,6 +18,10 @@ export default {
           DEFAULT: '#2F6FED',
           dim: '#1D47A6',
         },
+        coral: '#FF6B6B',
+        mint: '#2EC4B6',
+        sunbeam: '#FFD166',
+        grape: '#8B5CF6',
       },
       fontFamily: {
         display: ['"Space Grotesk"', 'sans-serif'],

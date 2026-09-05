@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
+import GradientBlobs from './motion/GradientBlobs.jsx'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-700 bg-ink text-paper">
+    <footer className="relative overflow-hidden border-t border-slate-700 bg-ink text-paper">
+      <GradientBlobs variant="mixed" />
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5">
@@ -21,11 +23,11 @@ export default function Footer() {
         <div>
           <h3 className="font-display text-sm font-semibold text-paper">Quick links</h3>
           <ul className="mt-4 space-y-2.5 text-sm text-slate-200/70">
-            <li><Link to="/" className="hover:text-amber">Home</Link></li>
-            <li><Link to="/about" className="hover:text-amber">About</Link></li>
-            <li><Link to="/services" className="hover:text-amber">Services</Link></li>
-            <li><Link to="/blog" className="hover:text-amber">Blog</Link></li>
-            <li><Link to="/contact" className="hover:text-amber">Contact</Link></li>
+            <li><Link to="/" className="transition-colors hover:text-amber">Home</Link></li>
+            <li><Link to="/about" className="transition-colors hover:text-coral">About</Link></li>
+            <li><Link to="/services" className="transition-colors hover:text-mint">Services</Link></li>
+            <li><Link to="/blog" className="transition-colors hover:text-sunbeam">Blog</Link></li>
+            <li><Link to="/contact" className="transition-colors hover:text-grape">Contact</Link></li>
           </ul>
         </div>
 
