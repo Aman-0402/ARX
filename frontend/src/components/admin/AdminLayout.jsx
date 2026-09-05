@@ -7,6 +7,7 @@ const links = [
   { to: '/admin/contact', label: 'Contact submissions' },
   { to: '/admin/verify', label: 'Verification records' },
   { to: '/admin/services', label: 'Services' },
+  { to: '/admin/team', label: 'Team' },
 ]
 
 export default function AdminLayout() {

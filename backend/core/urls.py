@@ -4,12 +4,14 @@ from .views import (
     ContactSubmissionCreateView,
     VerifyRecordView,
     ServiceGroupListView,
+    TeamMemberListView,
     BlogPostListView,
     BlogPostDetailView,
     BlogPostAdminViewSet,
     ContactSubmissionAdminViewSet,
     VerificationRecordAdminViewSet,
     ServiceGroupAdminViewSet,
+    TeamMemberAdminViewSet,
     AdminStatsView,
     CsrfCookieView,
     LoginView,
@@ -22,11 +24,13 @@ admin_router.register('blog', BlogPostAdminViewSet, basename='admin-blog')
 admin_router.register('contact', ContactSubmissionAdminViewSet, basename='admin-contact')
 admin_router.register('verify', VerificationRecordAdminViewSet, basename='admin-verify')
 admin_router.register('services', ServiceGroupAdminViewSet, basename='admin-services')
+admin_router.register('team', TeamMemberAdminViewSet, basename='admin-team')
 
 urlpatterns = [
     path('contact/', ContactSubmissionCreateView.as_view(), name='contact-create'),
     path('verify/<str:code>/', VerifyRecordView.as_view(), name='verify-record'),
     path('services/', ServiceGroupListView.as_view(), name='services-list'),
+    path('team/', TeamMemberListView.as_view(), name='team-list'),
     path('blog/', BlogPostListView.as_view(), name='blog-list'),
     path('blog/<slug:slug>/', BlogPostDetailView.as_view(), name='blog-detail'),
     path('auth/csrf/', CsrfCookieView.as_view(), name='auth-csrf'),

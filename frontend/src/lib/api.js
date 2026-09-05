@@ -19,6 +19,16 @@ async function apiFetch(path, { method = 'GET', body } = {}) {
   return res
 }
 
+async function apiFetchForm(path, { method = 'POST', formData }) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method,
+    headers: { 'X-CSRFToken': getCookie('csrftoken') },
+    credentials: 'include',
+    body: formData,
+  })
+  return res
+}
+
 export async function submitContact(payload) {
   const res = await fetch(`${API_BASE}/contact/`, {
     method: 'POST',
@@ -169,8 +179,8 @@ export async function fetchAdminServiceGroups() {
   return res.json()
 }
 
-export async function createServiceGroup(payload) {
-  const res = await apiFetch('/admin/services/', { method: 'POST', body: payload })
+export async function createServiceGroup(formData) {
+  const res = await apiFetchForm('/admin/services/', { method: 'POST', formData })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(Object.values(err)[0]?.[0] || 'Could not create service group.')
@@ -178,8 +188,8 @@ export async function createServiceGroup(payload) {
   return res.json()
 }
 
-export async function updateServiceGroup(id, payload) {
-  const res = await apiFetch(`/admin/services/${id}/`, { method: 'PATCH', body: payload })
+export async function updateServiceGroup(id, formData) {
+  const res = await apiFetchForm(`/admin/services/${id}/`, { method: 'PATCH', formData })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(Object.values(err)[0]?.[0] || 'Could not update service group.')
@@ -190,4 +200,39 @@ export async function updateServiceGroup(id, payload) {
 export async function deleteServiceGroup(id) {
   const res = await apiFetch(`/admin/services/${id}/`, { method: 'DELETE' })
   if (!res.ok) throw new Error('Could not delete service group.')
+}
+
+export async function fetchTeam() {
+  const res = await fetch(`${API_BASE}/team/`)
+  if (!res.ok) throw new Error('Could not load team.')
+  return res.json()
+}
+
+export async function fetchAdminTeam() {
+  const res = await apiFetch('/admin/team/')
+  if (!res.ok) throw new Error('Could not load team members.')
+  return res.json()
+}
+
+export async function createTeamMember(formData) {
+  const res = await apiFetchForm('/admin/team/', { method: 'POST', formData })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not create team member.')
+  }
+  return res.json()
+}
+
+export async function updateTeamMember(id, formData) {
+  const res = await apiFetchForm(`/admin/team/${id}/`, { method: 'PATCH', formData })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not update team member.')
+  }
+  return res.json()
+}
+
+export async function deleteTeamMember(id) {
+  const res = await apiFetch(`/admin/team/${id}/`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Could not delete team member.')
 }

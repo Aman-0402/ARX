@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react'
+import { fetchTeam } from '../lib/api.js'
+
 const values = [
   { title: 'Security-first design', copy: 'Every system we ship is built to a hardened baseline, not patched after the fact.' },
   { title: 'Transparent delivery', copy: 'Clients see status, timelines, and decisions as they happen — no black boxes.' },
@@ -6,6 +9,18 @@ const values = [
 ]
 
 export default function About() {
+  const [team, setTeam] = useState([])
+  const [teamStatus, setTeamStatus] = useState('loading') // loading | ready | error
+
+  useEffect(() => {
+    fetchTeam()
+      .then((data) => {
+        setTeam(data)
+        setTeamStatus('ready')
+      })
+      .catch(() => setTeamStatus('error'))
+  }, [])
+
   return (
     <>
       <section className="border-b border-slate-200">
@@ -58,6 +73,36 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {teamStatus === 'ready' && team.length > 0 && (
+        <section className="border-t border-slate-200">
+          <div className="mx-auto max-w-6xl px-4 py-20">
+            <h2 className="font-display text-3xl font-semibold text-graphite">Leadership</h2>
+            <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+              {team.map((member) => (
+                <div key={member.name}>
+                  {member.photo ? (
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      className="h-40 w-40 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-40 w-40 rounded-full bg-slate-200" />
+                  )}
+                  <h3 className="mt-4 font-display text-base font-semibold text-graphite">
+                    {member.name}
+                  </h3>
+                  <p className="font-mono text-xs text-slate">{member.role}</p>
+                  {member.bio && (
+                    <p className="mt-2 text-sm leading-relaxed text-slate">{member.bio}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   )
 }

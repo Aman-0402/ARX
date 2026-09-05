@@ -2,11 +2,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import generics, status, viewsets
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup
+from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember
 from .serializers import (
     ContactSubmissionSerializer,
     ContactSubmissionAdminSerializer,
@@ -17,6 +18,8 @@ from .serializers import (
     BlogPostAdminSerializer,
     ServiceGroupPublicSerializer,
     ServiceGroupAdminSerializer,
+    TeamMemberPublicSerializer,
+    TeamMemberAdminSerializer,
 )
 
 
@@ -43,6 +46,13 @@ class ServiceGroupListView(generics.ListAPIView):
 
     queryset = ServiceGroup.objects.all()
     serializer_class = ServiceGroupPublicSerializer
+
+
+class TeamMemberListView(generics.ListAPIView):
+    """GET /api/team/ — team members in display order."""
+
+    queryset = TeamMember.objects.all()
+    serializer_class = TeamMemberPublicSerializer
 
 
 class BlogPostListView(generics.ListAPIView):
@@ -137,6 +147,16 @@ class ServiceGroupAdminViewSet(viewsets.ModelViewSet):
     queryset = ServiceGroup.objects.all()
     serializer_class = ServiceGroupAdminSerializer
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+
+class TeamMemberAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/team/ — team members shown on the About page."""
+
+    queryset = TeamMember.objects.all()
+    serializer_class = TeamMemberAdminSerializer
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
 
 class AdminStatsView(APIView):
@@ -153,4 +173,5 @@ class AdminStatsView(APIView):
             'contact_unhandled': ContactSubmission.objects.filter(handled=False).count(),
             'verification_total': VerificationRecord.objects.count(),
             'service_groups_total': ServiceGroup.objects.count(),
+            'team_total': TeamMember.objects.count(),
         })

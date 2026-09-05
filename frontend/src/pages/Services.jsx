@@ -44,6 +44,13 @@ export default function Services() {
             <div className="grid gap-px overflow-hidden border border-slate-200 bg-slate-200 md:grid-cols-2">
               {groups.map((group) => (
                 <div key={group.name} className="bg-paper p-8">
+                  {group.image && (
+                    <img
+                      src={group.image}
+                      alt=""
+                      className="mb-5 h-40 w-full rounded-sm object-cover"
+                    />
+                  )}
                   <h2 className="font-display text-lg font-semibold text-graphite">{group.name}</h2>
                   <ul className="mt-4 space-y-2">
                     {group.items.map((item) => (

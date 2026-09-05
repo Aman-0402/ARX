@@ -20,9 +20,10 @@ backend/    Django 5 + Django REST Framework
   monitoring dashboard (live uptime, response time) rather than generic
   stat cards, since that's literally what the company sells.
 
-Pages: Home, About, Services (→ Django API), Blog (list + post detail →
-Django API), Contact (working form → Django API). Plus `/login` and a
-protected `/admin` dashboard — see "Admin dashboard" below.
+Pages: Home, About (incl. Leadership team → Django API), Services (→ Django
+API), Blog (list + post detail → Django API), Contact (working form → Django
+API). Plus `/login` and a protected `/admin` dashboard — see "Admin
+dashboard" below.
 
 ## Running locally
 
@@ -62,8 +63,14 @@ your local backend with no extra config.
 - `GET /api/blog/` — list of published `BlogPost`s, newest first.
 - `GET /api/blog/<slug>/` — a single published post, `404` if not found or
   unpublished.
-- `GET /api/services/` — service groups (name + items) in display order,
-  for the public Services page.
+- `GET /api/services/` — service groups (name + image + items) in display
+  order, for the public Services page.
+- `GET /api/team/` — team members (name, role, bio, photo) in display order,
+  for the About page's Leadership section.
+
+Uploaded images (service group images, team photos) are served from
+`/media/` in dev (`backend/media/`, gitignored — not committed). Requires
+`Pillow` (in `requirements.txt`) for Django's `ImageField`.
 
 Note: the backend still exposes `GET /api/verify/<code>/` and the
 `VerificationRecord` model — no public frontend page consumes it (the
@@ -83,15 +90,18 @@ dashboard below.
 - **Verification records** — create/edit/delete the codes looked up by
   `GET /api/verify/<code>/`.
 - **Services** — create/edit/delete/reorder the groups shown on the public
-  Services page.
+  Services page, each with an optional image.
+- **Team** — create/edit/delete/reorder the Leadership entries (name, role,
+  bio, photo) shown on the About page.
 
 Backed by:
 
 - `GET /api/auth/csrf/`, `POST /api/auth/login/`, `POST /api/auth/logout/`,
   `GET /api/auth/me/`
 - `GET /api/admin/stats/`
-- `/api/admin/blog/`, `/api/admin/verify/`, `/api/admin/services/` — full
-  CRUD, staff-only, session + CSRF protected
+- `/api/admin/blog/`, `/api/admin/verify/`, `/api/admin/services/`,
+  `/api/admin/team/` — full CRUD, staff-only, session + CSRF protected
+  (services/team accept `multipart/form-data` for image/photo uploads)
 - `/api/admin/contact/` — same, but read/patch(`handled`)/delete only, no
   create (submissions only come from the public contact form)
 

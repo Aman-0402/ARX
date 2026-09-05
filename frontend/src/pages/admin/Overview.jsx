@@ -9,6 +9,7 @@ const cards = [
   { key: 'contact_total', label: 'Total contacts', to: '/admin/contact' },
   { key: 'verification_total', label: 'Verification records', to: '/admin/verify' },
   { key: 'service_groups_total', label: 'Service groups', to: '/admin/services' },
+  { key: 'team_total', label: 'Team members', to: '/admin/team' },
 ]
 
 export default function Overview() {

@@ -22,10 +22,19 @@ Two-service split, no shared runtime:
   URL), published flag, published_at. Public `GET /api/blog/` and
   `GET /api/blog/<slug>/` only return `published=True` posts. Full CRUD
   (drafts included) at `/api/admin/blog/`, staff-only.
-- `ServiceGroup` — name, order, items (`TextField`, one item per line —
-  `items_list()` splits it for the public serializer). Public
-  `GET /api/services/` returns groups ordered by `order`, `items` as a list.
-  Full CRUD at `/api/admin/services/`.
+- `ServiceGroup` — name, order, image (`ImageField`, optional), items
+  (`TextField`, one item per line — `items_list()` splits it for the public
+  serializer). Public `GET /api/services/` returns groups ordered by
+  `order`, `items` as a list. Full CRUD at `/api/admin/services/`.
+- `TeamMember` — name, role, bio (optional), photo (`ImageField`, optional),
+  order. Public `GET /api/team/` returns members ordered by `order`. Full
+  CRUD at `/api/admin/team/`. Shown on the About page's Leadership section.
+
+Both `ImageField`s need `Pillow` (`requirements.txt`) and
+`MEDIA_URL`/`MEDIA_ROOT` (`config/settings.py`) — files land in
+`backend/media/` (gitignored) and are served at `/media/*` only when
+`DEBUG=True` (`config/urls.py`'s `static()` helper); a real deploy needs its
+own media serving (nginx, S3, whatever).
 
 ## Auth (session-based, staff-only)
 
@@ -40,8 +49,13 @@ makes `/api/*` same-origin from the browser's perspective — revisit
 deployed on genuinely different origins.
 
 Every admin `ModelViewSet` (`BlogPostAdminViewSet`, `VerificationRecordAdminViewSet`,
-`ServiceGroupAdminViewSet`) is separate from its public read-only view(s), so
-drafts/full record data never leak through the public endpoints.
+`ServiceGroupAdminViewSet`, `TeamMemberAdminViewSet`) is separate from its
+public read-only view(s), so drafts/full record data never leak through the
+public endpoints. `ServiceGroupAdminViewSet` and `TeamMemberAdminViewSet` set
+`parser_classes = [MultiPartParser, FormParser, JSONParser]` so they accept
+both plain JSON and `multipart/form-data` (needed for the image/photo file
+uploads — the frontend always sends `FormData` for these two, even when no
+file is attached, since `apiFetchForm` in `lib/api.js` doesn't JSON-encode).
 `ContactSubmissionAdminViewSet` overrides `http_method_names` to
 `['get', 'patch', 'delete', ...]` — no create, since submissions only come
 from the public `POST /api/contact/`. `AdminStatsView` is a plain `APIView`
@@ -58,9 +72,14 @@ doing `.count()`/`.filter().count()` queries, no caching — fine at this scale.
   `<Outlet/>` for the nested `/admin/*` routes (`App.jsx`): index
   (`pages/admin/Overview.jsx`), `blog` (`AdminBlog.jsx`), `contact`
   (`AdminContact.jsx`), `verify` (`AdminVerify.jsx`), `services`
-  (`AdminServices.jsx`).
-- `components/admin/Field.jsx` — shared labeled-input wrapper reused by the
-  three CRUD forms (blog/verify/services).
+  (`AdminServices.jsx`), `team` (`AdminTeam.jsx`).
+- `components/admin/Field.jsx` — shared labeled-input wrapper reused by all
+  the CRUD forms.
+- `AdminServices.jsx`/`AdminTeam.jsx` build a `FormData` on submit (name,
+  order, items/bio, and the file input if one was picked) and always go
+  through `apiFetchForm`, never `apiFetch` — mixing JSON and multipart
+  bodies on the same endpoint works fine server-side (see parser_classes
+  above) but the frontend picks one per-entity and sticks to it.
 - Public chrome (`Navbar`, `Footer`) is hidden on `/login` and `/admin*` —
   see the `isBareLayout` check in `App.jsx`.
 
