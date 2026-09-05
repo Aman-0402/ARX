@@ -41,7 +41,14 @@ export default function AdminLayout() {
 
       <div className="flex flex-1 flex-col">
         <header className="flex h-16 items-center justify-between border-b border-slate-200 px-8">
-          <span className="font-mono text-xs text-slate">Signed in</span>
+          <a
+            href="/"
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-medium text-slate hover:text-ink"
+          >
+            View site ↗
+          </a>
           <div className="flex items-center gap-4 text-sm">
             <span className="text-graphite">{user?.username}</span>
             <button onClick={logout} className="text-slate hover:text-ink">
