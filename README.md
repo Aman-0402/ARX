@@ -60,7 +60,21 @@ your local backend with no extra config.
   `ContactSubmission`, visible in `/admin/`.
 - `GET /api/blog/` — list of published `BlogPost`s, newest first.
 - `GET /api/blog/<slug>/` — a single published post, `404` if not found or
-  unpublished. Add/edit posts via `/admin/`.
+  unpublished.
+
+## Frontend admin
+
+`/login` — session-based login (staff users only) for the built-in admin
+area. On success, redirects to `/admin`, a protected blog-post manager
+(list, create, edit, delete — including drafts). Backed by:
+
+- `GET /api/auth/csrf/`, `POST /api/auth/login/`, `POST /api/auth/logout/`,
+  `GET /api/auth/me/`
+- `/api/admin/blog/` and `/api/admin/blog/<slug>/` — full CRUD, staff-only,
+  session + CSRF protected.
+
+Django's own `/admin/` (the built-in admin site) still works too and is
+still where `ContactSubmission`s and `VerificationRecord`s are managed.
 
 Note: the backend still exposes `GET /api/verify/<code>/` and the
 `VerificationRecord` model — only the frontend Verify page/nav link was
