@@ -66,7 +66,7 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="border-b border-slate-200">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 md:grid-cols-[1.15fr_1fr] md:items-center md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-14 md:grid-cols-[1.15fr_1fr] md:items-center md:py-16">
           <div>
             <h1 className="font-display text-4xl font-semibold leading-[1.1] text-graphite md:text-5xl">
               IT services and modern tech solutions for growing businesses
