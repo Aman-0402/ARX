@@ -11,9 +11,10 @@ backend/    Django 5 + Django REST Framework
 
 ## Design
 
-- **Palette** — ink `#0E1116` (dark panels), paper `#F6F5F1` (background),
-  graphite `#1B1F27` (text), slate `#6B7280` (muted text), amber `#FFB020`
-  (signal accent).
+- **Palette** — all-blue: ink `#0B1221` (dark panels), paper `#F3F6FC`
+  (background), graphite `#152238` (text), slate `#5B6B8C` (muted text),
+  amber `#2F6FED` (signal accent — token name kept from the original
+  palette, value is now blue). Defined in `frontend/tailwind.config.js`.
 - **Type** — Space Grotesk for headings, Inter for body, IBM Plex Mono
   for status/metric readouts.
 - **Concept** — a "systems status board": the hero and metrics read like a

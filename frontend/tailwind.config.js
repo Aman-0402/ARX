@@ -4,19 +4,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#0E1116',
-        'ink-raised': '#161A22',
-        paper: '#F6F5F1',
-        'paper-dim': '#ECEAE3',
-        graphite: '#1B1F27',
+        ink: '#0B1221',
+        'ink-raised': '#111A30',
+        paper: '#F3F6FC',
+        'paper-dim': '#E6ECF7',
+        graphite: '#152238',
         slate: {
-          DEFAULT: '#6B7280',
-          200: '#D8DBE0',
-          700: '#3A3F4B',
+          DEFAULT: '#5B6B8C',
+          200: '#D3DCEC',
+          700: '#2A3A5C',
         },
         amber: {
-          DEFAULT: '#FFB020',
-          dim: '#9A6B14',
+          DEFAULT: '#2F6FED',
+          dim: '#1D47A6',
         },
       },
       fontFamily: {
