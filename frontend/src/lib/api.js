@@ -32,6 +32,14 @@ export async function submitContact(payload) {
   return res.json()
 }
 
+export async function fetchServices() {
+  const res = await fetch(`${API_BASE}/services/`)
+  if (!res.ok) {
+    throw new Error('Could not load services.')
+  }
+  return res.json()
+}
+
 export async function fetchBlogPosts() {
   const res = await fetch(`${API_BASE}/blog/`)
   if (!res.ok) {
@@ -101,4 +109,85 @@ export async function updateAdminPost(slug, payload) {
 export async function deleteAdminPost(slug) {
   const res = await apiFetch(`/admin/blog/${encodeURIComponent(slug)}/`, { method: 'DELETE' })
   if (!res.ok) throw new Error('Could not delete post.')
+}
+
+export async function fetchAdminStats() {
+  const res = await apiFetch('/admin/stats/')
+  if (!res.ok) throw new Error('Could not load stats.')
+  return res.json()
+}
+
+export async function fetchAdminContacts() {
+  const res = await apiFetch('/admin/contact/')
+  if (!res.ok) throw new Error('Could not load contact submissions.')
+  return res.json()
+}
+
+export async function setContactHandled(id, handled) {
+  const res = await apiFetch(`/admin/contact/${id}/`, { method: 'PATCH', body: { handled } })
+  if (!res.ok) throw new Error('Could not update submission.')
+  return res.json()
+}
+
+export async function deleteContact(id) {
+  const res = await apiFetch(`/admin/contact/${id}/`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Could not delete submission.')
+}
+
+export async function fetchAdminVerifyRecords() {
+  const res = await apiFetch('/admin/verify/')
+  if (!res.ok) throw new Error('Could not load verification records.')
+  return res.json()
+}
+
+export async function createVerifyRecord(payload) {
+  const res = await apiFetch('/admin/verify/', { method: 'POST', body: payload })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not create record.')
+  }
+  return res.json()
+}
+
+export async function updateVerifyRecord(code, payload) {
+  const res = await apiFetch(`/admin/verify/${encodeURIComponent(code)}/`, { method: 'PATCH', body: payload })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not update record.')
+  }
+  return res.json()
+}
+
+export async function deleteVerifyRecord(code) {
+  const res = await apiFetch(`/admin/verify/${encodeURIComponent(code)}/`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Could not delete record.')
+}
+
+export async function fetchAdminServiceGroups() {
+  const res = await apiFetch('/admin/services/')
+  if (!res.ok) throw new Error('Could not load service groups.')
+  return res.json()
+}
+
+export async function createServiceGroup(payload) {
+  const res = await apiFetch('/admin/services/', { method: 'POST', body: payload })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not create service group.')
+  }
+  return res.json()
+}
+
+export async function updateServiceGroup(id, payload) {
+  const res = await apiFetch(`/admin/services/${id}/`, { method: 'PATCH', body: payload })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not update service group.')
+  }
+  return res.json()
+}
+
+export async function deleteServiceGroup(id) {
+  const res = await apiFetch(`/admin/services/${id}/`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Could not delete service group.')
 }

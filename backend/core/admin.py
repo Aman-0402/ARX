@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ContactSubmission, VerificationRecord, BlogPost
+from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup
 
 
 @admin.register(ContactSubmission)
@@ -22,3 +22,9 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_filter = ['published']
     search_fields = ['title', 'excerpt', 'content']
     prepopulated_fields = {'slug': ('title',)}
+
+
+@admin.register(ServiceGroup)
+class ServiceGroupAdmin(admin.ModelAdmin):
+    list_display = ['name', 'order']
+    ordering = ['order', 'name']

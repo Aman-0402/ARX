@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '../../hooks/use-auth.jsx'
+import Field from '../../components/admin/Field.jsx'
 import {
   fetchAdminPosts,
   createAdminPost,
@@ -18,7 +18,6 @@ const emptyForm = {
 }
 
 export default function AdminBlog() {
-  const { user, logout } = useAuth()
   const [posts, setPosts] = useState([])
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [error, setError] = useState('')
@@ -102,156 +101,129 @@ export default function AdminBlog() {
   }
 
   return (
-    <div className="min-h-screen bg-paper px-6 py-10">
-      <div className="mx-auto max-w-5xl">
-        <div className="flex items-center justify-between border-b border-slate-200 pb-6">
-          <div>
-            <span className="font-mono text-xs text-slate">Admin</span>
-            <h1 className="mt-1 font-display text-2xl font-semibold text-graphite">
-              Blog posts
-            </h1>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-slate">
-            <span>{user?.username}</span>
-            <button onClick={logout} className="text-graphite hover:text-ink">
-              Sign out
-            </button>
-          </div>
+    <div>
+      <h1 className="font-display text-2xl font-semibold text-graphite">Blog posts</h1>
+
+      {error && (
+        <p className="mt-4 border border-slate-200 p-4 text-sm text-red-700">{error}</p>
+      )}
+
+      <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
+        <div>
+          <h2 className="font-display text-lg font-semibold text-graphite">
+            {editingSlug ? `Edit "${editingSlug}"` : 'New post'}
+          </h2>
+          <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+            <Field label="Title" required>
+              <input
+                required
+                type="text"
+                value={form.title}
+                onChange={update('title')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
+            <Field label="Slug (auto-generated if left blank on create)">
+              <input
+                type="text"
+                value={form.slug}
+                onChange={update('slug')}
+                disabled={!!editingSlug}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink disabled:opacity-60"
+              />
+            </Field>
+            <Field label="Excerpt" required>
+              <input
+                required
+                type="text"
+                value={form.excerpt}
+                onChange={update('excerpt')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
+            <Field label="Content" required>
+              <textarea
+                required
+                rows={6}
+                value={form.content}
+                onChange={update('content')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
+            <Field label="Cover image URL (optional)">
+              <input
+                type="url"
+                value={form.cover_image}
+                onChange={update('cover_image')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
+            <Field label="Published at">
+              <input
+                required
+                type="datetime-local"
+                value={form.published_at}
+                onChange={update('published_at')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
+            <label className="flex items-center gap-2 text-sm text-graphite">
+              <input type="checkbox" checked={form.published} onChange={update('published')} />
+              Published (visible on the public blog)
+            </label>
+
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                disabled={saving}
+                className="rounded-sm bg-ink px-5 py-2.5 text-sm font-medium text-paper hover:bg-graphite disabled:opacity-60"
+              >
+                {saving ? 'Saving…' : editingSlug ? 'Save changes' : 'Create post'}
+              </button>
+              {editingSlug && (
+                <button
+                  type="button"
+                  onClick={cancelEdit}
+                  className="rounded-sm border border-slate-200 px-5 py-2.5 text-sm font-medium text-graphite hover:border-ink"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+          </form>
         </div>
 
-        {error && (
-          <p className="mt-6 border border-slate-200 p-4 text-sm text-red-700">{error}</p>
-        )}
-
-        <div className="mt-8 grid gap-10 md:grid-cols-[1fr_1.2fr]">
-          <div>
-            <h2 className="font-display text-lg font-semibold text-graphite">
-              {editingSlug ? `Edit "${editingSlug}"` : 'New post'}
-            </h2>
-            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-              <Field label="Title" required>
-                <input
-                  required
-                  type="text"
-                  value={form.title}
-                  onChange={update('title')}
-                  className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
-                />
-              </Field>
-              <Field label="Slug (auto-generated if left blank on create)">
-                <input
-                  type="text"
-                  value={form.slug}
-                  onChange={update('slug')}
-                  disabled={!!editingSlug}
-                  className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink disabled:opacity-60"
-                />
-              </Field>
-              <Field label="Excerpt" required>
-                <input
-                  required
-                  type="text"
-                  value={form.excerpt}
-                  onChange={update('excerpt')}
-                  className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
-                />
-              </Field>
-              <Field label="Content" required>
-                <textarea
-                  required
-                  rows={6}
-                  value={form.content}
-                  onChange={update('content')}
-                  className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
-                />
-              </Field>
-              <Field label="Cover image URL (optional)">
-                <input
-                  type="url"
-                  value={form.cover_image}
-                  onChange={update('cover_image')}
-                  className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
-                />
-              </Field>
-              <Field label="Published at">
-                <input
-                  required
-                  type="datetime-local"
-                  value={form.published_at}
-                  onChange={update('published_at')}
-                  className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
-                />
-              </Field>
-              <label className="flex items-center gap-2 text-sm text-graphite">
-                <input type="checkbox" checked={form.published} onChange={update('published')} />
-                Published (visible on the public blog)
-              </label>
-
-              <div className="flex gap-3">
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="rounded-sm bg-ink px-5 py-2.5 text-sm font-medium text-paper hover:bg-graphite disabled:opacity-60"
-                >
-                  {saving ? 'Saving…' : editingSlug ? 'Save changes' : 'Create post'}
-                </button>
-                {editingSlug && (
-                  <button
-                    type="button"
-                    onClick={cancelEdit}
-                    className="rounded-sm border border-slate-200 px-5 py-2.5 text-sm font-medium text-graphite hover:border-ink"
-                  >
-                    Cancel
+        <div>
+          <h2 className="font-display text-lg font-semibold text-graphite">All posts</h2>
+          {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
+          {status === 'ready' && posts.length === 0 && (
+            <p className="mt-4 text-sm text-slate">No posts yet.</p>
+          )}
+          <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
+            {posts.map((post) => (
+              <li key={post.slug} className="flex items-center justify-between gap-4 py-4">
+                <div>
+                  <p className="text-sm font-medium text-graphite">
+                    {post.title}
+                    {!post.published && (
+                      <span className="ml-2 font-mono text-xs text-slate">draft</span>
+                    )}
+                  </p>
+                  <p className="font-mono text-xs text-slate">{post.slug}</p>
+                </div>
+                <div className="flex shrink-0 gap-3 text-sm">
+                  <button onClick={() => startEdit(post)} className="text-graphite hover:text-ink">
+                    Edit
                   </button>
-                )}
-              </div>
-            </form>
-          </div>
-
-          <div>
-            <h2 className="font-display text-lg font-semibold text-graphite">All posts</h2>
-            {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
-            {status === 'ready' && posts.length === 0 && (
-              <p className="mt-4 text-sm text-slate">No posts yet.</p>
-            )}
-            <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
-              {posts.map((post) => (
-                <li key={post.slug} className="flex items-center justify-between gap-4 py-4">
-                  <div>
-                    <p className="text-sm font-medium text-graphite">
-                      {post.title}
-                      {!post.published && (
-                        <span className="ml-2 font-mono text-xs text-slate">draft</span>
-                      )}
-                    </p>
-                    <p className="font-mono text-xs text-slate">{post.slug}</p>
-                  </div>
-                  <div className="flex shrink-0 gap-3 text-sm">
-                    <button onClick={() => startEdit(post)} className="text-graphite hover:text-ink">
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(post.slug)} className="text-red-700 hover:text-red-800">
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+                  <button onClick={() => handleDelete(post.slug)} className="text-red-700 hover:text-red-800">
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
-  )
-}
-
-function Field({ label, required, children }) {
-  return (
-    <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-graphite">
-        {label}
-        {required && <span className="text-amber-dim"> *</span>}
-      </span>
-      {children}
-    </label>
   )
 }

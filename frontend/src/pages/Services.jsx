@@ -1,31 +1,23 @@
-const serviceGroups = [
-  {
-    name: 'Managed IT services',
-    items: ['Server monitoring & maintenance', 'Network management & VPN setup', 'Backup & disaster recovery', 'Helpdesk & remote support'],
-  },
-  {
-    name: 'Cloud & infrastructure',
-    items: ['Cloud migration (AWS, Azure, GCP)', 'Cloud cost optimization', 'Virtualization & VDI', 'CI/CD & DevOps pipelines'],
-  },
-  {
-    name: 'Cybersecurity',
-    items: ['Security audits & penetration testing', 'Endpoint & network security', 'SIEM & incident response', 'Compliance & data protection'],
-  },
-  {
-    name: 'Product development',
-    items: ['Web & mobile app development', 'UI/UX design', 'API design & integration', 'QA & automation testing'],
-  },
-  {
-    name: 'Academic automation',
-    items: ['Admission & enrollment portals', 'Attendance management systems', 'LMS integration', 'Result & reporting dashboards'],
-  },
-  {
-    name: 'Data & AI',
-    items: ['Business intelligence dashboards', 'Data engineering & ETL', 'Automation & RPA', 'AI & chatbot integration'],
-  },
-]
+import { useEffect, useState } from 'react'
+import { fetchServices } from '../lib/api.js'
 
 export default function Services() {
+  const [status, setStatus] = useState('loading') // loading | ready | error
+  const [groups, setGroups] = useState([])
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    fetchServices()
+      .then((data) => {
+        setGroups(data)
+        setStatus('ready')
+      })
+      .catch((err) => {
+        setError(err.message)
+        setStatus('error')
+      })
+  }, [])
+
   return (
     <>
       <section className="border-b border-slate-200">
@@ -44,21 +36,27 @@ export default function Services() {
 
       <section>
         <div className="mx-auto max-w-6xl px-6 py-16">
-          <div className="grid gap-px overflow-hidden border border-slate-200 bg-slate-200 md:grid-cols-2">
-            {serviceGroups.map((group) => (
-              <div key={group.name} className="bg-paper p-8">
-                <h2 className="font-display text-lg font-semibold text-graphite">{group.name}</h2>
-                <ul className="mt-4 space-y-2">
-                  {group.items.map((item) => (
-                    <li key={item} className="flex gap-3 border-t border-slate-200 pt-2 text-sm text-slate first:border-t-0 first:pt-0">
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          {status === 'loading' && <p className="text-sm text-slate">Loading…</p>}
+          {status === 'error' && (
+            <p className="border border-slate-200 p-6 text-sm text-red-700">{error}</p>
+          )}
+          {status === 'ready' && (
+            <div className="grid gap-px overflow-hidden border border-slate-200 bg-slate-200 md:grid-cols-2">
+              {groups.map((group) => (
+                <div key={group.name} className="bg-paper p-8">
+                  <h2 className="font-display text-lg font-semibold text-graphite">{group.name}</h2>
+                  <ul className="mt-4 space-y-2">
+                    {group.items.map((item) => (
+                      <li key={item} className="flex gap-3 border-t border-slate-200 pt-2 text-sm text-slate first:border-t-0 first:pt-0">
+                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

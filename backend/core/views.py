@@ -6,13 +6,17 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import ContactSubmission, VerificationRecord, BlogPost
+from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup
 from .serializers import (
     ContactSubmissionSerializer,
+    ContactSubmissionAdminSerializer,
     VerificationRecordSerializer,
+    VerificationRecordAdminSerializer,
     BlogPostListSerializer,
     BlogPostDetailSerializer,
     BlogPostAdminSerializer,
+    ServiceGroupPublicSerializer,
+    ServiceGroupAdminSerializer,
 )
 
 
@@ -32,6 +36,13 @@ class VerifyRecordView(APIView):
         except VerificationRecord.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(VerificationRecordSerializer(record).data)
+
+
+class ServiceGroupListView(generics.ListAPIView):
+    """GET /api/services/ — service groups in display order."""
+
+    queryset = ServiceGroup.objects.all()
+    serializer_class = ServiceGroupPublicSerializer
 
 
 class BlogPostListView(generics.ListAPIView):
@@ -100,3 +111,46 @@ class BlogPostAdminViewSet(viewsets.ModelViewSet):
     serializer_class = BlogPostAdminSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'slug'
+
+
+class ContactSubmissionAdminViewSet(viewsets.ModelViewSet):
+    """/api/admin/contact/ — view submissions and toggle `handled`. No create/full update."""
+
+    http_method_names = ['get', 'patch', 'delete', 'head', 'options']
+    queryset = ContactSubmission.objects.all()
+    serializer_class = ContactSubmissionAdminSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class VerificationRecordAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/verify/ — all verification records. Staff-only."""
+
+    queryset = VerificationRecord.objects.all()
+    serializer_class = VerificationRecordAdminSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'code'
+
+
+class ServiceGroupAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/services/ — service groups shown on the Services page."""
+
+    queryset = ServiceGroup.objects.all()
+    serializer_class = ServiceGroupAdminSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class AdminStatsView(APIView):
+    """GET /api/admin/stats/ — counts for the dashboard overview."""
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            'blog_total': BlogPost.objects.count(),
+            'blog_published': BlogPost.objects.filter(published=True).count(),
+            'blog_draft': BlogPost.objects.filter(published=False).count(),
+            'contact_total': ContactSubmission.objects.count(),
+            'contact_unhandled': ContactSubmission.objects.filter(handled=False).count(),
+            'verification_total': VerificationRecord.objects.count(),
+            'service_groups_total': ServiceGroup.objects.count(),
+        })

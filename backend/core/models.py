@@ -50,3 +50,21 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ServiceGroup(models.Model):
+    name = models.CharField(max_length=150)
+    order = models.PositiveIntegerField(default=0)
+    items = models.TextField(
+        blank=True,
+        help_text='One item per line.',
+    )
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name
+
+    def items_list(self):
+        return [line.strip() for line in self.items.splitlines() if line.strip()]

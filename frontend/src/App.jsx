@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
+import AdminLayout from './components/admin/AdminLayout.jsx'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import Services from './pages/Services.jsx'
@@ -9,7 +10,11 @@ import Contact from './pages/Contact.jsx'
 import Blog from './pages/Blog.jsx'
 import BlogPost from './pages/BlogPost.jsx'
 import Login from './pages/Login.jsx'
+import Overview from './pages/admin/Overview.jsx'
 import AdminBlog from './pages/admin/AdminBlog.jsx'
+import AdminContact from './pages/admin/AdminContact.jsx'
+import AdminVerify from './pages/admin/AdminVerify.jsx'
+import AdminServices from './pages/admin/AdminServices.jsx'
 
 export default function App() {
   const location = useLocation()
@@ -31,10 +36,16 @@ export default function App() {
             path="/admin"
             element={
               <RequireAuth>
-                <AdminBlog />
+                <AdminLayout />
               </RequireAuth>
             }
-          />
+          >
+            <Route index element={<Overview />} />
+            <Route path="blog" element={<AdminBlog />} />
+            <Route path="contact" element={<AdminContact />} />
+            <Route path="verify" element={<AdminVerify />} />
+            <Route path="services" element={<AdminServices />} />
+          </Route>
         </Routes>
       </main>
       {!isBareLayout && <Footer />}

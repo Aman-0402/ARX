@@ -20,8 +20,9 @@ backend/    Django 5 + Django REST Framework
   monitoring dashboard (live uptime, response time) rather than generic
   stat cards, since that's literally what the company sells.
 
-Pages: Home, About, Services, Blog (list + post detail → Django API), Contact
-(working form → Django API).
+Pages: Home, About, Services (→ Django API), Blog (list + post detail →
+Django API), Contact (working form → Django API). Plus `/login` and a
+protected `/admin` dashboard — see "Admin dashboard" below.
 
 ## Running locally
 
@@ -61,24 +62,41 @@ your local backend with no extra config.
 - `GET /api/blog/` — list of published `BlogPost`s, newest first.
 - `GET /api/blog/<slug>/` — a single published post, `404` if not found or
   unpublished.
+- `GET /api/services/` — service groups (name + items) in display order,
+  for the public Services page.
 
-## Frontend admin
+Note: the backend still exposes `GET /api/verify/<code>/` and the
+`VerificationRecord` model — no public frontend page consumes it (the
+Verify page was removed), but it's fully manageable from the admin
+dashboard below.
 
-`/login` — session-based login (staff users only) for the built-in admin
-area. On success, redirects to `/admin`, a protected blog-post manager
-(list, create, edit, delete — including drafts). Backed by:
+## Admin dashboard
+
+`/login` — session-based login (staff users only). On success, redirects to
+`/admin`, a sidebar-nav dashboard:
+
+- **Overview** — stat cards (published/draft posts, unhandled contacts,
+  verification records, service groups), each linking to its section.
+- **Blog posts** — create/edit/delete, including unpublished drafts.
+- **Contact submissions** — view messages from the public contact form,
+  mark handled/unhandled, delete.
+- **Verification records** — create/edit/delete the codes looked up by
+  `GET /api/verify/<code>/`.
+- **Services** — create/edit/delete/reorder the groups shown on the public
+  Services page.
+
+Backed by:
 
 - `GET /api/auth/csrf/`, `POST /api/auth/login/`, `POST /api/auth/logout/`,
   `GET /api/auth/me/`
-- `/api/admin/blog/` and `/api/admin/blog/<slug>/` — full CRUD, staff-only,
-  session + CSRF protected.
+- `GET /api/admin/stats/`
+- `/api/admin/blog/`, `/api/admin/verify/`, `/api/admin/services/` — full
+  CRUD, staff-only, session + CSRF protected
+- `/api/admin/contact/` — same, but read/patch(`handled`)/delete only, no
+  create (submissions only come from the public contact form)
 
-Django's own `/admin/` (the built-in admin site) still works too and is
-still where `ContactSubmission`s and `VerificationRecord`s are managed.
-
-Note: the backend still exposes `GET /api/verify/<code>/` and the
-`VerificationRecord` model — only the frontend Verify page/nav link was
-removed. Remove the backend route too if it's no longer needed.
+Django's own `/admin/` (the built-in admin site) still works too, as a
+fallback / for anything not covered above.
 
 ## What's not built yet
 

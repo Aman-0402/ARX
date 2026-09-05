@@ -1,6 +1,6 @@
 from django.utils.text import slugify
 from rest_framework import serializers
-from .models import ContactSubmission, VerificationRecord, BlogPost
+from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup
 
 
 class ContactSubmissionSerializer(serializers.ModelSerializer):
@@ -10,10 +10,23 @@ class ContactSubmissionSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at']
 
 
+class ContactSubmissionAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactSubmission
+        fields = ['id', 'name', 'email', 'phone', 'message', 'created_at', 'handled']
+        read_only_fields = ['id', 'name', 'email', 'phone', 'message', 'created_at']
+
+
 class VerificationRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = VerificationRecord
         fields = ['code', 'holder_name', 'record_type', 'issued_on', 'notes']
+
+
+class VerificationRecordAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VerificationRecord
+        fields = ['id', 'code', 'holder_name', 'record_type', 'issued_on', 'notes']
 
 
 class BlogPostListSerializer(serializers.ModelSerializer):
@@ -59,3 +72,20 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
                 n += 1
             validated_data['slug'] = slug
         return super().create(validated_data)
+
+
+class ServiceGroupPublicSerializer(serializers.ModelSerializer):
+    items = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ServiceGroup
+        fields = ['name', 'items']
+
+    def get_items(self, obj):
+        return obj.items_list()
+
+
+class ServiceGroupAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceGroup
+        fields = ['id', 'name', 'order', 'items']
