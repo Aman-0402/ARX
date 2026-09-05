@@ -14,7 +14,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-paper/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
         <NavLink to="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
           <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-ink font-mono text-sm text-amber">
             A
@@ -59,7 +59,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <nav className="flex flex-col border-t border-slate-200 bg-paper px-6 py-4 md:hidden">
+        <nav className="flex flex-col border-t border-slate-200 bg-paper px-4 py-4 md:hidden">
           {links.map((link) => (
             <NavLink
               key={link.to}

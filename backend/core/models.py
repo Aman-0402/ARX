@@ -55,6 +55,7 @@ class BlogPost(models.Model):
 class ServiceGroup(models.Model):
     name = models.CharField(max_length=150)
     order = models.PositiveIntegerField(default=0)
+    image = models.ImageField(upload_to='services/', blank=True, null=True)
     items = models.TextField(
         blank=True,
         help_text='One item per line.',
@@ -68,3 +69,17 @@ class ServiceGroup(models.Model):
 
     def items_list(self):
         return [line.strip() for line in self.items.splitlines() if line.strip()]
+
+
+class TeamMember(models.Model):
+    name = models.CharField(max_length=150)
+    role = models.CharField(max_length=150)
+    bio = models.CharField(max_length=300, blank=True)
+    photo = models.ImageField(upload_to='team/', blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return f'{self.name} — {self.role}'

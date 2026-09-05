@@ -66,7 +66,7 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="border-b border-slate-200">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-[1.15fr_1fr] md:items-center md:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 md:grid-cols-[1.15fr_1fr] md:items-center md:py-28">
           <div>
             <h1 className="font-display text-4xl font-semibold leading-[1.1] text-graphite md:text-5xl">
               IT services and modern tech solutions for growing businesses
@@ -100,7 +100,7 @@ export default function Home() {
 
       {/* Why choose */}
       <section className="border-b border-slate-200 bg-paper-dim">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-[1fr_1fr]">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 md:grid-cols-[1fr_1fr]">
           <div>
             <h2 className="font-display text-3xl font-semibold text-graphite">
               Why organizations choose ARX Infotech
@@ -142,7 +142,7 @@ export default function Home() {
 
       {/* Core services */}
       <section className="border-b border-slate-200">
-        <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 className="font-display text-3xl font-semibold text-graphite">Our core services</h2>
@@ -174,7 +174,7 @@ export default function Home() {
 
       {/* What we deliver */}
       <section className="border-b border-slate-200 bg-paper-dim">
-        <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20">
           <h2 className="font-display text-3xl font-semibold text-graphite">What we deliver</h2>
           <p className="mt-3 max-w-md text-slate">
             Professional solutions designed for business growth and digital efficiency.
@@ -198,7 +198,7 @@ export default function Home() {
 
       {/* Testimonials */}
       <section className="border-b border-slate-200">
-        <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20">
           <h2 className="font-display text-3xl font-semibold text-graphite">What our clients say</h2>
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {testimonials.map((t) => (
@@ -216,7 +216,7 @@ export default function Home() {
 
       {/* CTA */}
       <section className="bg-ink">
-        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-6 py-16 md:flex-row md:items-center">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 py-16 md:flex-row md:items-center">
           <div>
             <h2 className="font-display text-2xl font-semibold text-paper md:text-3xl">
               Need IT support or custom software?

@@ -28,7 +28,7 @@ export default function Contact() {
 
   return (
     <section className="border-b border-slate-200">
-      <div className="mx-auto grid max-w-6xl gap-14 px-6 py-20 md:grid-cols-[1fr_1fr]">
+      <div className="mx-auto grid max-w-6xl gap-14 px-4 py-20 md:grid-cols-[1fr_1fr]">
         <div>
           <span className="font-mono text-xs text-slate">Contact</span>
           <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-graphite">

@@ -21,7 +21,7 @@ export default function Blog() {
 
   return (
     <section className="border-b border-slate-200">
-      <div className="mx-auto max-w-4xl px-6 py-20">
+      <div className="mx-auto max-w-4xl px-4 py-20">
         <span className="font-mono text-xs text-slate">Blog</span>
         <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-graphite">
           Notes on systems, software, and automation

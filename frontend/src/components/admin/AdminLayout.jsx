@@ -40,7 +40,7 @@ export default function AdminLayout() {
       </aside>
 
       <div className="flex flex-1 flex-col">
-        <header className="flex h-16 items-center justify-between border-b border-slate-200 px-8">
+        <header className="flex h-16 items-center justify-between border-b border-slate-200 px-6">
           <a
             href="/"
             target="_blank"
@@ -56,7 +56,7 @@ export default function AdminLayout() {
             </button>
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-6">
           <Outlet />
         </main>
       </div>

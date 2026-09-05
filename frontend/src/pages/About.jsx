@@ -9,7 +9,7 @@ export default function About() {
   return (
     <>
       <section className="border-b border-slate-200">
-        <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20">
           <span className="font-mono text-xs text-slate">About ARX Infotech</span>
           <h1 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight text-graphite">
             IT services and academic automation, built by people who run the systems they design
@@ -24,7 +24,7 @@ export default function About() {
       </section>
 
       <section className="border-b border-slate-200 bg-paper-dim">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-2">
           <div className="border border-slate-200 bg-paper p-8">
             <h2 className="font-display text-xl font-semibold text-graphite">What we do</h2>
             <p className="mt-3 text-sm leading-relaxed text-slate">
@@ -46,7 +46,7 @@ export default function About() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20">
           <h2 className="font-display text-3xl font-semibold text-graphite">How we work</h2>
           <div className="mt-10 grid gap-px overflow-hidden border border-slate-200 bg-slate-200 sm:grid-cols-2">
             {values.map((v) => (

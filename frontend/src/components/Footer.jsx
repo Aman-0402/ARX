@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 export default function Footer() {
   return (
     <footer className="border-t border-slate-700 bg-ink text-paper">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1.3fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-amber font-mono text-sm text-ink">
@@ -43,7 +43,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-slate-700/60 px-6 py-5">
+      <div className="border-t border-slate-700/60 px-4 py-5">
         <p className="mx-auto max-w-6xl text-xs text-slate-200/50">
           © {new Date().getFullYear()} ARX Infotech. All rights reserved.
         </p>

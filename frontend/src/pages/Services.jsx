@@ -21,7 +21,7 @@ export default function Services() {
   return (
     <>
       <section className="border-b border-slate-200">
-        <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="mx-auto max-w-6xl px-4 py-20">
           <span className="font-mono text-xs text-slate">Services</span>
           <h1 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight text-graphite">
             Complete IT and digital transformation solutions
@@ -35,7 +35,7 @@ export default function Services() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto max-w-6xl px-4 py-16">
           {status === 'loading' && <p className="text-sm text-slate">Loading…</p>}
           {status === 'error' && (
             <p className="border border-slate-200 p-6 text-sm text-red-700">{error}</p>

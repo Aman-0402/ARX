@@ -27,7 +27,7 @@ export default function BlogPost() {
 
   return (
     <section className="border-b border-slate-200">
-      <div className="mx-auto max-w-2xl px-6 py-20">
+      <div className="mx-auto max-w-2xl px-4 py-20">
         <Link to="/blog" className="font-mono text-xs text-slate hover:text-ink">
           ← Blog
         </Link>

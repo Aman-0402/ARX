@@ -1,6 +1,6 @@
 from django.utils.text import slugify
 from rest_framework import serializers
-from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup
+from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember
 
 
 class ContactSubmissionSerializer(serializers.ModelSerializer):
@@ -79,7 +79,7 @@ class ServiceGroupPublicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceGroup
-        fields = ['name', 'items']
+        fields = ['name', 'image', 'items']
 
     def get_items(self, obj):
         return obj.items_list()
@@ -88,4 +88,16 @@ class ServiceGroupPublicSerializer(serializers.ModelSerializer):
 class ServiceGroupAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceGroup
-        fields = ['id', 'name', 'order', 'items']
+        fields = ['id', 'name', 'order', 'image', 'items']
+
+
+class TeamMemberPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMember
+        fields = ['name', 'role', 'bio', 'photo']
+
+
+class TeamMemberAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamMember
+        fields = ['id', 'name', 'role', 'bio', 'photo', 'order']

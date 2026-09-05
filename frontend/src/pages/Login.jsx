@@ -32,7 +32,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-paper px-6">
+    <div className="flex min-h-screen items-center justify-center bg-paper px-4">
       <form onSubmit={handleSubmit} className="w-full max-w-sm border border-slate-200 p-8">
         <span className="font-mono text-xs text-slate">Admin</span>
         <h1 className="mt-2 font-display text-2xl font-semibold text-graphite">Sign in</h1>
