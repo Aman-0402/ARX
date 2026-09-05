@@ -2,8 +2,13 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import ContactSubmission, VerificationRecord
-from .serializers import ContactSubmissionSerializer, VerificationRecordSerializer
+from .models import ContactSubmission, VerificationRecord, BlogPost
+from .serializers import (
+    ContactSubmissionSerializer,
+    VerificationRecordSerializer,
+    BlogPostListSerializer,
+    BlogPostDetailSerializer,
+)
 
 
 class ContactSubmissionCreateView(generics.CreateAPIView):
@@ -22,3 +27,18 @@ class VerifyRecordView(APIView):
         except VerificationRecord.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(VerificationRecordSerializer(record).data)
+
+
+class BlogPostListView(generics.ListAPIView):
+    """GET /api/blog/ — published posts, newest first."""
+
+    queryset = BlogPost.objects.filter(published=True)
+    serializer_class = BlogPostListSerializer
+
+
+class BlogPostDetailView(generics.RetrieveAPIView):
+    """GET /api/blog/<slug>/ — a single published post."""
+
+    queryset = BlogPost.objects.filter(published=True)
+    serializer_class = BlogPostDetailSerializer
+    lookup_field = 'slug'

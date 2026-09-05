@@ -34,3 +34,19 @@ class VerificationRecord(models.Model):
 
     def __str__(self):
         return f'{self.code} — {self.holder_name}'
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True)
+    excerpt = models.CharField(max_length=300)
+    content = models.TextField()
+    cover_image = models.URLField(blank=True)
+    published = models.BooleanField(default=True)
+    published_at = models.DateTimeField()
+
+    class Meta:
+        ordering = ['-published_at']
+
+    def __str__(self):
+        return self.title

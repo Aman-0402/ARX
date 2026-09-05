@@ -20,7 +20,8 @@ backend/    Django 5 + Django REST Framework
   monitoring dashboard (live uptime, response time) rather than generic
   stat cards, since that's literally what the company sells.
 
-Pages: Home, About, Services, Contact (working form → Django API).
+Pages: Home, About, Services, Blog (list + post detail → Django API), Contact
+(working form → Django API).
 
 ## Running locally
 
@@ -57,6 +58,9 @@ your local backend with no extra config.
 
 - `POST /api/contact/` — `{ name, email, phone, message }` → creates a
   `ContactSubmission`, visible in `/admin/`.
+- `GET /api/blog/` — list of published `BlogPost`s, newest first.
+- `GET /api/blog/<slug>/` — a single published post, `404` if not found or
+  unpublished. Add/edit posts via `/admin/`.
 
 Note: the backend still exposes `GET /api/verify/<code>/` and the
 `VerificationRecord` model — only the frontend Verify page/nav link was

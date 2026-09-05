@@ -12,3 +12,22 @@ export async function submitContact(payload) {
   }
   return res.json()
 }
+
+export async function fetchBlogPosts() {
+  const res = await fetch(`${API_BASE}/blog/`)
+  if (!res.ok) {
+    throw new Error('Could not load blog posts.')
+  }
+  return res.json()
+}
+
+export async function fetchBlogPost(slug) {
+  const res = await fetch(`${API_BASE}/blog/${encodeURIComponent(slug)}/`)
+  if (res.status === 404) {
+    return null
+  }
+  if (!res.ok) {
+    throw new Error('Could not load this post.')
+  }
+  return res.json()
+}

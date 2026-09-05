@@ -17,11 +17,17 @@ Two-service split, no shared runtime:
 - `VerificationRecord` — code (unique), holder_name, record_type
   (certificate / internship / project), issued_on, notes. Read by
   `GET /api/verify/<code>/`, seeded manually via admin or shell — no import
-  pipeline yet.
+  pipeline yet. No frontend page consumes this anymore (Verify page removed);
+  the model and endpoint are still live.
+- `BlogPost` — title, slug (unique), excerpt, content, cover_image (optional
+  URL), published flag, published_at. `GET /api/blog/` and
+  `GET /api/blog/<slug>/` only return `published=True` posts. Managed via
+  `/admin/` — `slug` auto-fills from `title` there.
 
 ## Pages (`frontend/src/pages/`)
 
-Home, About, Services, Contact, Verify — matches the API surface above.
+Home, About, Services, Blog (`Blog.jsx` list + `BlogPost.jsx` detail, at
+`/blog` and `/blog/:slug`), Contact — matches the API surface above.
 Shared chrome in `frontend/src/components/` (Navbar, Footer, StatusBoard).
 
 ## Open items

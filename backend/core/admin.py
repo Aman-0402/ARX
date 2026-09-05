@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ContactSubmission, VerificationRecord
+from .models import ContactSubmission, VerificationRecord, BlogPost
 
 
 @admin.register(ContactSubmission)
@@ -14,3 +14,11 @@ class VerificationRecordAdmin(admin.ModelAdmin):
     list_display = ['code', 'holder_name', 'record_type', 'issued_on']
     search_fields = ['code', 'holder_name']
     list_filter = ['record_type']
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ['title', 'published', 'published_at']
+    list_filter = ['published']
+    search_fields = ['title', 'excerpt', 'content']
+    prepopulated_fields = {'slug': ('title',)}
