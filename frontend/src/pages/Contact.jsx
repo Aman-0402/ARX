@@ -1,5 +1,8 @@
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { submitContact } from '../lib/api.js'
+import Reveal from '../components/motion/Reveal.jsx'
+import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 
 const initialForm = { name: '', email: '', phone: '', message: '' }
 
@@ -27,9 +30,10 @@ export default function Contact() {
   }
 
   return (
-    <section className="border-b border-slate-200">
+    <section className="relative overflow-hidden border-b border-slate-200">
+      <GradientBlobs variant="warm" />
       <div className="mx-auto grid max-w-6xl gap-14 px-4 py-20 md:grid-cols-[1fr_1fr]">
-        <div>
+        <Reveal>
           <span className="font-mono text-xs text-slate">Contact</span>
           <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-graphite">
             Get a free consultation
@@ -55,64 +59,82 @@ export default function Contact() {
               </dd>
             </div>
           </dl>
-        </div>
+        </Reveal>
 
-        <form onSubmit={handleSubmit} className="border border-slate-200 p-8">
-          <div className="space-y-5">
-            <Field label="Full name" required>
-              <input
-                required
-                type="text"
-                value={form.name}
-                onChange={update('name')}
-                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none focus:border-ink"
-              />
-            </Field>
-            <Field label="Email" required>
-              <input
-                required
-                type="email"
-                value={form.email}
-                onChange={update('email')}
-                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none focus:border-ink"
-              />
-            </Field>
-            <Field label="Phone (optional)">
-              <input
-                type="tel"
-                value={form.phone}
-                onChange={update('phone')}
-                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none focus:border-ink"
-              />
-            </Field>
-            <Field label="How can we help?" required>
-              <textarea
-                required
-                rows={4}
-                value={form.message}
-                onChange={update('message')}
-                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none focus:border-ink"
-              />
-            </Field>
-          </div>
+        <Reveal delay={0.1} className="rounded-2xl border border-slate-200 bg-paper p-8 shadow-sm">
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-5">
+              <Field label="Full name" required>
+                <input
+                  required
+                  type="text"
+                  value={form.name}
+                  onChange={update('name')}
+                  className="w-full rounded-xl border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none transition-colors focus:border-amber"
+                />
+              </Field>
+              <Field label="Email" required>
+                <input
+                  required
+                  type="email"
+                  value={form.email}
+                  onChange={update('email')}
+                  className="w-full rounded-xl border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none transition-colors focus:border-amber"
+                />
+              </Field>
+              <Field label="Phone (optional)">
+                <input
+                  type="tel"
+                  value={form.phone}
+                  onChange={update('phone')}
+                  className="w-full rounded-xl border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none transition-colors focus:border-amber"
+                />
+              </Field>
+              <Field label="How can we help?" required>
+                <textarea
+                  required
+                  rows={4}
+                  value={form.message}
+                  onChange={update('message')}
+                  className="w-full rounded-xl border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none transition-colors focus:border-amber"
+                />
+              </Field>
+            </div>
 
-          <button
-            type="submit"
-            disabled={status === 'sending'}
-            className="mt-6 w-full rounded-sm bg-ink px-5 py-3 text-sm font-medium text-paper hover:bg-graphite disabled:opacity-60"
-          >
-            {status === 'sending' ? 'Sending…' : 'Send message'}
-          </button>
+            <motion.button
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={status === 'sending'}
+              className="mt-6 w-full rounded-xl bg-ink px-5 py-3 text-sm font-medium text-paper transition-shadow hover:shadow-lg disabled:opacity-60"
+            >
+              {status === 'sending' ? 'Sending…' : 'Send message'}
+            </motion.button>
 
-          {status === 'sent' && (
-            <p className="mt-4 border-t border-slate-200 pt-4 text-sm text-graphite">
-              Message sent. We'll get back to you within one business day.
-            </p>
-          )}
-          {status === 'error' && (
-            <p className="mt-4 border-t border-slate-200 pt-4 text-sm text-red-700">{error}</p>
-          )}
-        </form>
+            <AnimatePresence>
+              {status === 'sent' && (
+                <motion.p
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="mt-4 rounded-xl bg-mint/15 px-4 py-3 text-sm text-graphite"
+                >
+                  Message sent. We'll get back to you within one business day.
+                </motion.p>
+              )}
+              {status === 'error' && (
+                <motion.p
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="mt-4 rounded-xl bg-coral/15 px-4 py-3 text-sm text-red-700"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </form>
+        </Reveal>
       </div>
     </section>
   )

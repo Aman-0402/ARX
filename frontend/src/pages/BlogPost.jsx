@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import Reveal from '../components/motion/Reveal.jsx'
 import { fetchBlogPost } from '../lib/api.js'
 
 export default function BlogPost() {
@@ -28,7 +29,7 @@ export default function BlogPost() {
   return (
     <section className="border-b border-slate-200">
       <div className="mx-auto max-w-2xl px-4 py-20">
-        <Link to="/blog" className="font-mono text-xs text-slate hover:text-ink">
+        <Link to="/blog" className="font-mono text-xs text-slate transition-colors hover:text-ink">
           ← Blog
         </Link>
 
@@ -36,17 +37,17 @@ export default function BlogPost() {
           <p className="mt-10 text-sm text-slate">Loading…</p>
         )}
         {status === 'notfound' && (
-          <p className="mt-10 border border-slate-200 p-6 text-sm text-graphite">
+          <p className="mt-10 rounded-2xl border border-slate-200 p-6 text-sm text-graphite">
             Post not found.
           </p>
         )}
         {status === 'error' && (
-          <p className="mt-10 border border-slate-200 p-6 text-sm text-red-700">{error}</p>
+          <p className="mt-10 rounded-2xl border border-slate-200 p-6 text-sm text-red-700">{error}</p>
         )}
 
         {status === 'ready' && post && (
-          <article className="mt-6">
-            <span className="font-mono text-xs text-slate">
+          <Reveal as="article" className="mt-6">
+            <span className="inline-flex rounded-full bg-amber/15 px-2.5 py-1 font-mono text-xs text-amber-dim">
               {new Date(post.published_at).toLocaleDateString(undefined, {
                 year: 'numeric',
                 month: 'short',
@@ -59,7 +60,7 @@ export default function BlogPost() {
             <p className="mt-4 whitespace-pre-line leading-relaxed text-slate">
               {post.content}
             </p>
-          </article>
+          </Reveal>
         )}
       </div>
     </section>

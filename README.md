@@ -5,18 +5,27 @@ Rebuild of arxinfo.tech as a React frontend + Django REST backend.
 ## Structure
 
 ```
-frontend/   React 18 + Vite + Tailwind CSS + React Router
+frontend/   React 18 + Vite + Tailwind CSS + React Router + Framer Motion
 backend/    Django 5 + Django REST Framework
 ```
 
 ## Design
 
-- **Palette** — all-blue: ink `#0B1221` (dark panels), paper `#F3F6FC`
+- **Palette** — blue base: ink `#0B1221` (dark panels), paper `#F3F6FC`
   (background), graphite `#152238` (text), slate `#5B6B8C` (muted text),
-  amber `#2F6FED` (signal accent — token name kept from the original
-  palette, value is now blue). Defined in `frontend/tailwind.config.js`.
+  amber `#2F6FED` (primary accent — token name kept from the original
+  palette). Plus 4 secondary accents for a joyful, colorful feel used
+  sparingly (per-card highlights, chips, blobs): `coral #FF6B6B`,
+  `mint #2EC4B6`, `sunbeam #FFD166`, `grape #8B5CF6`. Defined in
+  `frontend/tailwind.config.js`.
 - **Type** — Space Grotesk for headings, Inter for body, IBM Plex Mono
   for status/metric readouts.
+- **Motion** — `frontend/src/components/motion/`: `Reveal` (scroll
+  fade/slide/scale-in), `StaggerGrid`/`StaggerItem` (staggered card
+  grids), `GradientBlobs` (decorative blurred parallax blobs behind
+  hero/CTA sections), `Counter` (count-up numbers on view, not yet
+  used). Built on `framer-motion`. Every public page (Home, About,
+  Services, Blog, Contact) uses these; Login/Admin don't.
 - **Concept** — a "systems status board": the hero and metrics read like a
   monitoring dashboard (live uptime, response time) rather than generic
   stat cards, since that's literally what the company sells.
