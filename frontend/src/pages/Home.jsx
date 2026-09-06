@@ -208,10 +208,11 @@ export default function Home() {
             </div>
             <Link
               to="/services"
-              className="group inline-flex items-center gap-2 rounded-xl bg-amber px-6 py-3.5 text-base font-medium text-ink transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber/30"
+              className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-amber bg-amber px-6 py-3.5 text-base font-medium text-ink transition-all duration-300 hover:-translate-y-0.5 hover:text-paper hover:shadow-lg hover:shadow-amber/40"
             >
-              View all services
-              <span className="transition-transform group-hover:translate-x-1">→</span>
+              <span className="absolute inset-0 origin-right scale-x-0 bg-ink transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              <span className="relative">View all services</span>
+              <span className="relative transition-transform duration-300 group-hover:translate-x-1.5">→</span>
             </Link>
           </Reveal>
 
