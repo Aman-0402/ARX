@@ -283,12 +283,12 @@ export default function Home() {
                     <h3 className="font-display text-2xl font-semibold text-graphite">{block.title}</h3>
                   </div>
 
-                  <div className="absolute inset-0 flex flex-col justify-center gap-4 bg-ink p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <h3 className="font-display text-xl font-semibold text-paper">{block.title}</h3>
-                    <p className="text-base leading-relaxed text-slate-200/80">{block.copy}</p>
+                  <div className="absolute inset-0 flex flex-col justify-center gap-4 bg-amber/10 p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <h3 className="font-display text-xl font-semibold text-graphite">{block.title}</h3>
+                    <p className="text-base leading-relaxed text-graphite/80">{block.copy}</p>
                     <div className="flex flex-wrap gap-2">
                       {block.items.map((item) => (
-                        <span key={item} className={`rounded-full px-3 py-1 text-xs font-medium ${block.chip}`}>
+                        <span key={item} className="rounded-full bg-white px-3 py-1 text-xs font-medium text-graphite shadow-sm">
                           {item}
                         </span>
                       ))}
