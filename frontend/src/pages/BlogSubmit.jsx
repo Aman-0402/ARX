@@ -73,7 +73,7 @@ export default function BlogSubmit() {
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
       <GradientBlobs variant="mixed" />
-      <div className="mx-auto max-w-3xl px-4 py-20">
+      <div className="mx-auto max-w-[1400px] px-4 py-20">
         <Reveal>
           <Link to="/blog" className="font-mono text-xs text-slate transition-colors hover:text-ink">
             ← Blog
