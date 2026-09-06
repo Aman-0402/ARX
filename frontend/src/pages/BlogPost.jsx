@@ -30,7 +30,7 @@ export default function BlogPost() {
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
       <GradientBlobs variant="blue" />
-      <div className="mx-auto max-w-2xl px-4 py-20">
+      <div className="mx-auto max-w-[1400px] px-4 py-20">
         <Link
           to="/blog"
           className="group inline-flex items-center gap-1.5 font-mono text-xs text-slate transition-colors hover:text-ink"
