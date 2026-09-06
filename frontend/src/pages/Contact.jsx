@@ -70,7 +70,7 @@ export default function Contact() {
         <Reveal>
           <h1 className="max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-graphite sm:text-5xl md:text-6xl">
             Let's talk{' '}
-            <span className="box-decoration-clone rounded-lg bg-amber px-2 py-1 text-paper shadow-[inset_0_-6px_0_0_rgba(0,0,0,0.15)]">
+            <span className="text-amber underline decoration-amber/30 decoration-8 underline-offset-4">
               about your project
             </span>
           </h1>
