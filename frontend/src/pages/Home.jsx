@@ -272,21 +272,27 @@ export default function Home() {
                 <motion.div
                   whileHover={{ y: -8, rotate: -0.5 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`h-full rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-9 shadow-md transition-shadow duration-300 hover:shadow-xl ${block.accent} ${block.ring} ${block.glow}`}
+                  className={`group h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 bg-white shadow-md transition-shadow duration-300 hover:shadow-xl ${block.accent} ${block.ring} ${block.glow}`}
                 >
-                  <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${block.chip}`}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-                      {block.icon}
-                    </svg>
-                  </span>
-                  <h3 className="mt-5 font-display text-2xl font-semibold text-graphite">{block.title}</h3>
-                  <p className="mt-3 text-base leading-relaxed text-slate">{block.copy}</p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {block.items.map((item) => (
-                      <span key={item} className={`rounded-full px-3.5 py-1.5 text-sm font-medium ${block.chip}`}>
-                        {item}
-                      </span>
-                    ))}
+                  <div className="relative flex h-56 items-center justify-center">
+                    <span className={`inline-flex h-14 w-14 items-center justify-center rounded-xl ${block.chip}`}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
+                        {block.icon}
+                      </svg>
+                    </span>
+                    <div className="absolute inset-0 flex translate-y-2 flex-col justify-center gap-4 bg-ink p-7 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                      <p className="text-base leading-relaxed text-paper">{block.copy}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {block.items.map((item) => (
+                          <span key={item} className={`rounded-full px-3 py-1 text-xs font-medium ${block.chip}`}>
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-9 pt-0">
+                    <h3 className="font-display text-2xl font-semibold text-graphite">{block.title}</h3>
                   </div>
                 </motion.div>
               </StaggerItem>
