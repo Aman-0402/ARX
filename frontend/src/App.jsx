@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
+import FloatingContact from './components/FloatingContact.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import AdminLayout from './components/admin/AdminLayout.jsx'
 import Home from './pages/Home.jsx'
@@ -51,6 +52,7 @@ export default function App() {
         </Routes>
       </main>
       {!isBareLayout && <Footer />}
+      {!isBareLayout && <FloatingContact />}
     </div>
   )
 }
