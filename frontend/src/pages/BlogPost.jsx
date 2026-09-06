@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Reveal from '../components/motion/Reveal.jsx'
+import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import { fetchBlogPost } from '../lib/api.js'
 
 export default function BlogPost() {
@@ -27,10 +28,14 @@ export default function BlogPost() {
   }, [slug])
 
   return (
-    <section className="border-b border-slate-200">
+    <section className="relative overflow-hidden border-b border-slate-200">
+      <GradientBlobs variant="blue" />
       <div className="mx-auto max-w-2xl px-4 py-20">
-        <Link to="/blog" className="font-mono text-xs text-slate transition-colors hover:text-ink">
-          ← Blog
+        <Link
+          to="/blog"
+          className="group inline-flex items-center gap-1.5 font-mono text-xs text-slate transition-colors hover:text-ink"
+        >
+          <span className="transition-transform group-hover:-translate-x-1">←</span> Blog
         </Link>
 
         {status === 'loading' && (
@@ -47,6 +52,13 @@ export default function BlogPost() {
 
         {status === 'ready' && post && (
           <Reveal as="article" className="mt-6">
+            {post.cover_image && (
+              <img
+                src={post.cover_image}
+                alt=""
+                className="mb-8 h-64 w-full rounded-2xl object-cover shadow-md"
+              />
+            )}
             <span className="inline-flex rounded-full bg-amber/15 px-2.5 py-1 font-mono text-xs text-amber-dim">
               {new Date(post.published_at).toLocaleDateString(undefined, {
                 year: 'numeric',
@@ -54,10 +66,10 @@ export default function BlogPost() {
                 day: 'numeric',
               })}
             </span>
-            <h1 className="mt-3 font-display text-3xl font-semibold leading-tight text-graphite">
+            <h1 className="mt-4 font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-5xl">
               {post.title}
             </h1>
-            <p className="mt-4 whitespace-pre-line leading-relaxed text-slate">
+            <p className="mt-6 whitespace-pre-line text-lg leading-relaxed text-slate">
               {post.content}
             </p>
           </Reveal>
