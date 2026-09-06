@@ -2,13 +2,23 @@
 
 ## Architecture
 
-Two-service split, no shared runtime:
-
-- **frontend/** — React 18 + Vite + Tailwind CSS + React Router. Static build,
-  served separately from the API. Talks to backend only via `frontend/src/lib/api.js`.
+- **frontend/** — React 18 + Vite + Tailwind CSS + React Router. Talks to the
+  backend only via `frontend/src/lib/api.js`.
 - **backend/** — Django 5 + Django REST Framework. `backend/config/` holds
   settings/urls/wsgi; `backend/core/` holds the one app (models, serializers,
-  views, urls, admin).
+  views, urls, admin, and `management/commands/seed_demo_data.py`).
+
+**Dev vs prod serve model differs.** In dev, two separate processes: Vite's
+dev server (`:5173`) proxies `/api/*` to Django (`:8000`, `vite.config.js`) —
+genuinely two origins, same-origin only from the *browser's* perspective. In
+prod (see [DEPLOY.md](DEPLOY.md)), Django is the only process — it serves the
+API/admin, whitenoise serves the built frontend's hashed JS/CSS at
+`STATIC_URL` (`/assets/`, set to match Vite's default output path,
+`config/settings.py`), and a catch-all view (`spa_view` in `config/urls.py`)
+serves `frontend/dist/index.html` for every other path so React Router's
+client-side routes work on direct load/refresh. `FRONTEND_DIST` in
+`settings.py` expects `frontend/dist/` as a sibling of `backend/` — this only
+works if both directories keep that relative layout, dev or prod.
 
 ## Data model (`backend/core/models.py`)
 

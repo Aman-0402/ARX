@@ -131,11 +131,15 @@ Backed by:
 Django's own `/admin/` (the built-in admin site) still works too, as a
 fallback / for anything not covered above.
 
+## Deployment
+
+See [DEPLOY.md](DEPLOY.md) for the full arxinfo.tech (cPanel + Passenger)
+deploy walkthrough. Short version: one Django app serves the API, admin, and
+the built React app (via whitenoise + a SPA catch-all view) all from the same
+origin — no subdomain, no CORS to configure.
+
 ## What's not built yet
 
-- Deployment config (the original stack was cPanel/PHP; this assumes a
-  standard Django + static-hosted React deploy — happy to add a
-  Docker/Nginx setup or adapt to your actual host).
 - Email notifications on new contact submissions (currently just stored
   in the DB — wire up `django.core.mail` once you have SMTP creds).
 - Real verification data — `VerificationRecord` is seeded with nothing;
