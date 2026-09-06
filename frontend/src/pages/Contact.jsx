@@ -16,6 +16,7 @@ const infoCards = [
     ring: 'hover:border-amber',
     glow: 'hover:shadow-amber/20',
     chip: 'bg-amber/15 text-amber-dim',
+    text: 'text-amber-dim',
     icon: <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm0 2 8 6 8-6" />,
   },
   {
@@ -26,6 +27,7 @@ const infoCards = [
     ring: 'hover:border-coral',
     glow: 'hover:shadow-coral/20',
     chip: 'bg-coral/15 text-coral',
+    text: 'text-coral',
     icon: <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02z" />,
   },
   {
@@ -36,6 +38,7 @@ const infoCards = [
     ring: 'hover:border-mint',
     glow: 'hover:shadow-mint/20',
     chip: 'bg-mint/15 text-mint',
+    text: 'text-mint',
     icon: <path d="M12 22s8-7.5 8-13a8 8 0 1 0-16 0c0 5.5 8 13 8 13Zm0-9.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />,
   },
 ]
@@ -88,16 +91,16 @@ export default function Contact() {
                 <motion.div
                   whileHover={{ y: -6 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`h-full rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl ${card.accent} ${card.ring} ${card.glow}`}
+                  className={`h-full rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-8 shadow-md transition-all duration-300 hover:shadow-xl ${card.accent} ${card.ring} ${card.glow}`}
                 >
                   <Wrapper {...(card.href ? { href: card.href } : {})} className="block">
-                    <span className={`inline-flex h-11 w-11 items-center justify-center rounded-xl ${card.chip}`}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                    <span className={`inline-flex h-16 w-16 items-center justify-center rounded-2xl ${card.chip}`}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8">
                         {card.icon}
                       </svg>
                     </span>
-                    <h3 className="mt-4 text-sm font-medium text-slate">{card.label}</h3>
-                    <p className="mt-1 text-sm font-medium leading-relaxed text-graphite">{card.value}</p>
+                    <h3 className={`mt-5 text-base font-semibold uppercase tracking-wide ${card.text}`}>{card.label}</h3>
+                    <p className="mt-2 text-xl font-semibold leading-snug text-graphite">{card.value}</p>
                   </Wrapper>
                 </motion.div>
               </StaggerItem>
