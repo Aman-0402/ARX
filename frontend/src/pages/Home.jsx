@@ -24,7 +24,8 @@ const services = [
     name: 'Managed IT Services',
     detail: 'Infrastructure monitoring, IT support, cloud migration, system optimization, and maintenance solutions.',
     accent: 'border-t-amber',
-    chip: 'bg-amber/15 text-amber-dim',
+    ring: 'border-amber/30 hover:border-amber',
+    chip: 'bg-amber/15 text-amber',
     glow: 'hover:shadow-amber/20',
     icon: (
       <path d="M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm0 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4Zm3-8h.01M7 17h.01" />
@@ -34,6 +35,7 @@ const services = [
     name: 'Product Development',
     detail: 'Full-cycle product engineering including UI/UX, development, testing, deployment, and scalability.',
     accent: 'border-t-coral',
+    ring: 'border-coral/30 hover:border-coral',
     chip: 'bg-coral/15 text-coral',
     glow: 'hover:shadow-coral/20',
     icon: <path d="m8 9-4 3 4 3m8-6 4 3-4 3m-2-9-4 12" />,
@@ -42,6 +44,7 @@ const services = [
     name: 'Academic Solutions',
     detail: 'Automation platforms for admissions, attendance management, reporting systems, and LMS integrations.',
     accent: 'border-t-mint',
+    ring: 'border-mint/30 hover:border-mint',
     icon: <path d="M22 10 12 5 2 10l10 5 10-5Zm-5 2.5v4.5c0 1-2.5 2.5-5 2.5s-5-1.5-5-2.5v-4.5M22 10v6" />,
     chip: 'bg-mint/15 text-mint',
     glow: 'hover:shadow-mint/20',
@@ -189,18 +192,23 @@ export default function Home() {
       </section>
 
       {/* Core services */}
-      <section className="border-b border-slate-200">
+      <section className="relative overflow-hidden border-b border-slate-700 bg-ink">
+        <GradientBlobs variant="mixed" />
         <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Our core services</h2>
-              <p className="mt-4 max-w-md text-lg text-slate">
+              <h2 className="font-display text-4xl font-semibold text-paper md:text-5xl">Our core services</h2>
+              <p className="mt-4 max-w-md text-lg text-slate-200/70">
                 Complete IT and digital transformation solutions, built around
                 how your organization actually works.
               </p>
             </div>
-            <Link to="/services" className="text-base font-medium text-ink underline decoration-amber decoration-2 underline-offset-4">
+            <Link
+              to="/services"
+              className="group inline-flex items-center gap-2 rounded-xl bg-amber px-6 py-3.5 text-base font-medium text-ink transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber/30"
+            >
               View all services
+              <span className="transition-transform group-hover:translate-x-1">→</span>
             </Link>
           </Reveal>
 
@@ -210,17 +218,17 @@ export default function Home() {
                 <motion.div
                   whileHover={{ y: -8, rotate: -0.5 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`h-full rounded-2xl border border-slate-200 border-t-4 bg-white p-9 shadow-md transition-shadow duration-300 hover:shadow-xl ${service.accent} ${service.glow}`}
+                  className={`h-full rounded-2xl border-2 border-t-4 bg-ink-raised p-9 shadow-xl transition-all duration-300 ${service.accent} ${service.ring} ${service.glow}`}
                 >
                   <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${service.chip}`}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
                       {service.icon}
                     </svg>
                   </span>
-                  <h3 className="mt-5 font-display text-xl font-semibold text-graphite">
+                  <h3 className="mt-5 font-display text-xl font-semibold text-paper">
                     {service.name}
                   </h3>
-                  <p className="mt-3 text-base leading-relaxed text-slate">{service.detail}</p>
+                  <p className="mt-3 text-base leading-relaxed text-slate-200/70">{service.detail}</p>
                 </motion.div>
               </StaggerItem>
             ))}
