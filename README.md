@@ -77,6 +77,8 @@ your local backend with no extra config.
   order, for the public Services page.
 - `GET /api/team/` — team members (name, role, bio, photo) in display order,
   for the About page's Leadership section.
+- `GET /api/testimonials/` — published testimonials (quote, name, org) in
+  display order, for the homepage's running testimonial strip.
 
 Uploaded images (service group images, team photos) are served from
 `/media/` in dev (`backend/media/`, gitignored — not committed). Requires
@@ -103,6 +105,9 @@ dashboard below.
   Services page, each with an optional image.
 - **Team** — create/edit/delete/reorder the Leadership entries (name, role,
   bio, photo) shown on the About page.
+- **Testimonials** — create/edit/delete/reorder client quotes (quote, name,
+  org) shown in the homepage's running testimonial strip, with a
+  published/hidden toggle.
 
 Backed by:
 
@@ -110,8 +115,9 @@ Backed by:
   `GET /api/auth/me/`
 - `GET /api/admin/stats/`
 - `/api/admin/blog/`, `/api/admin/verify/`, `/api/admin/services/`,
-  `/api/admin/team/` — full CRUD, staff-only, session + CSRF protected
-  (services/team accept `multipart/form-data` for image/photo uploads)
+  `/api/admin/team/`, `/api/admin/testimonials/` — full CRUD, staff-only,
+  session + CSRF protected (services/team accept `multipart/form-data` for
+  image/photo uploads)
 - `/api/admin/contact/` — same, but read/patch(`handled`)/delete only, no
   create (submissions only come from the public contact form)
 

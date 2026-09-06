@@ -29,6 +29,11 @@ Two-service split, no shared runtime:
 - `TeamMember` — name, role, bio (optional), photo (`ImageField`, optional),
   order. Public `GET /api/team/` returns members ordered by `order`. Full
   CRUD at `/api/admin/team/`. Shown on the About page's Leadership section.
+- `Testimonial` — quote, name, org (optional), order, published flag.
+  Public `GET /api/testimonials/` only returns `published=True`, ordered by
+  `order`. Full CRUD (drafts included) at `/api/admin/testimonials/`. Shown
+  in the homepage's running (marquee) testimonial strip — see Home.jsx note
+  below.
 
 Both `ImageField`s need `Pillow` (`requirements.txt`) and
 `MEDIA_URL`/`MEDIA_ROOT` (`config/settings.py`) — files land in
@@ -49,7 +54,7 @@ makes `/api/*` same-origin from the browser's perspective — revisit
 deployed on genuinely different origins.
 
 Every admin `ModelViewSet` (`BlogPostAdminViewSet`, `VerificationRecordAdminViewSet`,
-`ServiceGroupAdminViewSet`, `TeamMemberAdminViewSet`) is separate from its
+`ServiceGroupAdminViewSet`, `TeamMemberAdminViewSet`, `TestimonialAdminViewSet`) is separate from its
 public read-only view(s), so drafts/full record data never leak through the
 public endpoints. `ServiceGroupAdminViewSet` and `TeamMemberAdminViewSet` set
 `parser_classes = [MultiPartParser, FormParser, JSONParser]` so they accept
@@ -72,7 +77,8 @@ doing `.count()`/`.filter().count()` queries, no caching — fine at this scale.
   `<Outlet/>` for the nested `/admin/*` routes (`App.jsx`): index
   (`pages/admin/Overview.jsx`), `blog` (`AdminBlog.jsx`), `contact`
   (`AdminContact.jsx`), `verify` (`AdminVerify.jsx`), `services`
-  (`AdminServices.jsx`), `team` (`AdminTeam.jsx`).
+  (`AdminServices.jsx`), `team` (`AdminTeam.jsx`), `testimonials`
+  (`AdminTestimonials.jsx`).
 - `components/admin/Field.jsx` — shared labeled-input wrapper reused by all
   the CRUD forms.
 - `AdminServices.jsx`/`AdminTeam.jsx` build a `FormData` on submit (name,
@@ -89,6 +95,17 @@ Home, About, Services, Blog (`Blog.jsx` list + `BlogPost.jsx` detail, at
 `/blog` and `/blog/:slug`), Contact, Login (`/login`) — matches the public
 API surface above. Admin dashboard pages live under `pages/admin/` — see
 above.
+
+`Home.jsx`'s testimonials section fetches `GET /api/testimonials/` (no
+static fallback array anymore) and renders an infinite horizontal marquee:
+the fetched list is duplicated once (`[...testimonials, ...testimonials]`)
+inside a `flex w-max` track running the `.animate-marquee` CSS animation
+(`index.css` — `@keyframes marquee` translates -50%, so the duplicate seam
+is invisible; pauses on `:hover`). Each card's accent color cycles through
+`testimonialAccents` (5 colors) by `original index % testimonials.length %
+5`, not by duplicated-array index, so colors stay consistent across the
+seam. `prefers-reduced-motion` already disables all animations globally
+(`index.css`), covering this one too.
 
 ## Open items
 

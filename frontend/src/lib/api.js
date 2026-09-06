@@ -236,3 +236,38 @@ export async function deleteTeamMember(id) {
   const res = await apiFetch(`/admin/team/${id}/`, { method: 'DELETE' })
   if (!res.ok) throw new Error('Could not delete team member.')
 }
+
+export async function fetchTestimonials() {
+  const res = await fetch(`${API_BASE}/testimonials/`)
+  if (!res.ok) throw new Error('Could not load testimonials.')
+  return res.json()
+}
+
+export async function fetchAdminTestimonials() {
+  const res = await apiFetch('/admin/testimonials/')
+  if (!res.ok) throw new Error('Could not load testimonials.')
+  return res.json()
+}
+
+export async function createTestimonial(payload) {
+  const res = await apiFetch('/admin/testimonials/', { method: 'POST', body: payload })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not create testimonial.')
+  }
+  return res.json()
+}
+
+export async function updateTestimonial(id, payload) {
+  const res = await apiFetch(`/admin/testimonials/${id}/`, { method: 'PATCH', body: payload })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not update testimonial.')
+  }
+  return res.json()
+}
+
+export async function deleteTestimonial(id) {
+  const res = await apiFetch(`/admin/testimonials/${id}/`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Could not delete testimonial.')
+}

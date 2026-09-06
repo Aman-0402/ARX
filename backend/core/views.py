@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember
+from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember, Testimonial
 from .serializers import (
     ContactSubmissionSerializer,
     ContactSubmissionAdminSerializer,
@@ -20,6 +20,8 @@ from .serializers import (
     ServiceGroupAdminSerializer,
     TeamMemberPublicSerializer,
     TeamMemberAdminSerializer,
+    TestimonialPublicSerializer,
+    TestimonialAdminSerializer,
 )
 
 
@@ -53,6 +55,13 @@ class TeamMemberListView(generics.ListAPIView):
 
     queryset = TeamMember.objects.all()
     serializer_class = TeamMemberPublicSerializer
+
+
+class TestimonialListView(generics.ListAPIView):
+    """GET /api/testimonials/ — published testimonials in display order."""
+
+    queryset = Testimonial.objects.filter(published=True)
+    serializer_class = TestimonialPublicSerializer
 
 
 class BlogPostListView(generics.ListAPIView):
@@ -159,6 +168,14 @@ class TeamMemberAdminViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
 
+class TestimonialAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/testimonials/ — all testimonials, published or not."""
+
+    queryset = Testimonial.objects.all()
+    serializer_class = TestimonialAdminSerializer
+    permission_classes = [IsAuthenticated]
+
+
 class AdminStatsView(APIView):
     """GET /api/admin/stats/ — counts for the dashboard overview."""
 
@@ -174,4 +191,5 @@ class AdminStatsView(APIView):
             'verification_total': VerificationRecord.objects.count(),
             'service_groups_total': ServiceGroup.objects.count(),
             'team_total': TeamMember.objects.count(),
+            'testimonials_total': Testimonial.objects.count(),
         })

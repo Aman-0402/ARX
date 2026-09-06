@@ -1,9 +1,19 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import StatusBoard from '../components/StatusBoard.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
+import { fetchTestimonials } from '../lib/api.js'
+
+const testimonialAccents = [
+  { avatar: 'bg-amber/15 text-amber-dim', quoteMark: 'text-amber/30' },
+  { avatar: 'bg-coral/15 text-coral', quoteMark: 'text-coral/30' },
+  { avatar: 'bg-mint/15 text-mint', quoteMark: 'text-mint/30' },
+  { avatar: 'bg-sunbeam/15 text-amber-dim', quoteMark: 'text-sunbeam/40' },
+  { avatar: 'bg-grape/15 text-grape', quoteMark: 'text-grape/30' },
+]
 
 const whyPoints = [
   { text: 'Global service capability with remote and on-site support models.', dot: 'bg-amber' },
@@ -81,31 +91,14 @@ const deliverables = [
   },
 ]
 
-const testimonials = [
-  {
-    quote: 'ARX Infotech transformed our infrastructure — downtime dropped and performance improved dramatically.',
-    name: 'Ellen Downing',
-    org: 'Wrode Co.',
-    avatar: 'bg-amber/15 text-amber-dim',
-    quoteMark: 'text-amber/30',
-  },
-  {
-    quote: 'Outstanding security audit and quick remediation suggestions. Highly recommended.',
-    name: 'Douglas Galveston',
-    org: 'Sitwell Financial',
-    avatar: 'bg-coral/15 text-coral',
-    quoteMark: 'text-coral/30',
-  },
-  {
-    quote: 'Their team is proactive and always available. Fantastic partner.',
-    name: 'Kian Graham',
-    org: 'Henlow Express',
-    avatar: 'bg-mint/15 text-mint',
-    quoteMark: 'text-mint/30',
-  },
-]
 
 export default function Home() {
+  const [testimonials, setTestimonials] = useState([])
+
+  useEffect(() => {
+    fetchTestimonials().then(setTestimonials).catch(() => {})
+  }, [])
+
   return (
     <>
       {/* Hero */}
@@ -314,37 +307,44 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="border-b border-slate-200">
-        <div className="mx-auto max-w-[1400px] px-4 py-20">
+      <section className="overflow-hidden border-b border-slate-200 bg-paper-dim py-20">
+        <div className="mx-auto max-w-[1400px] px-4">
           <Reveal>
             <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">What our clients say</h2>
           </Reveal>
-          <StaggerGrid className="mt-14 grid gap-6 md:grid-cols-3">
-            {testimonials.map((t) => (
-              <StaggerItem key={t.name}>
-                <motion.figure
-                  whileHover={{ y: -6 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-8 shadow-md transition-shadow duration-300 hover:shadow-xl"
-                >
-                  <div>
-                    <span className={`font-display text-6xl leading-none ${t.quoteMark}`}>“</span>
-                    <blockquote className="-mt-4 text-lg leading-relaxed text-graphite">{t.quote}</blockquote>
-                  </div>
-                  <figcaption className="mt-8 flex items-center gap-3 border-t border-slate-200 pt-5">
-                    <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-base font-semibold ${t.avatar}`}>
-                      {t.name.charAt(0)}
-                    </span>
-                    <div className="text-sm">
-                      <div className="font-medium text-graphite">{t.name}</div>
-                      <div className="text-slate">{t.org}</div>
-                    </div>
-                  </figcaption>
-                </motion.figure>
-              </StaggerItem>
-            ))}
-          </StaggerGrid>
         </div>
+
+        {testimonials.length > 0 && (
+          <div className="relative mt-14">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-paper-dim to-transparent md:w-32" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-paper-dim to-transparent md:w-32" />
+            <div className="flex w-max gap-6 animate-marquee">
+              {[...testimonials, ...testimonials].map((t, i) => {
+                const a = testimonialAccents[i % testimonials.length % testimonialAccents.length]
+                return (
+                  <figure
+                    key={i}
+                    className="flex w-[340px] shrink-0 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-8 shadow-md md:w-[380px]"
+                  >
+                    <div>
+                      <span className={`font-display text-6xl leading-none ${a.quoteMark}`}>“</span>
+                      <blockquote className="-mt-4 text-base leading-relaxed text-graphite">{t.quote}</blockquote>
+                    </div>
+                    <figcaption className="mt-8 flex items-center gap-3 border-t border-slate-200 pt-5">
+                      <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-base font-semibold ${a.avatar}`}>
+                        {t.name.charAt(0)}
+                      </span>
+                      <div className="text-sm">
+                        <div className="font-medium text-graphite">{t.name}</div>
+                        <div className="text-slate">{t.org}</div>
+                      </div>
+                    </figcaption>
+                  </figure>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* CTA */}

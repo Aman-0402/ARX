@@ -24,6 +24,21 @@
   .grid-line {
     background-image: linear-gradient(to right, transparent 0, transparent calc(100% - 1px), rgba(21,34,56,0.08) 100%);
   }
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

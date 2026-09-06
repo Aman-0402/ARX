@@ -17,6 +17,7 @@ import AdminContact from './pages/admin/AdminContact.jsx'
 import AdminVerify from './pages/admin/AdminVerify.jsx'
 import AdminServices from './pages/admin/AdminServices.jsx'
 import AdminTeam from './pages/admin/AdminTeam.jsx'
+import AdminTestimonials from './pages/admin/AdminTestimonials.jsx'
 
 export default function App() {
   const location = useLocation()
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="verify" element={<AdminVerify />} />
             <Route path="services" element={<AdminServices />} />
             <Route path="team" element={<AdminTeam />} />
+            <Route path="testimonials" element={<AdminTestimonials />} />
           </Route>
         </Routes>
       </main>

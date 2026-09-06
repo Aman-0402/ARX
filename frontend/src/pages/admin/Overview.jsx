@@ -10,6 +10,7 @@ const cards = [
   { key: 'verification_total', label: 'Verification records', to: '/admin/verify' },
   { key: 'service_groups_total', label: 'Service groups', to: '/admin/services' },
   { key: 'team_total', label: 'Team members', to: '/admin/team' },
+  { key: 'testimonials_total', label: 'Testimonials', to: '/admin/testimonials' },
 ]
 
 export default function Overview() {

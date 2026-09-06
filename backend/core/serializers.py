@@ -1,6 +1,6 @@
 from django.utils.text import slugify
 from rest_framework import serializers
-from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember
+from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember, Testimonial
 
 
 class ContactSubmissionSerializer(serializers.ModelSerializer):
@@ -101,3 +101,15 @@ class TeamMemberAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMember
         fields = ['id', 'name', 'role', 'bio', 'photo', 'order']
+
+
+class TestimonialPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testimonial
+        fields = ['quote', 'name', 'org']
+
+
+class TestimonialAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testimonial
+        fields = ['id', 'quote', 'name', 'org', 'order', 'published']

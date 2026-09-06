@@ -83,3 +83,17 @@ class TeamMember(models.Model):
 
     def __str__(self):
         return f'{self.name} — {self.role}'
+
+
+class Testimonial(models.Model):
+    quote = models.TextField()
+    name = models.CharField(max_length=150)
+    org = models.CharField(max_length=150, blank=True)
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return f'{self.name} — {self.org}'
