@@ -27,6 +27,7 @@ const services = [
     ring: 'border-amber/30 hover:border-amber',
     chip: 'bg-amber/15 text-amber',
     glow: 'hover:shadow-amber/20',
+    imageBg: 'from-amber/20 via-ink-raised to-ink-raised',
     icon: (
       <path d="M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm0 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4Zm3-8h.01M7 17h.01" />
     ),
@@ -38,6 +39,7 @@ const services = [
     ring: 'border-coral/30 hover:border-coral',
     chip: 'bg-coral/15 text-coral',
     glow: 'hover:shadow-coral/20',
+    imageBg: 'from-coral/20 via-ink-raised to-ink-raised',
     icon: <path d="m8 9-4 3 4 3m8-6 4 3-4 3m-2-9-4 12" />,
   },
   {
@@ -48,6 +50,7 @@ const services = [
     icon: <path d="M22 10 12 5 2 10l10 5 10-5Zm-5 2.5v4.5c0 1-2.5 2.5-5 2.5s-5-1.5-5-2.5v-4.5M22 10v6" />,
     chip: 'bg-mint/15 text-mint',
     glow: 'hover:shadow-mint/20',
+    imageBg: 'from-mint/20 via-ink-raised to-ink-raised',
   },
 ]
 
@@ -218,17 +221,21 @@ export default function Home() {
                 <motion.div
                   whileHover={{ y: -8, rotate: -0.5 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`h-full rounded-2xl border-2 border-t-4 bg-ink-raised p-9 shadow-xl transition-all duration-300 ${service.accent} ${service.ring} ${service.glow}`}
+                  className={`group h-full overflow-hidden rounded-2xl border-2 border-t-4 bg-ink-raised shadow-xl transition-all duration-300 ${service.accent} ${service.ring} ${service.glow}`}
                 >
-                  <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${service.chip}`}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                  <div className={`flex h-40 items-center justify-center bg-gradient-to-br ${service.imageBg}`}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className={`h-16 w-16 ${service.chip.split(' ')[1]}`}>
                       {service.icon}
                     </svg>
-                  </span>
-                  <h3 className="mt-5 font-display text-xl font-semibold text-paper">
-                    {service.name}
-                  </h3>
-                  <p className="mt-3 text-base leading-relaxed text-slate-200/70">{service.detail}</p>
+                  </div>
+                  <div className="p-9">
+                    <h3 className="font-display text-2xl font-semibold text-paper">
+                      {service.name}
+                    </h3>
+                    <p className="mt-0 max-h-0 overflow-hidden text-base leading-relaxed text-slate-200/70 opacity-0 transition-all duration-300 group-hover:mt-3 group-hover:max-h-40 group-hover:opacity-100">
+                      {service.detail}
+                    </p>
+                  </div>
                 </motion.div>
               </StaggerItem>
             ))}
