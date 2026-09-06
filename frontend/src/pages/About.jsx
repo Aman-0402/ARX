@@ -77,27 +77,45 @@ export default function About() {
 
       <section className="border-b border-slate-200 bg-paper-dim">
         <div className="mx-auto px-4 py-16">
-          <StaggerGrid className="mx-auto grid max-w-[1400px] gap-10 md:grid-cols-2">
+          <StaggerGrid className="mx-auto grid max-w-[1400px] gap-6 md:grid-cols-2">
             <StaggerItem>
-              <div className="h-full rounded-2xl border-t-4 border-t-amber bg-paper p-8 shadow-sm">
-                <h2 className="font-display text-xl font-semibold text-graphite">What we do</h2>
+              <motion.div
+                whileHover={{ y: -8, rotate: -0.5 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="h-full rounded-2xl border-2 border-slate-200 border-t-4 border-t-amber bg-white p-8 shadow-md transition-shadow duration-300 hover:border-amber hover:shadow-xl hover:shadow-amber/20"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber/15 text-amber-dim">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                    <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />
+                  </svg>
+                </span>
+                <h2 className="mt-5 font-display text-xl font-semibold text-graphite">What we do</h2>
                 <p className="mt-3 text-sm leading-relaxed text-slate">
                   We manage infrastructure and support, build custom software
                   products, and deliver automation platforms for schools and
                   colleges — admissions, attendance, reporting, and LMS
                   integration — under one engineering team.
                 </p>
-              </div>
+              </motion.div>
             </StaggerItem>
             <StaggerItem>
-              <div className="h-full rounded-2xl border-t-4 border-t-coral bg-paper p-8 shadow-sm">
-                <h2 className="font-display text-xl font-semibold text-graphite">Who we work with</h2>
+              <motion.div
+                whileHover={{ y: -8, rotate: -0.5 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                className="h-full rounded-2xl border-2 border-slate-200 border-t-4 border-t-coral bg-white p-8 shadow-md transition-shadow duration-300 hover:border-coral hover:shadow-xl hover:shadow-coral/20"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-coral/15 text-coral">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12 10v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </span>
+                <h2 className="mt-5 font-display text-xl font-semibold text-graphite">Who we work with</h2>
                 <p className="mt-3 text-sm leading-relaxed text-slate">
                   Small and mid-sized businesses that need dependable IT support,
                   and academic institutions modernizing admissions, attendance,
                   and reporting workflows.
                 </p>
-              </div>
+              </motion.div>
             </StaggerItem>
           </StaggerGrid>
         </div>
