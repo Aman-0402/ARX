@@ -27,22 +27,24 @@ export default function SectionNav({ sections }) {
   }
 
   return (
-    <nav className="fixed left-6 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-3 lg:flex">
+    <nav className="fixed left-6 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-1 rounded-full border border-slate-200 bg-white p-2 shadow-lg lg:flex">
       {sections.map((s) => (
         <button
           key={s.id}
           onClick={() => scrollTo(s.id)}
-          className="group flex items-center gap-3"
+          className="group relative flex h-9 w-9 items-center justify-center"
           aria-label={s.label}
           aria-current={active === s.id}
         >
           <span
-            className={`h-2.5 w-2.5 rounded-full border-2 border-slate-300 transition-all duration-300 ${
-              active === s.id ? 'scale-125 border-amber bg-amber' : 'bg-transparent group-hover:border-slate-500'
+            className={`h-3 w-3 rounded-full border-2 transition-all duration-300 ${
+              active === s.id
+                ? 'scale-125 border-amber bg-amber shadow-sm shadow-amber/50'
+                : 'border-slate-300 bg-white group-hover:border-slate-500'
             }`}
           />
           <span
-            className={`origin-left scale-x-0 whitespace-nowrap rounded-full bg-white px-3 py-1 text-xs font-medium text-graphite opacity-0 shadow-md transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100 ${
+            className={`pointer-events-none absolute left-full ml-3 origin-left scale-x-0 whitespace-nowrap rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-graphite opacity-0 shadow-md transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100 ${
               active === s.id ? 'text-amber-dim' : ''
             }`}
           >
