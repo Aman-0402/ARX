@@ -50,14 +50,6 @@ export default function SectionNav({ sections }) {
           aria-label={s.label}
           aria-current={active === s.id}
         >
-          {active === s.id && (
-            <motion.span
-              layoutId="section-nav-ring"
-              className="absolute h-6 w-6 rounded-full bg-amber/20"
-              animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          )}
           <span
             className={`relative h-3 w-3 rounded-full border-2 transition-all duration-300 ${
               active === s.id
