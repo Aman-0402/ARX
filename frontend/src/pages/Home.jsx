@@ -13,10 +13,10 @@ const whyPoints = [
 ]
 
 const metrics = [
-  { value: '24/7', label: 'Support', accent: 'border-t-amber', dot: 'bg-amber', offset: '' },
-  { value: '100%', label: 'Client focus', accent: 'border-t-coral', dot: 'bg-coral', offset: 'sm:translate-y-6' },
-  { value: 'Secure', label: 'Solutions', accent: 'border-t-mint', dot: 'bg-mint', offset: 'sm:-translate-y-3' },
-  { value: 'Fast', label: 'Delivery', accent: 'border-t-grape', dot: 'bg-grape', offset: 'sm:translate-y-3' },
+  { value: '24/7', label: 'Support', accent: 'border-t-amber' },
+  { value: '100%', label: 'Client focus', accent: 'border-t-coral' },
+  { value: 'Secure', label: 'Solutions', accent: 'border-t-mint' },
+  { value: 'Fast', label: 'Delivery', accent: 'border-t-grape' },
 ]
 
 const services = [
@@ -161,16 +161,16 @@ export default function Home() {
               Cloud migration, automation, IT services, software products, and
               digital platforms designed for growth.
             </p>
-            <StaggerGrid className="mt-8 grid grid-cols-2 gap-5 font-mono">
+            <StaggerGrid className="mt-8 grid grid-cols-2 gap-4 font-mono">
               {metrics.map((metric) => (
-                <StaggerItem key={metric.label} className={metric.offset}>
+                <StaggerItem key={metric.label}>
                   <motion.div
                     whileHover={{ y: -6, rotate: -1.5, scale: 1.03 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-                    className={`rounded-2xl border-t-4 bg-ink p-6 text-paper shadow-lg shadow-ink/20 ${metric.accent}`}
+                    className={`flex items-center justify-between rounded-2xl border-t-4 bg-ink px-6 py-5 text-paper shadow-lg shadow-ink/20 ${metric.accent}`}
                   >
-                    <div className="text-4xl font-semibold">{metric.value}</div>
-                    <div className="mt-1.5 text-sm text-slate-200/60">{metric.label}</div>
+                    <div className="text-sm text-slate-200/60">{metric.label}</div>
+                    <div className="text-3xl font-semibold">{metric.value}</div>
                   </motion.div>
                 </StaggerItem>
               ))}
