@@ -60,6 +60,8 @@ const deliverables = [
     copy: 'We manage IT infrastructure, servers, network monitoring, backups, troubleshooting, performance optimization, and maintenance for businesses.',
     items: ['Server monitoring', 'Network management', 'Backup & recovery', 'System optimization'],
     accent: 'border-t-amber',
+    ring: 'hover:border-amber',
+    glow: 'hover:shadow-amber/20',
     chip: 'bg-amber/10 text-amber-dim',
     icon: <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />,
   },
@@ -68,6 +70,8 @@ const deliverables = [
     copy: 'We create custom digital solutions that automate workflows, improve productivity, and enhance customer experience through modern technology.',
     items: ['Web application development', 'Automation systems', 'UI/UX design', 'API development'],
     accent: 'border-t-coral',
+    ring: 'hover:border-coral',
+    glow: 'hover:shadow-coral/20',
     chip: 'bg-coral/10 text-coral',
     icon: <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" />,
   },
@@ -266,9 +270,9 @@ export default function Home() {
             {deliverables.map((block) => (
               <StaggerItem key={block.title}>
                 <motion.div
-                  whileHover={{ y: -6 }}
+                  whileHover={{ y: -8, rotate: -0.5 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`h-full rounded-2xl border border-slate-200 border-t-4 bg-white p-9 shadow-md ${block.accent}`}
+                  className={`h-full rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-9 shadow-md transition-shadow duration-300 hover:shadow-xl ${block.accent} ${block.ring} ${block.glow}`}
                 >
                   <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${block.chip}`}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
