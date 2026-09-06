@@ -167,10 +167,11 @@ export default function Home() {
                   <motion.div
                     whileHover={{ y: -6, rotate: -1.5, scale: 1.03 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-                    className={`flex items-center justify-between rounded-2xl border-t-4 bg-ink px-6 py-5 text-paper shadow-lg shadow-ink/20 ${metric.accent}`}
+                    className={`flex flex-col items-center rounded-2xl border-t-4 bg-ink px-6 py-6 text-center text-paper shadow-lg shadow-ink/20 ${metric.accent}`}
                   >
-                    <div className="text-sm text-slate-200/60">{metric.label}</div>
                     <div className="text-3xl font-semibold">{metric.value}</div>
+                    <div className="mt-2 h-px w-8 bg-slate-700" />
+                    <div className="mt-2 text-sm text-slate-200/60">{metric.label}</div>
                   </motion.div>
                 </StaggerItem>
               ))}
