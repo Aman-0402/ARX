@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import RichTextEditor from '../components/RichTextEditor.jsx'
+import SEO from '../components/SEO.jsx'
 import { submitBlogPost } from '../lib/api.js'
 
 const initialForm = { name: '', email: '', title: '', excerpt: '', content: '', cover_image: null }
@@ -72,6 +73,11 @@ export default function BlogSubmit() {
 
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
+      <SEO
+        path="/blog/submit"
+        title="Write for the ARX Blog"
+        description="Have an idea about systems, software, or automation? Submit a post — our team reviews every submission before it goes live."
+      />
       <GradientBlobs variant="mixed" />
       <div className="mx-auto max-w-[1400px] px-4 py-20">
         <Reveal>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import SEO from '../components/SEO.jsx'
 import { submitContact } from '../lib/api.js'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
@@ -68,6 +69,11 @@ export default function Contact() {
 
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
+      <SEO
+        path="/contact"
+        title="Contact"
+        description="Get a free consultation. Tell us about your infrastructure, product, or automation need — we typically respond within one business day."
+      />
       <GradientBlobs variant="warm" />
       <div className="mx-auto max-w-[1400px] px-4 py-20">
         <Reveal>

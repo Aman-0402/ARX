@@ -20,6 +20,43 @@ client-side routes work on direct load/refresh. `FRONTEND_DIST` in
 `settings.py` expects `frontend/dist/` as a sibling of `backend/` — this only
 works if both directories keep that relative layout, dev or prod.
 
+`spa_view`'s catch-all (`re_path(r'^(?!api/|admin/|media/|assets/)(?P<path>.*)$', ...)`)
+first checks whether the requested path is a literal file under
+`frontend/dist/` (e.g. `frontend/public/favicon.svg`, which Vite copies to
+`dist/favicon.svg` on build) and serves it directly if so — only falling
+back to `index.html` when there's no matching file. **The `(?P<path>...)`
+named group is load-bearing**: without it, `path` never gets passed to the
+view and silently stays `''`, so this file check always no-ops and every
+non-API/admin/media/assets request — including real static files like
+`favicon.svg`, or the SEO `<meta>`/JSON-LD scripts referencing them — gets
+`index.html`'s HTML back instead. Caught this exact regression once already
+(favicon.svg returning HTML) — if you ever "simplify" this regex, keep the
+named group.
+
+## SEO
+
+- `frontend/src/components/SEO.jsx` — thin `react-helmet-async` wrapper
+  (title/description/canonical/OG/Twitter tags + optional JSON-LD), used by
+  every public page. `HelmetProvider` wraps the app in `main.jsx`. Since
+  there's no SSR, these tags only apply once React hydrates — fine for
+  Google (renders JS) and browser tabs, weak for non-JS-executing social
+  preview bots (Facebook/Twitter/LinkedIn largely don't run JS), so the
+  *static* defaults baked into `frontend/index.html` are what those bots
+  actually see. Keep both in sync in spirit, even though they can't share
+  code.
+- `frontend/index.html` — static OG/Twitter/JSON-LD (Organization schema)
+  defaults, favicon (`frontend/public/favicon.svg`, an inline SVG — same "A"
+  mark as the in-app logo badge), `theme-color`.
+- `config/urls.py` — `robots_view` and `sitemap_view` (mounted at
+  `/robots.txt`/`/sitemap.xml`, before the SPA catch-all so they don't get
+  swallowed by it). Both generated from `settings.SITE_URL`, not static
+  files, so the sitemap can include every currently-published `BlogPost`
+  slug (`STATIC_ROUTES` in `urls.py` covers the fixed pages) rather than
+  going stale.
+- `BlogPost.jsx` passes per-post `title`/`description`/`BlogPosting` JSON-LD
+  to `<SEO/>` once the post loads; `Login.jsx` passes `noindex` (admin-auth
+  page, nothing to rank).
+
 ## Data model (`backend/core/models.py`)
 
 - `ContactSubmission` — name, email, phone, message, created_at, handled flag.

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import SEO from '../components/SEO.jsx'
 import { fetchTeam } from '../lib/api.js'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
@@ -71,6 +72,11 @@ export default function About() {
 
   return (
     <>
+      <SEO
+        path="/about"
+        title="About Us"
+        description="ARX Infotech works with businesses and educational institutions across infrastructure, software, and security — one accountable engineering team, not a handful of vendors."
+      />
       <SectionNav sections={navSections} />
 
       <section id="hero" className="relative overflow-hidden border-b border-slate-200">

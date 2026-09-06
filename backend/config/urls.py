@@ -4,14 +4,44 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.urls import path, include, re_path
 from django.views.static import serve
 
+from core.models import BlogPost
+
+STATIC_ROUTES = ['', 'about', 'services', 'blog', 'contact']
+
+
+def robots_view(request):
+    body = f"User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: {settings.SITE_URL}/sitemap.xml\n"
+    return HttpResponse(body, content_type='text/plain')
+
+
+def sitemap_view(request):
+    urls = [f'{settings.SITE_URL}/{route}' for route in STATIC_ROUTES]
+    urls += [
+        f'{settings.SITE_URL}/blog/{slug}'
+        for slug in BlogPost.objects.filter(published=True).values_list('slug', flat=True)
+    ]
+    body = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    body += [f'<url><loc>{url}</loc></url>' for url in urls]
+    body.append('</urlset>')
+    return HttpResponse('\n'.join(body), content_type='application/xml')
+
 
 def spa_view(request, path=''):
-    """Serves the built React app's index.html for any non-API route.
+    """Serves the built React app for any non-API route.
 
-    Lets React Router handle client-side routes (/about, /services, ...)
-    while Django still owns /api/, /admin/, /assets/ (whitenoise), and
-    /media/ above this catch-all.
+    First tries `path` as a literal static file under frontend/dist/ — this
+    is what makes files dropped in frontend/public/ (favicon.svg, and
+    anything else added there later) reachable at their root URL, since
+    they're outside /api/, /admin/, /assets/, /media/ and would otherwise
+    be swallowed by this catch-all and get index.html's HTML instead of
+    the actual file. Falls back to index.html so React Router can handle
+    client-side routes (/about, /services, ...).
     """
+    if path:
+        candidate = settings.FRONTEND_DIST / path
+        if candidate.is_file():
+            return serve(request, path, document_root=settings.FRONTEND_DIST)
+
     index_path = settings.FRONTEND_DIST / 'index.html'
     if not index_path.exists():
         return HttpResponseNotFound(
@@ -24,5 +54,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('core.urls')),
     path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
-    re_path(r'^(?!api/|admin/|media/|assets/).*$', spa_view),
+    path('robots.txt', robots_view),
+    path('sitemap.xml', sitemap_view),
+    re_path(r'^(?!api/|admin/|media/|assets/)(?P<path>.*)$', spa_view),
 ]

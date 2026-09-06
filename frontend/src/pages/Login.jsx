@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/use-auth.jsx'
+import SEO from '../components/SEO.jsx'
 
 export default function Login() {
   const { status, login } = useAuth()
@@ -33,6 +34,7 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-paper px-4">
+      <SEO path="/login" title="Sign in" noindex />
       <form onSubmit={handleSubmit} className="w-full max-w-sm border border-slate-200 p-8">
         <span className="font-mono text-xs text-slate">Admin</span>
         <h1 className="mt-2 font-display text-2xl font-semibold text-graphite">Sign in</h1>

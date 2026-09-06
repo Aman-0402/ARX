@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import SEO from '../components/SEO.jsx'
 import Earth from '../components/Earth.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
@@ -102,6 +103,29 @@ export default function Home() {
 
   return (
     <>
+      <SEO
+        path="/"
+        title="IT Services & Modern Tech Solutions"
+        description="ARX Infotech delivers scalable IT services, software development, cloud migration, cybersecurity, and academic automation solutions for businesses and institutions."
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'ProfessionalService',
+          name: 'ARX Infotech',
+          url: 'https://arxinfo.tech',
+          telephone: '+918317818107',
+          email: 'info@arxinfo.tech',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: '1st Floor, 150, Panchita, Bongaon–Bagdh Rd. Street',
+            addressLocality: 'Kolkata',
+            addressRegion: 'West Bengal',
+            postalCode: '743235',
+            addressCountry: 'IN',
+          },
+          description:
+            'Managed IT services, cloud infrastructure, cybersecurity, product development, and academic automation.',
+        }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />

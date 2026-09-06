@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
+import SEO from '../components/SEO.jsx'
 import { fetchBlogPost } from '../lib/api.js'
+
+function stripHtml(html) {
+  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+}
 
 export default function BlogPost() {
   const { slug } = useParams()
@@ -29,6 +34,23 @@ export default function BlogPost() {
 
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
+      {status === 'ready' && post && (
+        <SEO
+          path={`/blog/${slug}`}
+          title={post.title}
+          description={post.excerpt || stripHtml(post.content).slice(0, 160)}
+          type="article"
+          jsonLd={{
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.excerpt,
+            image: post.cover_image || undefined,
+            datePublished: post.published_at,
+            author: { '@type': 'Organization', name: 'ARX Infotech' },
+          }}
+        />
+      )}
       <GradientBlobs variant="blue" />
       <div className="mx-auto max-w-[1400px] px-4 py-20">
         <Link
@@ -55,7 +77,7 @@ export default function BlogPost() {
             {post.cover_image && (
               <img
                 src={post.cover_image}
-                alt=""
+                alt={post.title}
                 className="mb-8 h-64 w-full rounded-2xl object-cover shadow-md"
               />
             )}

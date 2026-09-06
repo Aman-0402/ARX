@@ -10,6 +10,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-only-insecure-key-change-me')
 DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# Canonical public URL, used for robots.txt/sitemap.xml and SEO canonical
+# links — no trailing slash.
+SITE_URL = os.getenv('SITE_URL', 'https://arxinfo.tech')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

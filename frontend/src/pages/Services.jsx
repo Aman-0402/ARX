@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import SEO from '../components/SEO.jsx'
 import { fetchServices } from '../lib/api.js'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
@@ -41,6 +42,11 @@ export default function Services() {
 
   return (
     <>
+      <SEO
+        path="/services"
+        title="Services"
+        description="Managed IT services, cloud & infrastructure, cybersecurity, product development, academic automation, and data & AI — complete IT and digital transformation solutions."
+      />
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="mixed" />
         <div className="mx-auto max-w-[1400px] px-4 py-20">

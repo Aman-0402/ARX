@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import SEO from '../components/SEO.jsx'
 import { fetchBlogPosts } from '../lib/api.js'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
@@ -32,6 +33,11 @@ export default function Blog() {
 
   return (
     <>
+      <SEO
+        path="/blog"
+        title="Blog"
+        description="Notes on systems, software, and automation from the ARX Infotech team on what we're building and learning."
+      />
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
         <div className="mx-auto max-w-[1400px] px-4 py-20">
