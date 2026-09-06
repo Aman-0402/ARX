@@ -86,16 +86,22 @@ const testimonials = [
     quote: 'ARX Infotech transformed our infrastructure — downtime dropped and performance improved dramatically.',
     name: 'Ellen Downing',
     org: 'Wrode Co.',
+    avatar: 'bg-amber/15 text-amber-dim',
+    quoteMark: 'text-amber/30',
   },
   {
     quote: 'Outstanding security audit and quick remediation suggestions. Highly recommended.',
     name: 'Douglas Galveston',
     org: 'Sitwell Financial',
+    avatar: 'bg-coral/15 text-coral',
+    quoteMark: 'text-coral/30',
   },
   {
     quote: 'Their team is proactive and always available. Fantastic partner.',
     name: 'Kian Graham',
     org: 'Henlow Express',
+    avatar: 'bg-mint/15 text-mint',
+    quoteMark: 'text-mint/30',
   },
 ]
 
@@ -311,20 +317,28 @@ export default function Home() {
       <section className="border-b border-slate-200">
         <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-graphite">What our clients say</h2>
+            <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">What our clients say</h2>
           </Reveal>
-          <StaggerGrid className="mt-12 grid gap-8 md:grid-cols-3">
+          <StaggerGrid className="mt-14 grid gap-6 md:grid-cols-3">
             {testimonials.map((t) => (
               <StaggerItem key={t.name}>
                 <motion.figure
-                  whileHover={{ y: -4 }}
+                  whileHover={{ y: -6 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-paper p-6 shadow-sm"
+                  className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-8 shadow-md transition-shadow duration-300 hover:shadow-xl"
                 >
-                  <blockquote className="text-sm leading-relaxed text-graphite">“{t.quote}”</blockquote>
-                  <figcaption className="mt-6 border-t border-slate-200 pt-4 text-sm">
-                    <div className="font-medium text-graphite">{t.name}</div>
-                    <div className="text-slate">{t.org}</div>
+                  <div>
+                    <span className={`font-display text-6xl leading-none ${t.quoteMark}`}>“</span>
+                    <blockquote className="-mt-4 text-lg leading-relaxed text-graphite">{t.quote}</blockquote>
+                  </div>
+                  <figcaption className="mt-8 flex items-center gap-3 border-t border-slate-200 pt-5">
+                    <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-base font-semibold ${t.avatar}`}>
+                      {t.name.charAt(0)}
+                    </span>
+                    <div className="text-sm">
+                      <div className="font-medium text-graphite">{t.name}</div>
+                      <div className="text-slate">{t.org}</div>
+                    </div>
                   </figcaption>
                 </motion.figure>
               </StaggerItem>
