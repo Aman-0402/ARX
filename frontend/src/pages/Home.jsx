@@ -77,28 +77,36 @@ export default function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-14 md:grid-cols-[1.15fr_1fr] md:items-center md:py-16">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-[1.15fr_1fr] md:items-center md:py-24">
           <div>
-            <Reveal as="h1" className="font-display text-4xl font-semibold leading-[1.1] text-graphite md:text-5xl">
-              IT services and modern tech solutions for growing businesses
+            <Reveal className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-paper/80 px-3.5 py-1.5 shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-mint" />
+              <span className="font-mono text-xs text-slate">Trusted by 120+ businesses & institutions</span>
             </Reveal>
-            <Reveal delay={0.1}>
-              <p className="mt-6 max-w-lg text-base leading-relaxed text-slate">
+            <Reveal as="h1" delay={0.05} className="mt-6 font-display text-5xl font-semibold leading-[1.05] text-graphite md:text-6xl lg:text-7xl">
+              IT services and{' '}
+              <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
+                modern tech
+              </span>{' '}
+              solutions for growing businesses
+            </Reveal>
+            <Reveal delay={0.15}>
+              <p className="mt-7 max-w-lg text-lg leading-relaxed text-slate">
                 ARX Infotech delivers scalable IT services, software development, cloud
                 migration, and academic automation solutions to help organizations
                 grow faster.
               </p>
             </Reveal>
-            <Reveal delay={0.2} className="mt-8 flex flex-wrap gap-4">
+            <Reveal delay={0.25} className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/services"
-                className="rounded-xl bg-ink px-5 py-3 text-sm font-medium text-paper transition-all hover:-translate-y-0.5 hover:bg-graphite hover:shadow-lg"
+                className="rounded-xl bg-ink px-7 py-4 text-base font-medium text-paper transition-all hover:-translate-y-0.5 hover:bg-graphite hover:shadow-lg"
               >
                 Explore services
               </Link>
               <Link
                 to="/contact"
-                className="rounded-xl border border-graphite px-5 py-3 text-sm font-medium text-graphite transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-md"
+                className="rounded-xl border-2 border-graphite px-7 py-4 text-base font-medium text-graphite transition-all hover:-translate-y-0.5 hover:border-ink hover:shadow-md"
               >
                 Get a free consultation
               </Link>
