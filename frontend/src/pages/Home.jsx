@@ -229,8 +229,8 @@ export default function Home() {
                         {service.icon}
                       </svg>
                     </div>
-                    <div className="absolute inset-0 flex translate-y-2 items-center bg-ink/95 p-6 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                      <p className="text-base leading-relaxed text-slate-200/80">{service.detail}</p>
+                    <div className="absolute inset-0 flex translate-y-2 items-center bg-ink p-6 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                      <p className="text-lg font-medium leading-relaxed text-paper">{service.detail}</p>
                     </div>
                   </div>
                   <div className="p-9">
