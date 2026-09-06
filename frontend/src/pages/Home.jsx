@@ -351,21 +351,30 @@ export default function Home() {
       {/* CTA */}
       <section className="relative overflow-hidden bg-ink">
         <GradientBlobs variant="warm" />
-        <Reveal className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-6 px-4 py-16 md:flex-row md:items-center">
+        <Reveal className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-8 px-4 py-24 md:flex-row md:items-center">
           <div>
-            <h2 className="font-display text-2xl font-semibold text-paper md:text-3xl">
+            <h2 className="font-display text-4xl font-semibold leading-tight text-paper md:text-5xl">
               Need IT support or custom software?
             </h2>
-            <p className="mt-2 text-slate-200/70">
+            <p className="mt-4 max-w-md text-lg text-slate-200/70">
               Get a free consultation and discover the best technology solution for your business.
             </p>
           </div>
           <div className="flex flex-wrap gap-4">
-            <Link to="/contact" className="rounded-xl bg-amber px-5 py-3 text-sm font-medium text-ink transition-all hover:-translate-y-0.5 hover:bg-amber/90 hover:shadow-lg">
-              Get consultation
+            <Link
+              to="/contact"
+              className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-amber bg-amber px-7 py-4 text-base font-semibold text-ink shadow-lg shadow-amber/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber/50"
+            >
+              <span className="absolute inset-0 origin-right scale-x-0 bg-paper transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              <span className="relative">Get consultation</span>
+              <span className="relative transition-transform duration-300 group-hover:translate-x-1.5">→</span>
             </Link>
-            <a href="tel:+918317818107" className="rounded-xl border border-slate-700 px-5 py-3 text-sm font-medium text-paper transition-all hover:-translate-y-0.5 hover:border-paper">
-              Call now
+            <a
+              href="tel:+918317818107"
+              className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-slate-700 px-7 py-4 text-base font-medium text-paper transition-all duration-300 hover:-translate-y-0.5 hover:border-paper"
+            >
+              <span className="absolute inset-0 origin-right scale-x-0 bg-paper transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              <span className="relative transition-colors duration-300 group-hover:text-ink">Call now</span>
             </a>
           </div>
         </Reveal>
