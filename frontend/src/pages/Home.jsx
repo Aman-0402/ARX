@@ -121,10 +121,7 @@ export default function Home() {
       <section className="border-b border-slate-200 bg-paper-dim">
         <div className="mx-auto grid max-w-[1400px] gap-16 px-4 py-24 md:grid-cols-[1fr_1fr] md:items-center">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber/15 via-grape/15 to-coral/15 px-3.5 py-1.5 font-mono text-xs text-graphite">
-              Why ARX
-            </span>
-            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-graphite md:text-5xl">
+            <h2 className="font-display text-4xl font-semibold leading-tight text-graphite md:text-5xl">
               Why organizations{' '}
               <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
                 choose ARX
