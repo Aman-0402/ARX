@@ -25,6 +25,7 @@ const services = [
     detail: 'Infrastructure monitoring, IT support, cloud migration, system optimization, and maintenance solutions.',
     accent: 'border-t-amber',
     chip: 'bg-amber/15 text-amber-dim',
+    glow: 'hover:shadow-amber/20',
     icon: (
       <path d="M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm0 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4Zm3-8h.01M7 17h.01" />
     ),
@@ -34,6 +35,7 @@ const services = [
     detail: 'Full-cycle product engineering including UI/UX, development, testing, deployment, and scalability.',
     accent: 'border-t-coral',
     chip: 'bg-coral/15 text-coral',
+    glow: 'hover:shadow-coral/20',
     icon: <path d="m8 9-4 3 4 3m8-6 4 3-4 3m-2-9-4 12" />,
   },
   {
@@ -42,6 +44,7 @@ const services = [
     accent: 'border-t-mint',
     icon: <path d="M22 10 12 5 2 10l10 5 10-5Zm-5 2.5v4.5c0 1-2.5 2.5-5 2.5s-5-1.5-5-2.5v-4.5M22 10v6" />,
     chip: 'bg-mint/15 text-mint',
+    glow: 'hover:shadow-mint/20',
   },
 ]
 
@@ -207,7 +210,7 @@ export default function Home() {
                 <motion.div
                   whileHover={{ y: -8, rotate: -0.5 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`h-full rounded-2xl border-t-4 bg-paper p-9 shadow-sm ${service.accent}`}
+                  className={`h-full rounded-2xl border border-slate-200 border-t-4 bg-white p-9 shadow-md transition-shadow duration-300 hover:shadow-xl ${service.accent} ${service.glow}`}
                 >
                   <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${service.chip}`}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
