@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import FloatingContact from './components/FloatingContact.jsx'
@@ -24,38 +25,49 @@ import AdminTestimonials from './pages/admin/AdminTestimonials.jsx'
 export default function App() {
   const location = useLocation()
   const isBareLayout = location.pathname === '/login' || location.pathname.startsWith('/admin')
+  const transitionKey = location.pathname.startsWith('/admin') ? '/admin' : location.pathname
 
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
       {!isBareLayout && <Navbar />}
       <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/submit" element={<BlogSubmit />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/admin"
-            element={
-              <RequireAuth>
-                <AdminLayout />
-              </RequireAuth>
-            }
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={transitionKey}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Route index element={<Overview />} />
-            <Route path="blog" element={<AdminBlog />} />
-            <Route path="contact" element={<AdminContact />} />
-            <Route path="verify" element={<AdminVerify />} />
-            <Route path="services" element={<AdminServices />} />
-            <Route path="team" element={<AdminTeam />} />
-            <Route path="testimonials" element={<AdminTestimonials />} />
-          </Route>
-        </Routes>
+            <Routes location={location}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/submit" element={<BlogSubmit />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/admin"
+                element={
+                  <RequireAuth>
+                    <AdminLayout />
+                  </RequireAuth>
+                }
+              >
+                <Route index element={<Overview />} />
+                <Route path="blog" element={<AdminBlog />} />
+                <Route path="contact" element={<AdminContact />} />
+                <Route path="verify" element={<AdminVerify />} />
+                <Route path="services" element={<AdminServices />} />
+                <Route path="team" element={<AdminTeam />} />
+                <Route path="testimonials" element={<AdminTestimonials />} />
+              </Route>
+            </Routes>
+          </motion.div>
+        </AnimatePresence>
       </main>
       {!isBareLayout && <Footer />}
       {!isBareLayout && <FloatingContact />}
