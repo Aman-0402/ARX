@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/use-auth.jsx'
 import SEO from '../components/SEO.jsx'
 
@@ -35,8 +35,15 @@ export default function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-paper px-4">
       <SEO path="/login" title="Sign in" noindex />
-      <form onSubmit={handleSubmit} className="w-full max-w-sm border border-slate-200 p-8">
-        <span className="font-mono text-xs text-slate">Admin</span>
+      <div className="w-full max-w-sm">
+        <Link
+          to="/"
+          className="mb-4 inline-flex items-center gap-1.5 font-mono text-xs text-slate transition-colors hover:text-ink"
+        >
+          ← Back to site
+        </Link>
+        <form onSubmit={handleSubmit} className="border border-slate-200 p-8">
+          <span className="font-mono text-xs text-slate">Admin</span>
         <h1 className="mt-2 font-display text-2xl font-semibold text-graphite">Sign in</h1>
 
         <div className="mt-6 space-y-4">
@@ -70,10 +77,11 @@ export default function Login() {
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>
 
-        {error && (
-          <p className="mt-4 border-t border-slate-200 pt-4 text-sm text-red-700">{error}</p>
-        )}
-      </form>
+          {error && (
+            <p className="mt-4 border-t border-slate-200 pt-4 text-sm text-red-700">{error}</p>
+          )}
+        </form>
+      </div>
     </div>
   )
 }
