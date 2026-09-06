@@ -119,40 +119,40 @@ export default function Home() {
 
       {/* Why choose */}
       <section className="border-b border-slate-200 bg-paper-dim">
-        <div className="mx-auto grid max-w-[1400px] gap-12 px-4 py-20 md:grid-cols-[1fr_1fr]">
+        <div className="mx-auto grid max-w-[1400px] gap-16 px-4 py-24 md:grid-cols-[1fr_1fr] md:items-center">
           <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-graphite">
+            <h2 className="font-display text-4xl font-semibold leading-tight text-graphite md:text-5xl">
               Why organizations choose ARX Infotech
             </h2>
-            <p className="mt-4 max-w-md text-slate">
+            <p className="mt-5 max-w-md text-lg text-slate">
               We focus on delivering secure, scalable, and high-performance
               solutions with a client-first approach.
             </p>
-            <ul className="mt-8 space-y-4">
+            <ul className="mt-10 space-y-5">
               {whyPoints.map((point) => (
-                <li key={point} className="flex gap-3 border-t border-slate-200 pt-4 text-sm text-graphite">
-                  <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-amber" />
+                <li key={point} className="flex gap-4 border-t border-slate-200 pt-5 text-base text-graphite">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber" />
                   {point}
                 </li>
               ))}
             </ul>
-            <Link to="/about" className="mt-8 inline-block text-sm font-medium text-ink underline decoration-amber decoration-2 underline-offset-4">
+            <Link to="/about" className="mt-10 inline-block text-base font-medium text-ink underline decoration-amber decoration-2 underline-offset-4">
               Learn more about us
             </Link>
           </Reveal>
 
-          <Reveal delay={0.15} className="relative overflow-hidden rounded-2xl border border-slate-700 bg-ink p-8 text-paper">
+          <Reveal delay={0.15} className="relative overflow-hidden rounded-2xl border border-slate-700 bg-ink p-10 text-paper">
             <GradientBlobs variant="mixed" />
-            <h3 className="font-display text-xl font-semibold">We build future-ready systems</h3>
-            <p className="mt-3 text-sm leading-relaxed text-slate-200/70">
+            <h3 className="font-display text-2xl font-semibold">We build future-ready systems</h3>
+            <p className="mt-3 text-base leading-relaxed text-slate-200/70">
               Cloud migration, automation, IT services, software products, and
               digital platforms designed for growth.
             </p>
-            <div className="mt-8 grid grid-cols-2 gap-6 font-mono">
+            <div className="mt-10 grid grid-cols-2 gap-8 font-mono">
               {metrics.map((metric) => (
                 <div key={metric.label}>
-                  <div className="text-2xl text-amber">{metric.value}</div>
-                  <div className="mt-1 text-xs text-slate-200/60">{metric.label}</div>
+                  <div className="text-4xl font-semibold text-amber">{metric.value}</div>
+                  <div className="mt-1.5 text-sm text-slate-200/60">{metric.label}</div>
                 </div>
               ))}
             </div>
