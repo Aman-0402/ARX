@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import FloatingContact from './components/FloatingContact.jsx'
+import ScrollToTop from './components/ScrollToTop.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
 import AdminLayout from './components/admin/AdminLayout.jsx'
 import Home from './pages/Home.jsx'
@@ -26,6 +27,7 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollToTop />
       {!isBareLayout && <Navbar />}
       <main className="flex-1">
         <Routes>
