@@ -25,17 +25,22 @@ const services = [
     detail: 'Infrastructure monitoring, IT support, cloud migration, system optimization, and maintenance solutions.',
     accent: 'border-t-amber',
     chip: 'bg-amber/15 text-amber-dim',
+    icon: (
+      <path d="M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Zm0 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4Zm3-8h.01M7 17h.01" />
+    ),
   },
   {
     name: 'Product Development',
     detail: 'Full-cycle product engineering including UI/UX, development, testing, deployment, and scalability.',
     accent: 'border-t-coral',
     chip: 'bg-coral/15 text-coral',
+    icon: <path d="m8 9-4 3 4 3m8-6 4 3-4 3m-2-9-4 12" />,
   },
   {
     name: 'Academic Solutions',
     detail: 'Automation platforms for admissions, attendance management, reporting systems, and LMS integrations.',
     accent: 'border-t-mint',
+    icon: <path d="M22 10 12 5 2 10l10 5 10-5Zm-5 2.5v4.5c0 1-2.5 2.5-5 2.5s-5-1.5-5-2.5v-4.5M22 10v6" />,
     chip: 'bg-mint/15 text-mint',
   },
 ]
@@ -185,32 +190,34 @@ export default function Home() {
         <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="font-display text-3xl font-semibold text-graphite">Our core services</h2>
-              <p className="mt-3 max-w-md text-slate">
+              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Our core services</h2>
+              <p className="mt-4 max-w-md text-lg text-slate">
                 Complete IT and digital transformation solutions, built around
                 how your organization actually works.
               </p>
             </div>
-            <Link to="/services" className="text-sm font-medium text-ink underline decoration-amber decoration-2 underline-offset-4">
+            <Link to="/services" className="text-base font-medium text-ink underline decoration-amber decoration-2 underline-offset-4">
               View all services
             </Link>
           </Reveal>
 
-          <StaggerGrid className="mt-12 grid gap-5 md:grid-cols-3">
-            {services.map((service, i) => (
+          <StaggerGrid className="mt-14 grid gap-6 md:grid-cols-3">
+            {services.map((service) => (
               <StaggerItem key={service.name}>
                 <motion.div
-                  whileHover={{ y: -6, rotate: -0.5 }}
+                  whileHover={{ y: -8, rotate: -0.5 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`h-full rounded-2xl border-t-4 bg-paper p-8 shadow-sm ${service.accent}`}
+                  className={`h-full rounded-2xl border-t-4 bg-paper p-9 shadow-sm ${service.accent}`}
                 >
-                  <span className={`inline-flex rounded-full px-2.5 py-1 font-mono text-xs ${service.chip}`}>
-                    {String(i + 1).padStart(2, '0')}
+                  <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${service.chip}`}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                      {service.icon}
+                    </svg>
                   </span>
-                  <h3 className="mt-4 font-display text-lg font-semibold text-graphite">
+                  <h3 className="mt-5 font-display text-xl font-semibold text-graphite">
                     {service.name}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate">{service.detail}</p>
+                  <p className="mt-3 text-base leading-relaxed text-slate">{service.detail}</p>
                 </motion.div>
               </StaggerItem>
             ))}
