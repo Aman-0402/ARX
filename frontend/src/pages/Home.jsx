@@ -96,13 +96,13 @@ export default function Home() {
             <Reveal delay={0.25} className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/services"
-                className="rounded-xl border-2 border-ink bg-ink px-7 py-4 text-base font-medium text-paper transition-all hover:-translate-y-0.5 hover:bg-paper hover:text-ink hover:shadow-lg"
+                className="rounded-xl border-2 border-ink bg-ink px-7 py-4 text-base font-medium text-paper transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:bg-paper hover:text-ink hover:shadow-lg"
               >
                 Explore services
               </Link>
               <Link
                 to="/contact"
-                className="rounded-xl border-2 border-graphite bg-paper px-7 py-4 text-base font-medium text-graphite transition-all hover:-translate-y-0.5 hover:border-ink hover:bg-ink hover:text-paper hover:shadow-md"
+                className="rounded-xl border-2 border-graphite bg-paper px-7 py-4 text-base font-medium text-graphite transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:border-ink hover:bg-ink hover:text-paper hover:shadow-md"
               >
                 Get a free consultation
               </Link>
