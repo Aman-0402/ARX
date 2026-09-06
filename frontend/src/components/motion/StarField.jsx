@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+const colors = ['bg-amber', 'bg-amber', 'bg-coral', 'bg-graphite/70']
+
 export default function StarField({ count = 70, className = '' }) {
   const stars = useMemo(
     () =>
@@ -10,6 +12,7 @@ export default function StarField({ count = 70, className = '' }) {
         size: Math.random() < 0.15 ? 3 : Math.random() < 0.5 ? 2 : 1,
         delay: Math.random() * 4,
         duration: 2 + Math.random() * 3,
+        color: colors[Math.floor(Math.random() * colors.length)],
       })),
     [count],
   )
@@ -19,7 +22,7 @@ export default function StarField({ count = 70, className = '' }) {
       {stars.map((star) => (
         <span
           key={star.id}
-          className="absolute animate-twinkle rounded-full bg-graphite/70"
+          className={`absolute animate-twinkle rounded-full ${star.color}`}
           style={{
             top: `${star.top}%`,
             left: `${star.left}%`,

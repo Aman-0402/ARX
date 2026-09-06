@@ -140,7 +140,10 @@ export default function Home() {
             </Reveal>
           </div>
 
-          <Reveal delay={0.15} y={32} className="flex justify-center md:justify-end">
+          <Reveal delay={0.15} y={32} className="relative flex justify-center md:justify-end">
+            <div className="absolute inset-0 -z-10 flex items-center justify-center">
+              <div className="h-[75%] w-[75%] animate-pulse-glow rounded-full bg-gradient-to-br from-amber via-grape to-coral opacity-30 blur-3xl" />
+            </div>
             <Earth />
           </Reveal>
         </div>
