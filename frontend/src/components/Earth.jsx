@@ -43,7 +43,7 @@ export default function Earth({
 
     let animationFrameId
     const animate = () => {
-      phi += 0.003
+      phi += 0.012
       globe.update({ phi })
       animationFrameId = requestAnimationFrame(animate)
     }
@@ -57,7 +57,7 @@ export default function Earth({
   }, [theta, dark, scale, diffuse, mapSamples, mapBrightness, baseColor, markerColor, glowColor])
 
   return (
-    <div className={`z-10 mx-auto flex w-full max-w-[350px] items-center justify-center ${className}`}>
+    <div className={`z-10 mx-auto flex w-full max-w-[520px] items-center justify-center ${className}`}>
       <canvas
         ref={canvasRef}
         style={{ width: '100%', maxWidth: '100%', aspectRatio: '1' }}
