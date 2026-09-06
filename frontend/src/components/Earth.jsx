@@ -16,43 +16,58 @@ export default function Earth({
   const canvasRef = useRef(null)
 
   useEffect(() => {
+    let cancelled = false
     let width = 0
+    let phi = 0
+    let globe
+    let animationFrameId
+    let setupFrameId
+
     const onResize = () => canvasRef.current && (width = canvasRef.current.offsetWidth)
     window.addEventListener('resize', onResize)
     onResize()
-    let phi = 0
 
-    const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
-      phi: 0,
-      theta,
-      dark,
-      scale,
-      diffuse,
-      mapSamples,
-      mapBrightness,
-      baseColor,
-      markerColor,
-      glowColor,
-      opacity: 1,
-      offset: [0, 0],
-      markers: [],
+    // Deferred by a frame: in React StrictMode dev double-mount, this lets
+    // the first pass's cleanup (globe.destroy()) fully release the WebGL
+    // context before the second pass creates a new one on the same canvas
+    // — creating two contexts back-to-back on one canvas corrupts the
+    // render (looks like erratic multi-axis rotation instead of a clean spin).
+    setupFrameId = requestAnimationFrame(() => {
+      if (cancelled || !canvasRef.current) return
+
+      globe = createGlobe(canvasRef.current, {
+        devicePixelRatio: 2,
+        width: width * 2,
+        height: width * 2,
+        phi: 0,
+        theta,
+        dark,
+        scale,
+        diffuse,
+        mapSamples,
+        mapBrightness,
+        baseColor,
+        markerColor,
+        glowColor,
+        opacity: 1,
+        offset: [0, 0],
+        markers: [],
+      })
+
+      const animate = () => {
+        phi += 0.006
+        globe.update({ phi })
+        animationFrameId = requestAnimationFrame(animate)
+      }
+      animationFrameId = requestAnimationFrame(animate)
     })
 
-    let animationFrameId
-    const animate = () => {
-      phi += 0.012
-      globe.update({ phi })
-      animationFrameId = requestAnimationFrame(animate)
-    }
-    animationFrameId = requestAnimationFrame(animate)
-
     return () => {
+      cancelled = true
       window.removeEventListener('resize', onResize)
+      cancelAnimationFrame(setupFrameId)
       cancelAnimationFrame(animationFrameId)
-      globe.destroy()
+      globe?.destroy()
     }
   }, [theta, dark, scale, diffuse, mapSamples, mapBrightness, baseColor, markerColor, glowColor])
 
