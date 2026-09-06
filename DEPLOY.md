@@ -59,25 +59,25 @@ available (most cPanel hosts have these; some need a support ticket).
 Everything below step 3 has a script so you're not retyping commands on
 every deploy:
 
-- `scripts/setup.sh` — first-time only: installs deps, checks `.env` exists,
+- `scripts/setup.py` — first-time only: installs deps, checks `.env` exists,
   migrates, collects static, seeds demo content, creates the superuser (if
   `DJANGO_SUPERUSER_*` env vars are set).
-- `scripts/deploy.sh` — every redeploy: `git pull`, reinstall deps, build the
+- `scripts/deploy.py` — every redeploy: `git pull`, reinstall deps, build the
   frontend (if `npm` is on PATH), migrate + collectstatic.
-- `scripts/migrate.sh` — just migrate + collectstatic.
-- `scripts/seed_data.sh` — (re-)seed demo service groups/testimonials/a
+- `scripts/migrate.py` — just migrate + collectstatic.
+- `scripts/seed_data.py` — (re-)seed demo service groups/testimonials/a
   sample post. Idempotent, safe to re-run.
-- `scripts/create_superuser.sh` — create or reset the admin user:
+- `scripts/create_superuser.py` — create or reset the admin user:
   ```bash
   DJANGO_SUPERUSER_USERNAME=admin \
   DJANGO_SUPERUSER_EMAIL=admin@arxinfo.tech \
   DJANGO_SUPERUSER_PASSWORD='choose-a-strong-one' \
-  sh scripts/create_superuser.sh
+  python scripts/create_superuser.py
   ```
 
 All of them assume you've already activated the app's virtualenv (step 2's
 "Enter to the virtual environment" command) so `python`/`pip` resolve to the
-right interpreter — run them as `sh scripts/<name>.sh` from anywhere.
+right interpreter — run them as `python scripts/<name>.py` from anywhere.
 
 ## 4. Configure environment
 
@@ -138,10 +138,10 @@ cd ~/arx/backend
 DJANGO_SUPERUSER_USERNAME=admin \
 DJANGO_SUPERUSER_EMAIL=admin@arxinfo.tech \
 DJANGO_SUPERUSER_PASSWORD='choose-a-strong-one' \
-sh scripts/setup.sh
+python scripts/setup.py
 ```
 
-Re-run `sh scripts/migrate.sh` alone whenever you just need to reapply
+Re-run `python scripts/migrate.py` alone whenever you just need to reapply
 migrations/collectstatic (e.g. after rebuilding the frontend — that's what
 copies the newly-hashed JS/CSS files to where whitenoise serves them from).
 
@@ -164,13 +164,13 @@ cPanel → SSL/TLS Status, so everything's served over HTTPS.
 
 ## Redeploying after future changes
 
-From the app's activated virtualenv: `sh scripts/deploy.sh` — pulls latest,
-reinstalls deps, builds the frontend if `npm` is on PATH (uploads it yourself
-first if not), migrates + collects static. Restart the app afterward either
-way (script reminds you).
+From the app's activated virtualenv: `python scripts/deploy.py` — pulls
+latest, reinstalls deps, builds the frontend if `npm` is on PATH (uploads it
+yourself first if not), migrates + collects static. Restart the app
+afterward either way (script reminds you).
 
 Model changes: still run `makemigrations` locally first (project convention —
-commit the generated migration file), then `deploy.sh`/`migrate.sh` picks it
+commit the generated migration file), then `deploy.py`/`migrate.py` picks it
 up on the server via `git pull` + `migrate`.
 
 ## What this setup does *not* cover
