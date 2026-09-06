@@ -169,9 +169,8 @@ export default function Home() {
                     transition={{ type: 'spring', stiffness: 300, damping: 18 }}
                     className={`rounded-2xl border-t-4 bg-ink p-6 text-paper shadow-lg shadow-ink/20 ${metric.accent}`}
                   >
-                    <span className={`inline-block h-2 w-2 rounded-full ${metric.dot}`} />
-                    <div className="mt-3 text-3xl font-semibold">{metric.value}</div>
-                    <div className="mt-1 text-xs text-slate-200/60">{metric.label}</div>
+                    <div className="text-4xl font-semibold">{metric.value}</div>
+                    <div className="mt-1.5 text-sm text-slate-200/60">{metric.label}</div>
                   </motion.div>
                 </StaggerItem>
               ))}
