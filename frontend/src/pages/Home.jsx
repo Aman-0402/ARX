@@ -79,7 +79,7 @@ export default function Home() {
         <GradientBlobs variant="blue" />
         <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-6 md:grid-cols-[1.15fr_1fr] md:items-center md:pb-20 md:pt-8">
           <div>
-            <Reveal as="h1" className="font-display text-5xl font-semibold leading-[1.05] text-graphite md:text-6xl lg:text-7xl">
+            <Reveal as="h1" className="font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-6xl lg:text-7xl">
               IT services and{' '}
               <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
                 modern tech
