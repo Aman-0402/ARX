@@ -63,6 +63,8 @@ const deliverables = [
     ring: 'hover:border-amber',
     glow: 'hover:shadow-amber/20',
     chip: 'bg-amber/10 text-amber-dim',
+    tint: 'from-amber/15 via-white to-white',
+    blob: 'bg-amber/30',
     icon: <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />,
   },
   {
@@ -73,6 +75,8 @@ const deliverables = [
     ring: 'hover:border-coral',
     glow: 'hover:shadow-coral/20',
     chip: 'bg-coral/10 text-coral',
+    tint: 'from-coral/15 via-white to-white',
+    blob: 'bg-coral/30',
     icon: <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" />,
   },
 ]
@@ -272,18 +276,20 @@ export default function Home() {
                 <motion.div
                   whileHover={{ y: -8 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`group relative isolate h-72 overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 shadow-md transition-shadow duration-300 hover:shadow-xl ${block.accent} ${block.ring} ${block.glow}`}
+                  className={`group relative isolate grid overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 shadow-md transition-shadow duration-300 hover:shadow-xl ${block.accent} ${block.ring} ${block.glow}`}
                 >
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-white p-8 text-center transition-opacity duration-300 group-hover:opacity-0">
-                    <span className={`inline-flex h-14 w-14 items-center justify-center rounded-xl ${block.chip}`}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
+                  <div className={`relative col-start-1 row-start-1 flex flex-col items-center justify-center gap-4 overflow-hidden bg-gradient-to-br p-10 text-center transition-opacity duration-300 group-hover:opacity-0 ${block.tint}`}>
+                    <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full blur-2xl ${block.blob}`} />
+                    <span className={`relative inline-flex h-16 w-16 items-center justify-center rounded-2xl ${block.chip}`}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8">
                         {block.icon}
                       </svg>
                     </span>
-                    <h3 className="font-display text-2xl font-semibold text-graphite">{block.title}</h3>
+                    <h3 className="relative font-display text-2xl font-semibold text-graphite">{block.title}</h3>
+                    <p className="relative text-sm text-slate">Hover to see what's included</p>
                   </div>
 
-                  <div className="absolute inset-0 flex flex-col justify-center gap-4 bg-amber/10 p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <div className="col-start-1 row-start-1 flex flex-col justify-center gap-4 bg-amber/10 p-9 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <h3 className="font-display text-xl font-semibold text-graphite">{block.title}</h3>
                     <p className="text-base leading-relaxed text-graphite/80">{block.copy}</p>
                     <div className="flex flex-wrap gap-2">
