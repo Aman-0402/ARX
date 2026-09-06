@@ -40,9 +40,11 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between px-4 py-3">
           <NavLink to="/" className="group flex items-center gap-2.5" onClick={() => setOpen(false)}>
-            <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-ink font-mono text-sm text-amber transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
-              A
-            </span>
+            <img
+              src="/logo.png"
+              alt="ARX Infotech"
+              className="h-8 w-8 object-contain transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
+            />
             <span className="font-display text-lg font-semibold text-graphite">ARX Infotech</span>
           </NavLink>
 

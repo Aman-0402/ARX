@@ -40,6 +40,7 @@ export default function BlogPost() {
           title={post.title}
           description={post.excerpt || stripHtml(post.content).slice(0, 160)}
           type="article"
+          image={post.cover_image || '/logo.png'}
           jsonLd={{
             '@context': 'https://schema.org',
             '@type': 'BlogPosting',

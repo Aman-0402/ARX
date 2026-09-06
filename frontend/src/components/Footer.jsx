@@ -47,9 +47,7 @@ export default function Footer() {
         <StaggerGrid className="grid gap-10 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <StaggerItem>
             <Link to="/" className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber font-mono text-sm font-bold text-ink">
-                A
-              </span>
+              <img src="/logo.png" alt="ARX Infotech" className="h-9 w-9 object-contain" />
               <span className="font-display text-lg font-semibold">ARX Infotech</span>
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-200/70">

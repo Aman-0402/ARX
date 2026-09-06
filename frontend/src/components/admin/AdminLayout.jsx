@@ -18,9 +18,7 @@ export default function AdminLayout() {
     <div className="flex min-h-screen bg-paper">
       <aside className="w-64 shrink-0 border-r border-slate-200 bg-paper">
         <div className="flex h-16 items-center gap-2.5 border-b border-slate-200 px-6">
-          <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-ink font-mono text-sm text-amber">
-            A
-          </span>
+          <img src="/logo.png" alt="ARX Infotech" className="h-8 w-8 object-contain" />
           <span className="font-display text-sm font-semibold text-graphite">Dashboard</span>
         </div>
         <nav className="flex flex-col gap-1 p-4">
