@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import StatusBoard from '../components/StatusBoard.jsx'
+import Earth from '../components/Earth.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
@@ -139,7 +139,7 @@ export default function Home() {
           </div>
 
           <Reveal delay={0.15} y={32} className="flex justify-center md:justify-end">
-            <StatusBoard />
+            <Earth />
           </Reveal>
         </div>
       </section>
