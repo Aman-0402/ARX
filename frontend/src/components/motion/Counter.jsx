@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
 
-export default function Counter({ value, suffix = '', className = '' }) {
+export default function Counter({ value, suffix = '', decimals = 0, className = '' }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, amount: 0.5 })
   const numeric = parseFloat(String(value).replace(/[^0-9.]/g, '')) || 0
@@ -17,10 +17,10 @@ export default function Counter({ value, suffix = '', className = '' }) {
   useEffect(() => {
     return spring.on('change', (latest) => {
       if (nodeRef.current) {
-        nodeRef.current.textContent = `${prefix}${Math.round(latest)}${suffix}`
+        nodeRef.current.textContent = `${prefix}${latest.toFixed(decimals)}${suffix}`
       }
     })
-  }, [spring, prefix, suffix])
+  }, [spring, prefix, suffix, decimals])
 
   return (
     <motion.span ref={ref} className={className}>

@@ -3,7 +3,14 @@ import { motion } from 'framer-motion'
 import { fetchTeam } from '../lib/api.js'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
+import Counter from '../components/motion/Counter.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
+
+const heroStats = [
+  { value: '120', suffix: '+', decimals: 0, static: null, label: 'Businesses served', accent: 'border-amber/40 bg-amber/5' },
+  { value: null, static: '24/7', label: 'Support coverage', accent: 'border-coral/40 bg-coral/5' },
+  { value: '99.98', suffix: '%', decimals: 2, static: null, label: 'Infrastructure uptime', accent: 'border-mint/40 bg-mint/5' },
+]
 
 const values = [
   { title: 'Security-first design', copy: 'Every system we ship is built to a hardened baseline, not patched after the fact.' },
@@ -31,10 +38,9 @@ export default function About() {
     <>
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
-        <div className="mx-auto max-w-[1400px] px-4 py-24">
+        <div className="mx-auto max-w-[1400px] px-4 pb-24 pt-8">
           <Reveal>
-            <span className="font-mono text-xs text-slate">About ARX Infotech</span>
-            <h1 className="mt-4 max-w-3xl font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-5xl lg:text-6xl">
+            <h1 className="max-w-3xl font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-5xl lg:text-6xl">
               IT services and{' '}
               <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
                 academic automation
@@ -47,18 +53,24 @@ export default function About() {
               with product engineering so clients get one accountable partner
               instead of a handful of vendors.
             </p>
-            <div className="mt-10 flex flex-wrap gap-8">
-              {[
-                { value: '120+', label: 'Businesses served' },
-                { value: '24/7', label: 'Support coverage' },
-                { value: '99.98%', label: 'Infrastructure uptime' },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="font-display text-3xl font-semibold text-graphite">{stat.value}</div>
-                  <div className="mt-1 text-sm text-slate">{stat.label}</div>
-                </div>
+            <StaggerGrid className="mt-10 flex flex-wrap gap-4">
+              {heroStats.map((stat) => (
+                <StaggerItem key={stat.label}>
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className={`rounded-2xl border-2 px-6 py-5 shadow-sm ${stat.accent}`}
+                  >
+                    <div className="font-display text-3xl font-semibold text-graphite">
+                      {stat.static ?? (
+                        <Counter value={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
+                      )}
+                    </div>
+                    <div className="mt-1 text-sm text-slate">{stat.label}</div>
+                  </motion.div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGrid>
           </Reveal>
         </div>
       </section>
