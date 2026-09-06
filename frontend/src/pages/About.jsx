@@ -31,18 +31,34 @@ export default function About() {
     <>
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
-        <div className="mx-auto max-w-[1400px] px-4 py-20">
+        <div className="mx-auto max-w-[1400px] px-4 py-24">
           <Reveal>
             <span className="font-mono text-xs text-slate">About ARX Infotech</span>
-            <h1 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight text-graphite">
-              IT services and academic automation, built by people who run the systems they design
+            <h1 className="mt-4 max-w-3xl font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-5xl lg:text-6xl">
+              IT services and{' '}
+              <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
+                academic automation
+              </span>
+              , built by people who run the systems they design
             </h1>
-            <p className="mt-6 max-w-2xl text-slate">
+            <p className="mt-6 max-w-2xl text-lg text-slate">
               ARX Infotech works with businesses and educational institutions across
               infrastructure, software, and security — combining managed IT services
               with product engineering so clients get one accountable partner
               instead of a handful of vendors.
             </p>
+            <div className="mt-10 flex flex-wrap gap-8">
+              {[
+                { value: '120+', label: 'Businesses served' },
+                { value: '24/7', label: 'Support coverage' },
+                { value: '99.98%', label: 'Infrastructure uptime' },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <div className="font-display text-3xl font-semibold text-graphite">{stat.value}</div>
+                  <div className="mt-1 text-sm text-slate">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </Reveal>
         </div>
       </section>
