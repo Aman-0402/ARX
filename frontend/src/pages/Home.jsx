@@ -223,18 +223,20 @@ export default function Home() {
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className={`group h-full overflow-hidden rounded-2xl border-2 border-t-4 bg-ink-raised shadow-xl transition-all duration-300 ${service.accent} ${service.ring} ${service.glow}`}
                 >
-                  <div className={`flex h-40 items-center justify-center bg-gradient-to-br ${service.imageBg}`}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className={`h-16 w-16 ${service.chip.split(' ')[1]}`}>
-                      {service.icon}
-                    </svg>
+                  <div className={`relative h-40 overflow-hidden bg-gradient-to-br ${service.imageBg}`}>
+                    <div className="flex h-full items-center justify-center">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" className={`h-16 w-16 ${service.chip.split(' ')[1]}`}>
+                        {service.icon}
+                      </svg>
+                    </div>
+                    <div className="absolute inset-0 flex translate-y-2 items-center bg-ink/95 p-6 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                      <p className="text-base leading-relaxed text-slate-200/80">{service.detail}</p>
+                    </div>
                   </div>
                   <div className="p-9">
                     <h3 className="font-display text-2xl font-semibold text-paper">
                       {service.name}
                     </h3>
-                    <p className="mt-0 max-h-0 overflow-hidden text-base leading-relaxed text-slate-200/70 opacity-0 transition-all duration-300 group-hover:mt-3 group-hover:max-h-40 group-hover:opacity-100">
-                      {service.detail}
-                    </p>
                   </div>
                 </motion.div>
               </StaggerItem>
