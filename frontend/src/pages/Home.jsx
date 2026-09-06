@@ -6,10 +6,10 @@ import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
 
 const whyPoints = [
-  'Global service capability with remote and on-site support models.',
-  'Client-first approach with transparent communication and dedicated assistance.',
-  'Strong focus on quality, scalability, and security in solution design.',
-  'Professional delivery aligned with long-term business sustainability.',
+  { text: 'Global service capability with remote and on-site support models.', dot: 'bg-amber' },
+  { text: 'Client-first approach with transparent communication and dedicated assistance.', dot: 'bg-coral' },
+  { text: 'Strong focus on quality, scalability, and security in solution design.', dot: 'bg-mint' },
+  { text: 'Professional delivery aligned with long-term business sustainability.', dot: 'bg-grape' },
 ]
 
 const metrics = [
@@ -121,23 +121,40 @@ export default function Home() {
       <section className="border-b border-slate-200 bg-paper-dim">
         <div className="mx-auto grid max-w-[1400px] gap-16 px-4 py-24 md:grid-cols-[1fr_1fr] md:items-center">
           <Reveal>
-            <h2 className="font-display text-4xl font-semibold leading-tight text-graphite md:text-5xl">
-              Why organizations choose ARX Infotech
+            <span className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber/15 via-grape/15 to-coral/15 px-3.5 py-1.5 font-mono text-xs text-graphite">
+              Why ARX
+            </span>
+            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-graphite md:text-5xl">
+              Why organizations{' '}
+              <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
+                choose ARX
+              </span>{' '}
+              Infotech
             </h2>
             <p className="mt-5 max-w-md text-lg text-slate">
               We focus on delivering secure, scalable, and high-performance
               solutions with a client-first approach.
             </p>
-            <ul className="mt-10 space-y-5">
+            <StaggerGrid className="mt-10 space-y-3">
               {whyPoints.map((point) => (
-                <li key={point} className="flex gap-4 border-t border-slate-200 pt-5 text-base text-graphite">
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber" />
-                  {point}
-                </li>
+                <StaggerItem key={point.text}>
+                  <motion.div
+                    whileHover={{ x: 6 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className="flex items-center gap-4 rounded-xl border border-slate-200 bg-paper px-5 py-4 text-base text-graphite shadow-sm"
+                  >
+                    <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${point.dot}`} />
+                    {point.text}
+                  </motion.div>
+                </StaggerItem>
               ))}
-            </ul>
-            <Link to="/about" className="mt-10 inline-block text-base font-medium text-ink underline decoration-amber decoration-2 underline-offset-4">
+            </StaggerGrid>
+            <Link
+              to="/about"
+              className="group mt-10 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-base font-medium text-paper transition-all hover:-translate-y-0.5 hover:shadow-lg"
+            >
               Learn more about us
+              <span className="transition-transform group-hover:translate-x-1">→</span>
             </Link>
           </Reveal>
 
