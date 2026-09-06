@@ -8,11 +8,11 @@ import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
 import { fetchTestimonials } from '../lib/api.js'
 
 const testimonialAccents = [
-  { avatar: 'bg-amber/15 text-amber-dim', quoteMark: 'text-amber/30' },
-  { avatar: 'bg-coral/15 text-coral', quoteMark: 'text-coral/30' },
-  { avatar: 'bg-mint/15 text-mint', quoteMark: 'text-mint/30' },
-  { avatar: 'bg-sunbeam/15 text-amber-dim', quoteMark: 'text-sunbeam/40' },
-  { avatar: 'bg-grape/15 text-grape', quoteMark: 'text-grape/30' },
+  { avatar: 'bg-amber/15 text-amber-dim', quoteMark: 'text-amber/40', border: 'border-amber/30', top: 'bg-amber', tint: 'from-amber/10' },
+  { avatar: 'bg-coral/15 text-coral', quoteMark: 'text-coral/40', border: 'border-coral/30', top: 'bg-coral', tint: 'from-coral/10' },
+  { avatar: 'bg-mint/15 text-mint', quoteMark: 'text-mint/40', border: 'border-mint/30', top: 'bg-mint', tint: 'from-mint/10' },
+  { avatar: 'bg-sunbeam/15 text-amber-dim', quoteMark: 'text-sunbeam/50', border: 'border-sunbeam/40', top: 'bg-sunbeam', tint: 'from-sunbeam/10' },
+  { avatar: 'bg-grape/15 text-grape', quoteMark: 'text-grape/40', border: 'border-grape/30', top: 'bg-grape', tint: 'from-grape/10' },
 ]
 
 const whyPoints = [
@@ -324,8 +324,9 @@ export default function Home() {
                 return (
                   <figure
                     key={i}
-                    className="flex w-[340px] shrink-0 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-8 shadow-md md:w-[380px]"
+                    className={`flex w-[340px] shrink-0 flex-col justify-between overflow-hidden rounded-2xl border-2 bg-gradient-to-br to-white p-8 shadow-md md:w-[380px] ${a.border} ${a.tint}`}
                   >
+                    <span className={`-mx-8 -mt-8 mb-6 block h-1.5 ${a.top}`} />
                     <div>
                       <span className={`font-display text-6xl leading-none ${a.quoteMark}`}>“</span>
                       <blockquote className="-mt-4 text-base leading-relaxed text-graphite">{t.quote}</blockquote>
