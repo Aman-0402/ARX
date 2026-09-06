@@ -13,11 +13,38 @@ const heroStats = [
 ]
 
 const values = [
-  { title: 'Security-first design', copy: 'Every system we ship is built to a hardened baseline, not patched after the fact.' },
-  { title: 'Transparent delivery', copy: 'Clients see status, timelines, and decisions as they happen — no black boxes.' },
-  { title: 'Built to scale', copy: 'Architecture decisions account for the client at 10x, not just at launch.' },
-  { title: 'Long-term partnership', copy: 'We stay on as infrastructure evolves, not just for the initial build.' },
+  {
+    title: 'Security-first design',
+    copy: 'Every system we ship is built to a hardened baseline, not patched after the fact.',
+    color: 'amber',
+    icon: <path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z" />,
+  },
+  {
+    title: 'Transparent delivery',
+    copy: 'Clients see status, timelines, and decisions as they happen — no black boxes.',
+    color: 'coral',
+    icon: <path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8Zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />,
+  },
+  {
+    title: 'Built to scale',
+    copy: 'Architecture decisions account for the client at 10x, not just at launch.',
+    color: 'mint',
+    icon: <path d="M3 17 9 11l4 4 8-8M21 7v6M21 7h-6" />,
+  },
+  {
+    title: 'Long-term partnership',
+    copy: 'We stay on as infrastructure evolves, not just for the initial build.',
+    color: 'grape',
+    icon: <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm8 2c-2.5 0-7.5 1.25-7.5 3.75V19h15v-2.25C23.5 14.25 18.5 13 16 13Zm-8 0c-2.5 0-7.5 1.25-7.5 3.75V19H8" />,
+  },
 ]
+
+const valueClasses = {
+  amber: { border: 'border-t-amber', ring: 'hover:border-amber', glow: 'hover:shadow-amber/25', chip: 'bg-amber/20 text-amber-dim' },
+  coral: { border: 'border-t-coral', ring: 'hover:border-coral', glow: 'hover:shadow-coral/25', chip: 'bg-coral/20 text-coral' },
+  mint: { border: 'border-t-mint', ring: 'hover:border-mint', glow: 'hover:shadow-mint/25', chip: 'bg-mint/20 text-mint' },
+  grape: { border: 'border-t-grape', ring: 'hover:border-grape', glow: 'hover:shadow-grape/25', chip: 'bg-grape/20 text-grape' },
+}
 
 const ringAccents = ['ring-amber', 'ring-coral', 'ring-mint', 'ring-grape']
 
@@ -127,18 +154,26 @@ export default function About() {
             <h2 className="font-display text-3xl font-semibold text-graphite">How we work</h2>
           </Reveal>
           <StaggerGrid className="mt-10 grid gap-5 sm:grid-cols-2">
-            {values.map((v) => (
-              <StaggerItem key={v.title}>
-                <motion.div
-                  whileHover={{ y: -4 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className="h-full rounded-2xl border border-slate-200 bg-paper p-7 shadow-sm"
-                >
-                  <h3 className="font-display text-base font-semibold text-graphite">{v.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate">{v.copy}</p>
-                </motion.div>
-              </StaggerItem>
-            ))}
+            {values.map((v) => {
+              const c = valueClasses[v.color]
+              return (
+                <StaggerItem key={v.title}>
+                  <motion.div
+                    whileHover={{ y: -8, rotate: -0.5 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className={`h-full rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-7 shadow-md transition-shadow duration-300 hover:shadow-xl ${c.border} ${c.ring} ${c.glow}`}
+                  >
+                    <span className={`inline-flex h-11 w-11 items-center justify-center rounded-xl ${c.chip}`}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                        {v.icon}
+                      </svg>
+                    </span>
+                    <h3 className="mt-4 font-display text-base font-semibold text-graphite">{v.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate">{v.copy}</p>
+                  </motion.div>
+                </StaggerItem>
+              )
+            })}
           </StaggerGrid>
         </div>
       </section>
