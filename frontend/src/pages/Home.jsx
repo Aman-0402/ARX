@@ -270,29 +270,29 @@ export default function Home() {
             {deliverables.map((block) => (
               <StaggerItem key={block.title}>
                 <motion.div
-                  whileHover={{ y: -8, rotate: -0.5 }}
+                  whileHover={{ y: -8 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`group h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 bg-white shadow-md transition-shadow duration-300 hover:shadow-xl ${block.accent} ${block.ring} ${block.glow}`}
+                  className={`group relative isolate h-72 overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 shadow-md transition-shadow duration-300 hover:shadow-xl ${block.accent} ${block.ring} ${block.glow}`}
                 >
-                  <div className="relative flex h-56 items-center justify-center">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-white p-8 text-center transition-opacity duration-300 group-hover:opacity-0">
                     <span className={`inline-flex h-14 w-14 items-center justify-center rounded-xl ${block.chip}`}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
                         {block.icon}
                       </svg>
                     </span>
-                    <div className="absolute inset-0 flex translate-y-2 flex-col justify-center gap-4 bg-ink p-7 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                      <p className="text-base leading-relaxed text-paper">{block.copy}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {block.items.map((item) => (
-                          <span key={item} className={`rounded-full px-3 py-1 text-xs font-medium ${block.chip}`}>
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-9 pt-0">
                     <h3 className="font-display text-2xl font-semibold text-graphite">{block.title}</h3>
+                  </div>
+
+                  <div className="absolute inset-0 flex flex-col justify-center gap-4 bg-ink p-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <h3 className="font-display text-xl font-semibold text-paper">{block.title}</h3>
+                    <p className="text-base leading-relaxed text-slate-200/80">{block.copy}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {block.items.map((item) => (
+                        <span key={item} className={`rounded-full px-3 py-1 text-xs font-medium ${block.chip}`}>
+                          {item}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </motion.div>
               </StaggerItem>
