@@ -18,9 +18,9 @@ class VerificationRecordAdmin(admin.ModelAdmin):
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'published', 'published_at']
+    list_display = ['title', 'published', 'published_at', 'submitter_name']
     list_filter = ['published']
-    search_fields = ['title', 'excerpt', 'content']
+    search_fields = ['title', 'excerpt', 'content', 'submitter_name', 'submitter_email']
     prepopulated_fields = {'slug': ('title',)}
 
 

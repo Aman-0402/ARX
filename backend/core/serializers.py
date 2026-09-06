@@ -41,6 +41,17 @@ class BlogPostDetailSerializer(serializers.ModelSerializer):
         fields = ['slug', 'title', 'excerpt', 'content', 'cover_image', 'published_at']
 
 
+def _unique_blog_slug(title):
+    base = slugify(title)[:220]
+    slug = base
+    n = 2
+    while BlogPost.objects.filter(slug=slug).exists():
+        suffix = f'-{n}'
+        slug = f'{base[:220 - len(suffix)]}{suffix}'
+        n += 1
+    return slug
+
+
 class BlogPostAdminSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(max_length=220, required=False)
 
@@ -48,8 +59,9 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
         model = BlogPost
         fields = [
             'id', 'slug', 'title', 'excerpt', 'content', 'cover_image',
-            'published', 'published_at',
+            'published', 'published_at', 'submitter_name', 'submitter_email',
         ]
+        read_only_fields = ['submitter_name', 'submitter_email']
 
     def validate_slug(self, value):
         if not value:
@@ -63,14 +75,20 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if not validated_data.get('slug'):
-            base = slugify(validated_data['title'])[:220]
-            slug = base
-            n = 2
-            while BlogPost.objects.filter(slug=slug).exists():
-                suffix = f'-{n}'
-                slug = f'{base[:220 - len(suffix)]}{suffix}'
-                n += 1
-            validated_data['slug'] = slug
+            validated_data['slug'] = _unique_blog_slug(validated_data['title'])
+        return super().create(validated_data)
+
+
+class BlogPostSubmitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPost
+        fields = [
+            'title', 'excerpt', 'content', 'cover_image',
+            'submitter_name', 'submitter_email',
+        ]
+
+    def create(self, validated_data):
+        validated_data['slug'] = _unique_blog_slug(validated_data['title'])
         return super().create(validated_data)
 
 

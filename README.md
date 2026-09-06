@@ -31,9 +31,9 @@ backend/    Django 5 + Django REST Framework
   stat cards, since that's literally what the company sells.
 
 Pages: Home, About (incl. Leadership team → Django API), Services (→ Django
-API), Blog (list + post detail → Django API), Contact (working form → Django
-API). Plus `/login` and a protected `/admin` dashboard — see "Admin
-dashboard" below.
+API), Blog (list + post detail + public submission form → Django API),
+Contact (working form → Django API). Plus `/login` and a protected `/admin`
+dashboard — see "Admin dashboard" below.
 
 ## Running locally
 
@@ -73,6 +73,10 @@ your local backend with no extra config.
 - `GET /api/blog/` — list of published `BlogPost`s, newest first.
 - `GET /api/blog/<slug>/` — a single published post, `404` if not found or
   unpublished.
+- `POST /api/blog/submit/` — public "write for us" form (`/blog/submit`):
+  `{ submitter_name, submitter_email, title, excerpt, content, cover_image }`
+  → creates a `BlogPost` forced to `published=False`, so it lands as a
+  pending-review draft in the admin, never shows up publicly until approved.
 - `GET /api/services/` — service groups (name + image + items) in display
   order, for the public Services page.
 - `GET /api/team/` — team members (name, role, bio, photo) in display order,
@@ -96,7 +100,10 @@ dashboard below.
 
 - **Overview** — stat cards (published/draft posts, unhandled contacts,
   verification records, service groups), each linking to its section.
-- **Blog posts** — create/edit/delete, including unpublished drafts.
+- **Blog posts** — create/edit/delete, including unpublished drafts and
+  public submissions pending review (flagged with submitter name/email, a
+  banner at the top of the section lists them); write content with a rich
+  text editor (bold/italic/headings/links/lists), cover image upload.
 - **Contact submissions** — view messages from the public contact form,
   mark handled/unhandled, delete.
 - **Verification records** — create/edit/delete the codes looked up by
@@ -116,8 +123,8 @@ Backed by:
 - `GET /api/admin/stats/`
 - `/api/admin/blog/`, `/api/admin/verify/`, `/api/admin/services/`,
   `/api/admin/team/`, `/api/admin/testimonials/` — full CRUD, staff-only,
-  session + CSRF protected (services/team accept `multipart/form-data` for
-  image/photo uploads)
+  session + CSRF protected (blog/services/team accept `multipart/form-data`
+  for image/photo uploads)
 - `/api/admin/contact/` — same, but read/patch(`handled`)/delete only, no
   create (submissions only come from the public contact form)
 

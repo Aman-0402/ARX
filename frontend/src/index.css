@@ -53,6 +53,75 @@
   }
 }
 
+/* Quill editor restyle to match the site */
+.rich-editor .ql-toolbar.ql-snow {
+  border: none;
+  border-bottom: 1px solid #D3DCEC;
+  border-radius: 0.75rem 0.75rem 0 0;
+  font-family: Inter, sans-serif;
+}
+.rich-editor .ql-container.ql-snow {
+  border: none;
+  border-radius: 0 0 0.75rem 0.75rem;
+  font-family: Inter, sans-serif;
+  font-size: 0.9375rem;
+}
+.rich-editor .ql-editor {
+  min-height: 260px;
+  line-height: 1.7;
+}
+.rich-editor .ql-editor.ql-blank::before {
+  color: #5B6B8C;
+  font-style: normal;
+}
+
+/* Rendered rich-text content on the public blog post page */
+.rich-content h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #152238;
+}
+.rich-content h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #152238;
+}
+.rich-content p {
+  margin-bottom: 1rem;
+}
+.rich-content a {
+  color: #2F6FED;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.rich-content strong {
+  font-weight: 600;
+  color: #152238;
+}
+.rich-content ul,
+.rich-content ol {
+  margin: 1rem 0 1rem 1.5rem;
+}
+.rich-content ul {
+  list-style: disc;
+}
+.rich-content ol {
+  list-style: decimal;
+}
+.rich-content blockquote {
+  border-left: 3px solid #2F6FED;
+  padding-left: 1rem;
+  margin: 1.25rem 0;
+  color: #5B6B8C;
+  font-style: italic;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;

@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import generics, status, viewsets
@@ -16,6 +17,7 @@ from .serializers import (
     BlogPostListSerializer,
     BlogPostDetailSerializer,
     BlogPostAdminSerializer,
+    BlogPostSubmitSerializer,
     ServiceGroupPublicSerializer,
     ServiceGroupAdminSerializer,
     TeamMemberPublicSerializer,
@@ -79,6 +81,18 @@ class BlogPostDetailView(generics.RetrieveAPIView):
     lookup_field = 'slug'
 
 
+class BlogPostSubmitView(generics.CreateAPIView):
+    """POST /api/blog/submit/ — public writer submission, lands as unpublished pending review."""
+
+    queryset = BlogPost.objects.all()
+    serializer_class = BlogPostSubmitSerializer
+    permission_classes = [AllowAny]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+    def perform_create(self, serializer):
+        serializer.save(published=False, published_at=timezone.now())
+
+
 @method_decorator(ensure_csrf_cookie, name='get')
 class CsrfCookieView(APIView):
     """GET /api/auth/csrf/ — sets the csrftoken cookie for the SPA to read."""
@@ -129,6 +143,7 @@ class BlogPostAdminViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostAdminSerializer
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     lookup_field = 'slug'
 
 

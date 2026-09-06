@@ -46,6 +46,13 @@ export default function Blog() {
             <p className="mt-5 max-w-md text-lg text-slate">
               Writing from the ARX Infotech team on what we're building and learning.
             </p>
+            <Link
+              to="/blog/submit"
+              className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-base font-medium text-paper transition-all hover:-translate-y-0.5 hover:bg-graphite hover:shadow-lg"
+            >
+              Have an idea? Write for us
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </Link>
           </Reveal>
         </div>
       </section>

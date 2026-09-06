@@ -40,10 +40,12 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, unique=True)
     excerpt = models.CharField(max_length=300)
-    content = models.TextField()
-    cover_image = models.URLField(blank=True)
-    published = models.BooleanField(default=True)
+    content = models.TextField(help_text='Rich text (HTML) from the writer UI.')
+    cover_image = models.ImageField(upload_to='blog/', blank=True, null=True)
+    published = models.BooleanField(default=True, help_text='Off = draft / pending review, not shown publicly.')
     published_at = models.DateTimeField()
+    submitter_name = models.CharField(max_length=150, blank=True)
+    submitter_email = models.EmailField(blank=True)
 
     class Meta:
         ordering = ['-published_at']

@@ -98,8 +98,8 @@ export async function fetchAdminPosts() {
   return res.json()
 }
 
-export async function createAdminPost(payload) {
-  const res = await apiFetch('/admin/blog/', { method: 'POST', body: payload })
+export async function createAdminPost(formData) {
+  const res = await apiFetchForm('/admin/blog/', { method: 'POST', formData })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(Object.values(err)[0]?.[0] || 'Could not create post.')
@@ -107,8 +107,8 @@ export async function createAdminPost(payload) {
   return res.json()
 }
 
-export async function updateAdminPost(slug, payload) {
-  const res = await apiFetch(`/admin/blog/${encodeURIComponent(slug)}/`, { method: 'PATCH', body: payload })
+export async function updateAdminPost(slug, formData) {
+  const res = await apiFetchForm(`/admin/blog/${encodeURIComponent(slug)}/`, { method: 'PATCH', formData })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(Object.values(err)[0]?.[0] || 'Could not update post.')
@@ -119,6 +119,18 @@ export async function updateAdminPost(slug, payload) {
 export async function deleteAdminPost(slug) {
   const res = await apiFetch(`/admin/blog/${encodeURIComponent(slug)}/`, { method: 'DELETE' })
   if (!res.ok) throw new Error('Could not delete post.')
+}
+
+export async function submitBlogPost(formData) {
+  const res = await fetch(`${API_BASE}/blog/submit/`, {
+    method: 'POST',
+    body: formData,
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not submit your post.')
+  }
+  return res.json()
 }
 
 export async function fetchAdminStats() {

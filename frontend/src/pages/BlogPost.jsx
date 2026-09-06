@@ -69,9 +69,10 @@ export default function BlogPost() {
             <h1 className="mt-4 font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-5xl">
               {post.title}
             </h1>
-            <p className="mt-6 whitespace-pre-line text-lg leading-relaxed text-slate">
-              {post.content}
-            </p>
+            <div
+              className="rich-content mt-6 max-w-3xl text-lg leading-relaxed text-slate"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
           </Reveal>
         )}
       </div>

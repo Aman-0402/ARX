@@ -10,6 +10,7 @@ import Services from './pages/Services.jsx'
 import Contact from './pages/Contact.jsx'
 import Blog from './pages/Blog.jsx'
 import BlogPost from './pages/BlogPost.jsx'
+import BlogSubmit from './pages/BlogSubmit.jsx'
 import Login from './pages/Login.jsx'
 import Overview from './pages/admin/Overview.jsx'
 import AdminBlog from './pages/admin/AdminBlog.jsx'
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/submit" element={<BlogSubmit />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/login" element={<Login />} />
           <Route

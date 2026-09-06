@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Field from '../../components/admin/Field.jsx'
+import RichTextEditor from '../../components/RichTextEditor.jsx'
 import {
   fetchAdminPosts,
   createAdminPost,
@@ -12,7 +13,7 @@ const emptyForm = {
   slug: '',
   excerpt: '',
   content: '',
-  cover_image: '',
+  photo: null,
   published: true,
   published_at: new Date().toISOString().slice(0, 16),
 }
@@ -23,6 +24,7 @@ export default function AdminBlog() {
   const [error, setError] = useState('')
   const [form, setForm] = useState(emptyForm)
   const [editingSlug, setEditingSlug] = useState(null)
+  const [editingSubmitter, setEditingSubmitter] = useState(null)
   const [saving, setSaving] = useState(false)
 
   function load() {
@@ -47,14 +49,19 @@ export default function AdminBlog() {
     }
   }
 
+  function updateFile(e) {
+    setForm((f) => ({ ...f, photo: e.target.files[0] || null }))
+  }
+
   function startEdit(post) {
     setEditingSlug(post.slug)
+    setEditingSubmitter(post.submitter_name ? { name: post.submitter_name, email: post.submitter_email } : null)
     setForm({
       title: post.title,
       slug: post.slug,
       excerpt: post.excerpt,
       content: post.content,
-      cover_image: post.cover_image || '',
+      photo: null,
       published: post.published,
       published_at: post.published_at.slice(0, 16),
     })
@@ -62,6 +69,7 @@ export default function AdminBlog() {
 
   function cancelEdit() {
     setEditingSlug(null)
+    setEditingSubmitter(null)
     setForm(emptyForm)
   }
 
@@ -69,16 +77,19 @@ export default function AdminBlog() {
     e.preventDefault()
     setSaving(true)
     setError('')
-    const payload = {
-      ...form,
-      published_at: new Date(form.published_at).toISOString(),
-    }
-    if (!payload.slug) delete payload.slug
+    const formData = new FormData()
+    formData.set('title', form.title)
+    if (form.slug) formData.set('slug', form.slug)
+    formData.set('excerpt', form.excerpt)
+    formData.set('content', form.content)
+    formData.set('published', String(form.published))
+    formData.set('published_at', new Date(form.published_at).toISOString())
+    if (form.photo) formData.set('cover_image', form.photo)
     try {
       if (editingSlug) {
-        await updateAdminPost(editingSlug, payload)
+        await updateAdminPost(editingSlug, formData)
       } else {
-        await createAdminPost(payload)
+        await createAdminPost(formData)
       }
       cancelEdit()
       load()
@@ -100,6 +111,8 @@ export default function AdminBlog() {
     }
   }
 
+  const pending = posts.filter((p) => !p.published && p.submitter_name)
+
   return (
     <div>
       <h1 className="font-display text-2xl font-semibold text-graphite">Blog posts</h1>
@@ -108,11 +121,34 @@ export default function AdminBlog() {
         <p className="mt-4 border border-slate-200 p-4 text-sm text-red-700">{error}</p>
       )}
 
+      {pending.length > 0 && (
+        <div className="mt-6 rounded-xl border border-amber/40 bg-amber/10 p-4">
+          <p className="text-sm font-medium text-amber-dim">
+            {pending.length} submission{pending.length > 1 ? 's' : ''} pending review
+          </p>
+          <ul className="mt-2 space-y-1 text-sm text-graphite">
+            {pending.map((p) => (
+              <li key={p.slug}>
+                <button onClick={() => startEdit(p)} className="underline decoration-dotted hover:text-ink">
+                  {p.title}
+                </button>
+                {' — '}submitted by {p.submitter_name} ({p.submitter_email})
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
         <div>
           <h2 className="font-display text-lg font-semibold text-graphite">
             {editingSlug ? `Edit "${editingSlug}"` : 'New post'}
           </h2>
+          {editingSubmitter && (
+            <p className="mt-1 text-xs text-slate">
+              Submitted by {editingSubmitter.name} ({editingSubmitter.email})
+            </p>
+          )}
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
             <Field label="Title" required>
               <input
@@ -142,20 +178,18 @@ export default function AdminBlog() {
               />
             </Field>
             <Field label="Content" required>
-              <textarea
-                required
-                rows={6}
+              <RichTextEditor
                 value={form.content}
-                onChange={update('content')}
-                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+                onChange={(html) => setForm((f) => ({ ...f, content: html }))}
+                placeholder="Write the post…"
               />
             </Field>
-            <Field label="Cover image URL (optional)">
+            <Field label="Cover image (optional)">
               <input
-                type="url"
-                value={form.cover_image}
-                onChange={update('cover_image')}
-                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+                type="file"
+                accept="image/*"
+                onChange={updateFile}
+                className="w-full text-sm text-graphite"
               />
             </Field>
             <Field label="Published at">
@@ -206,7 +240,9 @@ export default function AdminBlog() {
                   <p className="text-sm font-medium text-graphite">
                     {post.title}
                     {!post.published && (
-                      <span className="ml-2 font-mono text-xs text-slate">draft</span>
+                      <span className="ml-2 font-mono text-xs text-slate">
+                        {post.submitter_name ? 'pending review' : 'draft'}
+                      </span>
                     )}
                   </p>
                   <p className="font-mono text-xs text-slate">{post.slug}</p>
