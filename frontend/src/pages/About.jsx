@@ -4,6 +4,7 @@ import { fetchTeam } from '../lib/api.js'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import Counter from '../components/motion/Counter.jsx'
+import SectionNav from '../components/SectionNav.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
 
 const heroStats = [
@@ -61,9 +62,18 @@ export default function About() {
       .catch(() => setTeamStatus('error'))
   }, [])
 
+  const navSections = [
+    { id: 'hero', label: 'Intro' },
+    { id: 'what-we-do', label: 'What we do' },
+    { id: 'how-we-work', label: 'How we work' },
+    ...(team.length > 0 ? [{ id: 'leadership', label: 'Leadership' }] : []),
+  ]
+
   return (
     <>
-      <section className="relative overflow-hidden border-b border-slate-200">
+      <SectionNav sections={navSections} />
+
+      <section id="hero" className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
         <div className="mx-auto max-w-[1400px] px-4 pb-24 pt-8">
           <Reveal>
@@ -102,7 +112,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="border-b border-slate-200 bg-paper-dim">
+      <section id="what-we-do" className="border-b border-slate-200 bg-paper-dim">
         <div className="mx-auto px-4 py-16">
           <StaggerGrid className="mx-auto grid max-w-[1400px] gap-6 md:grid-cols-2">
             <StaggerItem>
@@ -148,28 +158,32 @@ export default function About() {
         </div>
       </section>
 
-      <section>
+      <section id="how-we-work" className="relative overflow-hidden">
+        <div className="absolute inset-0 -z-10 animate-drift bg-[radial-gradient(rgba(21,34,56,0.08)_1px,transparent_1px)] bg-[length:22px_22px]" />
         <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-graphite">How we work</h2>
           </Reveal>
           <StaggerGrid className="mt-10 grid gap-5 sm:grid-cols-2">
-            {values.map((v) => {
+            {values.map((v, i) => {
               const c = valueClasses[v.color]
               return (
                 <StaggerItem key={v.title}>
                   <motion.div
                     whileHover={{ y: -8, rotate: -0.5 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className={`h-full rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-7 shadow-md transition-shadow duration-300 hover:shadow-xl ${c.border} ${c.ring} ${c.glow}`}
+                    className={`relative h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-7 shadow-md transition-shadow duration-300 hover:shadow-xl ${c.border} ${c.ring} ${c.glow}`}
                   >
-                    <span className={`inline-flex h-11 w-11 items-center justify-center rounded-xl ${c.chip}`}>
+                    <span className="absolute -right-2 -top-4 font-display text-8xl font-bold text-slate-200/40">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className={`relative inline-flex h-11 w-11 items-center justify-center rounded-xl ${c.chip}`}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                         {v.icon}
                       </svg>
                     </span>
-                    <h3 className="mt-4 font-display text-base font-semibold text-graphite">{v.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate">{v.copy}</p>
+                    <h3 className="relative mt-4 font-display text-base font-semibold text-graphite">{v.title}</h3>
+                    <p className="relative mt-2 text-sm leading-relaxed text-slate">{v.copy}</p>
                   </motion.div>
                 </StaggerItem>
               )
@@ -179,7 +193,7 @@ export default function About() {
       </section>
 
       {teamStatus === 'ready' && team.length > 0 && (
-        <section className="border-t border-slate-200">
+        <section id="leadership" className="border-t border-slate-200">
           <div className="mx-auto max-w-[1400px] px-4 py-20">
             <Reveal>
               <h2 className="font-display text-3xl font-semibold text-graphite">Leadership</h2>

@@ -30,6 +30,9 @@
   .animate-marquee:hover {
     animation-play-state: paused;
   }
+  .animate-drift {
+    animation: drift 18s linear infinite;
+  }
 }
 
 @keyframes marquee {
@@ -38,6 +41,15 @@
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 22px 22px;
   }
 }
 
