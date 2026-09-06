@@ -79,11 +79,7 @@ export default function Home() {
         <GradientBlobs variant="blue" />
         <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-6 md:grid-cols-[1.15fr_1fr] md:items-center md:pb-20 md:pt-8">
           <div>
-            <Reveal className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-paper/80 px-3.5 py-1.5 shadow-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-mint" />
-              <span className="font-mono text-xs text-slate">Trusted by 120+ businesses & institutions</span>
-            </Reveal>
-            <Reveal as="h1" delay={0.05} className="mt-6 font-display text-5xl font-semibold leading-[1.05] text-graphite md:text-6xl lg:text-7xl">
+            <Reveal as="h1" className="font-display text-5xl font-semibold leading-[1.05] text-graphite md:text-6xl lg:text-7xl">
               IT services and{' '}
               <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
                 modern tech
