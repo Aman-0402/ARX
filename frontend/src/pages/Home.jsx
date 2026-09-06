@@ -59,11 +59,17 @@ const deliverables = [
     title: 'IT infrastructure & support',
     copy: 'We manage IT infrastructure, servers, network monitoring, backups, troubleshooting, performance optimization, and maintenance for businesses.',
     items: ['Server monitoring', 'Network management', 'Backup & recovery', 'System optimization'],
+    accent: 'border-t-amber',
+    chip: 'bg-amber/10 text-amber-dim',
+    icon: <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />,
   },
   {
     title: 'Development & automation',
     copy: 'We create custom digital solutions that automate workflows, improve productivity, and enhance customer experience through modern technology.',
     items: ['Web application development', 'Automation systems', 'UI/UX design', 'API development'],
+    accent: 'border-t-coral',
+    chip: 'bg-coral/10 text-coral',
+    icon: <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" />,
   },
 ]
 
@@ -250,24 +256,35 @@ export default function Home() {
       <section className="border-b border-slate-200 bg-paper-dim">
         <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal>
-            <h2 className="font-display text-3xl font-semibold text-graphite">What we deliver</h2>
-            <p className="mt-3 max-w-md text-slate">
+            <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">What we deliver</h2>
+            <p className="mt-4 max-w-md text-lg text-slate">
               Professional solutions designed for business growth and digital efficiency.
             </p>
           </Reveal>
 
-          <StaggerGrid className="mt-12 grid gap-10 md:grid-cols-2">
+          <StaggerGrid className="mt-12 grid gap-6 md:grid-cols-2">
             {deliverables.map((block) => (
               <StaggerItem key={block.title}>
-                <div className="rounded-2xl border-t-2 border-ink pt-6">
-                  <h3 className="font-display text-xl font-semibold text-graphite">{block.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate">{block.copy}</p>
-                  <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-graphite">
+                <motion.div
+                  whileHover={{ y: -6 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className={`h-full rounded-2xl border border-slate-200 border-t-4 bg-white p-9 shadow-md ${block.accent}`}
+                >
+                  <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${block.chip}`}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                      {block.icon}
+                    </svg>
+                  </span>
+                  <h3 className="mt-5 font-display text-2xl font-semibold text-graphite">{block.title}</h3>
+                  <p className="mt-3 text-base leading-relaxed text-slate">{block.copy}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
                     {block.items.map((item) => (
-                      <li key={item} className="border-b border-slate-200 pb-2">{item}</li>
+                      <span key={item} className={`rounded-full px-3.5 py-1.5 text-sm font-medium ${block.chip}`}>
+                        {item}
+                      </span>
                     ))}
-                  </ul>
-                </div>
+                  </div>
+                </motion.div>
               </StaggerItem>
             ))}
           </StaggerGrid>
