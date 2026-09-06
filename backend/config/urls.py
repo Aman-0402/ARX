@@ -10,7 +10,7 @@ STATIC_ROUTES = ['', 'about', 'services', 'blog', 'contact']
 
 
 def robots_view(request):
-    body = f"User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: {settings.SITE_URL}/sitemap.xml\n"
+    body = f"User-agent: *\nAllow: /\nDisallow: /django-admin/\nSitemap: {settings.SITE_URL}/sitemap.xml\n"
     return HttpResponse(body, content_type='text/plain')
 
 
@@ -51,10 +51,10 @@ def spa_view(request, path=''):
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('django-admin/', admin.site.urls),
     path('api/', include('core.urls')),
     path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
     path('robots.txt', robots_view),
     path('sitemap.xml', sitemap_view),
-    re_path(r'^(?!api/|admin/|media/|assets/)(?P<path>.*)$', spa_view),
+    re_path(r'^(?!api/|django-admin/|media/|assets/)(?P<path>.*)$', spa_view),
 ]

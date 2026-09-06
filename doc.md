@@ -20,18 +20,30 @@ client-side routes work on direct load/refresh. `FRONTEND_DIST` in
 `settings.py` expects `frontend/dist/` as a sibling of `backend/` — this only
 works if both directories keep that relative layout, dev or prod.
 
-`spa_view`'s catch-all (`re_path(r'^(?!api/|admin/|media/|assets/)(?P<path>.*)$', ...)`)
+`spa_view`'s catch-all (`re_path(r'^(?!api/|django-admin/|media/|assets/)(?P<path>.*)$', ...)`)
 first checks whether the requested path is a literal file under
 `frontend/dist/` (e.g. `frontend/public/favicon.svg`, which Vite copies to
 `dist/favicon.svg` on build) and serves it directly if so — only falling
 back to `index.html` when there's no matching file. **The `(?P<path>...)`
 named group is load-bearing**: without it, `path` never gets passed to the
 view and silently stays `''`, so this file check always no-ops and every
-non-API/admin/media/assets request — including real static files like
-`favicon.svg`, or the SEO `<meta>`/JSON-LD scripts referencing them — gets
-`index.html`'s HTML back instead. Caught this exact regression once already
-(favicon.svg returning HTML) — if you ever "simplify" this regex, keep the
-named group.
+non-API/django-admin/media/assets request — including real static files
+like `favicon.svg`, or the SEO `<meta>`/JSON-LD scripts referencing them —
+gets `index.html`'s HTML back instead. Caught this exact regression once
+already (favicon.svg returning HTML) — if you ever "simplify" this regex,
+keep the named group.
+
+**Django's built-in admin lives at `/django-admin/`, not `/admin/`.** The
+React dashboard (`components/admin/AdminLayout.jsx`, client-side routes
+under `/admin/*`) owns `/admin/*` entirely. Originally Django's admin was
+mounted at the default `path('admin/', admin.site.urls)`, which silently
+swallowed every `/admin/<sub-route>` request server-side (the catch-all's
+negative lookahead excluded it) — normal SPA link-clicks never noticed
+since those never leave the client, but a hard refresh or deep link to
+e.g. `/admin/blog` hit Django's own admin login instead of the React app.
+Found during a full test pass and fixed by moving Django's admin to
+`/django-admin/`. If you ever add another top-level Django URL, make sure
+it doesn't start with `admin/` — same class of bug.
 
 ## SEO
 

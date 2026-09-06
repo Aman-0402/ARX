@@ -153,12 +153,17 @@ In cPanel's Setup Python App page, click **Restart**. (Or from SSH:
 ## 8. Verify
 
 ```bash
-curl -I https://arxinfo.tech/api/blog/       # should be 200
-curl -I https://arxinfo.tech/admin/          # should be 302 (redirect to login)
-curl -I https://arxinfo.tech/                # should be 200, serving the SPA
+curl -I https://arxinfo.tech/api/blog/          # should be 200
+curl -I https://arxinfo.tech/django-admin/      # should be 302 (redirect to Django admin login)
+curl -I https://arxinfo.tech/admin/blog         # should be 200 (SPA dashboard, client-side auth gate)
+curl -I https://arxinfo.tech/                   # should be 200, serving the SPA
 ```
 
-Then open `https://arxinfo.tech/` and `https://arxinfo.tech/admin/` in a
+Note: the React dashboard lives at the client-side route `/admin` (handled entirely
+by React Router). Django's own built-in admin site is mounted at `/django-admin/`
+specifically so it doesn't collide with `/admin/*` — see the warning in `doc.md`.
+
+Then open `https://arxinfo.tech/` and `https://arxinfo.tech/admin` in a
 browser. If cPanel's AutoSSL isn't already on for this domain, enable it in
 cPanel → SSL/TLS Status, so everything's served over HTTPS.
 
