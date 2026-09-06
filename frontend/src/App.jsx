@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar.jsx'
@@ -25,10 +25,27 @@ const AdminTeam = lazy(() => import('./pages/admin/AdminTeam.jsx'))
 const AdminTestimonials = lazy(() => import('./pages/admin/AdminTestimonials.jsx'))
 
 function PageLoader() {
+  // Only appears if the chunk is still loading after 300ms, so fast/cached
+  // loads never flash a spinner — it's reserved for genuinely slow loads.
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShow(true), 300)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (!show) return null
+
   return (
-    <div className="flex min-h-[50vh] items-center justify-center">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
+      className="flex min-h-[50vh] flex-col items-center justify-center gap-3"
+    >
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-amber" />
-    </div>
+      <span className="font-mono text-xs text-slate">Loading…</span>
+    </motion.div>
   )
 }
 
