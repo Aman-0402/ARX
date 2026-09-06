@@ -68,9 +68,9 @@ export default function Contact() {
       <GradientBlobs variant="warm" />
       <div className="mx-auto max-w-[1400px] px-4 py-20">
         <Reveal>
-          <h1 className="max-w-2xl font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-5xl">
+          <h1 className="max-w-2xl font-display text-4xl font-semibold leading-[1.1] text-graphite sm:text-5xl md:text-6xl">
             Let's talk{' '}
-            <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
+            <span className="rounded-lg bg-amber px-2 text-paper shadow-[inset_0_-6px_0_0_rgba(0,0,0,0.15)]">
               about your project
             </span>
           </h1>
