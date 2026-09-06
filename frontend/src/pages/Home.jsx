@@ -77,7 +77,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-[1.15fr_1fr] md:items-center md:py-24">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-6 md:grid-cols-[1.15fr_1fr] md:items-center md:pb-20 md:pt-8">
           <div>
             <Reveal className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-paper/80 px-3.5 py-1.5 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-mint" />
