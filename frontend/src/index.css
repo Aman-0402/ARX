@@ -33,6 +33,9 @@
   .animate-drift {
     animation: drift 18s linear infinite;
   }
+  .animate-twinkle {
+    animation: twinkle ease-in-out infinite;
+  }
 }
 
 @keyframes marquee {
@@ -50,6 +53,17 @@
   }
   to {
     background-position: 22px 22px;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.3);
   }
 }
 

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Earth from '../components/Earth.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
+import StarField from '../components/motion/StarField.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
 import { fetchTestimonials } from '../lib/api.js'
 
@@ -104,6 +105,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
+        <StarField count={80} />
         <div className="mx-auto grid max-w-[1400px] gap-12 px-4 pb-16 pt-6 md:grid-cols-[1.15fr_1fr] md:items-center md:pb-20 md:pt-8">
           <div>
             <Reveal as="h1" className="font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-6xl lg:text-7xl">
