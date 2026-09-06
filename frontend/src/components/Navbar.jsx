@@ -32,7 +32,7 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 px-4 pt-4">
       <div
-        className={`mx-auto max-w-6xl rounded-2xl border transition-all duration-300 ${
+        className={`mx-auto max-w-[1400px] rounded-2xl border transition-all duration-300 ${
           scrolled || open
             ? 'border-slate-200 bg-paper/90 shadow-lg shadow-ink/5 backdrop-blur-md'
             : 'border-slate-200/70 bg-paper/70 shadow-md shadow-ink/[0.03] backdrop-blur-md'

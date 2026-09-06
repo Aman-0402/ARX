@@ -32,7 +32,7 @@ export default function Contact() {
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
       <GradientBlobs variant="warm" />
-      <div className="mx-auto grid max-w-6xl gap-14 px-4 py-20 md:grid-cols-[1fr_1fr]">
+      <div className="mx-auto grid max-w-[1400px] gap-14 px-4 py-20 md:grid-cols-[1fr_1fr]">
         <Reveal>
           <span className="font-mono text-xs text-slate">Contact</span>
           <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-graphite">

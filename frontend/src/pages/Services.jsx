@@ -28,7 +28,7 @@ export default function Services() {
     <>
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="mixed" />
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal>
             <span className="font-mono text-xs text-slate">Services</span>
             <h1 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight text-graphite">
@@ -44,7 +44,7 @@ export default function Services() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-6xl px-4 py-16">
+        <div className="mx-auto max-w-[1400px] px-4 py-16">
           {status === 'loading' && <p className="text-sm text-slate">Loading…</p>}
           {status === 'error' && (
             <p className="rounded-2xl border border-slate-200 p-6 text-sm text-red-700">{error}</p>

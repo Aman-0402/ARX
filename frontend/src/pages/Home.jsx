@@ -77,7 +77,7 @@ export default function Home() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 pb-16 pt-6 md:grid-cols-[1.15fr_1fr] md:items-center md:pb-20 md:pt-8">
+        <div className="mx-auto grid max-w-[1400px] gap-12 px-4 pb-16 pt-6 md:grid-cols-[1.15fr_1fr] md:items-center md:pb-20 md:pt-8">
           <div>
             <Reveal as="h1" className="font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-6xl lg:text-7xl">
               IT services and{' '}
@@ -119,7 +119,7 @@ export default function Home() {
 
       {/* Why choose */}
       <section className="border-b border-slate-200 bg-paper-dim">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 md:grid-cols-[1fr_1fr]">
+        <div className="mx-auto grid max-w-[1400px] gap-12 px-4 py-20 md:grid-cols-[1fr_1fr]">
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-graphite">
               Why organizations choose ARX Infotech
@@ -162,7 +162,7 @@ export default function Home() {
 
       {/* Core services */}
       <section className="border-b border-slate-200">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <h2 className="font-display text-3xl font-semibold text-graphite">Our core services</h2>
@@ -200,7 +200,7 @@ export default function Home() {
 
       {/* What we deliver */}
       <section className="border-b border-slate-200 bg-paper-dim">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-graphite">What we deliver</h2>
             <p className="mt-3 max-w-md text-slate">
@@ -228,7 +228,7 @@ export default function Home() {
 
       {/* Testimonials */}
       <section className="border-b border-slate-200">
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-graphite">What our clients say</h2>
           </Reveal>
@@ -255,7 +255,7 @@ export default function Home() {
       {/* CTA */}
       <section className="relative overflow-hidden bg-ink">
         <GradientBlobs variant="warm" />
-        <Reveal className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 py-16 md:flex-row md:items-center">
+        <Reveal className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-6 px-4 py-16 md:flex-row md:items-center">
           <div>
             <h2 className="font-display text-2xl font-semibold text-paper md:text-3xl">
               Need IT support or custom software?

@@ -31,7 +31,7 @@ export default function About() {
     <>
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal>
             <span className="font-mono text-xs text-slate">About ARX Infotech</span>
             <h1 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight text-graphite">
@@ -49,7 +49,7 @@ export default function About() {
 
       <section className="border-b border-slate-200 bg-paper-dim">
         <div className="mx-auto px-4 py-16">
-          <StaggerGrid className="mx-auto grid max-w-6xl gap-10 md:grid-cols-2">
+          <StaggerGrid className="mx-auto grid max-w-[1400px] gap-10 md:grid-cols-2">
             <StaggerItem>
               <div className="h-full rounded-2xl border-t-4 border-t-amber bg-paper p-8 shadow-sm">
                 <h2 className="font-display text-xl font-semibold text-graphite">What we do</h2>
@@ -76,7 +76,7 @@ export default function About() {
       </section>
 
       <section>
-        <div className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mx-auto max-w-[1400px] px-4 py-20">
           <Reveal>
             <h2 className="font-display text-3xl font-semibold text-graphite">How we work</h2>
           </Reveal>
@@ -99,7 +99,7 @@ export default function About() {
 
       {teamStatus === 'ready' && team.length > 0 && (
         <section className="border-t border-slate-200">
-          <div className="mx-auto max-w-6xl px-4 py-20">
+          <div className="mx-auto max-w-[1400px] px-4 py-20">
             <Reveal>
               <h2 className="font-display text-3xl font-semibold text-graphite">Leadership</h2>
             </Reveal>
