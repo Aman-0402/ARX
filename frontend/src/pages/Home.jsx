@@ -208,7 +208,7 @@ export default function Home() {
             </div>
             <Link
               to="/services"
-              className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-amber bg-amber px-6 py-3.5 text-base font-medium text-ink transition-all duration-300 hover:-translate-y-0.5 hover:text-paper hover:shadow-lg hover:shadow-amber/40"
+              className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-amber bg-amber px-6 py-3.5 text-base font-semibold text-paper shadow-lg shadow-amber/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber/50"
             >
               <span className="absolute inset-0 origin-right scale-x-0 bg-ink transition-transform duration-300 ease-out group-hover:scale-x-100" />
               <span className="relative">View all services</span>
