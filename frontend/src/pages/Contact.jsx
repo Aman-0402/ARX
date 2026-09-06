@@ -111,14 +111,41 @@ export default function Contact() {
         <Reveal delay={0.15} className="mt-10 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md md:mt-14">
           <form onSubmit={handleSubmit} className="grid gap-10 p-8 md:grid-cols-[1fr_1.2fr] md:p-12">
             <div>
-              <h2 className="font-display text-2xl font-semibold text-graphite">Send us a message</h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate">
+              <h2 className="font-display text-3xl font-semibold text-graphite">Send us a message</h2>
+              <p className="mt-3 text-base leading-relaxed text-slate">
                 Fill out the form and our team will get back to you within
                 one business day. For anything urgent, call or WhatsApp us directly.
               </p>
-              <div className="mt-8 flex items-center gap-3 rounded-xl bg-mint/10 px-4 py-3">
+              <div className="mt-8 flex items-center gap-3 rounded-xl bg-mint/10 px-4 py-3.5">
                 <span className="h-2 w-2 shrink-0 rounded-full bg-mint" />
-                <span className="text-sm text-graphite">Average response time: under 24 hours</span>
+                <span className="text-sm font-medium text-graphite">Average response time: under 24 hours</span>
+              </div>
+
+              <ul className="mt-8 space-y-4 border-t border-slate-200 pt-8">
+                {[
+                  { text: 'No sales pressure — just a straight answer on scope and cost.', dot: 'bg-amber' },
+                  { text: 'Talk directly with the engineers who’d work on it.', dot: 'bg-coral' },
+                  { text: 'Free initial consultation, no strings attached.', dot: 'bg-grape' },
+                ].map((point) => (
+                  <li key={point.text} className="flex gap-3 text-sm text-graphite">
+                    <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${point.dot}`} />
+                    {point.text}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-10 hidden md:block">
+                <div className="flex -space-x-3">
+                  {['bg-amber/20 text-amber-dim', 'bg-coral/20 text-coral', 'bg-mint/20 text-mint', 'bg-grape/20 text-grape'].map((cls, i) => (
+                    <span
+                      key={i}
+                      className={`flex h-10 w-10 items-center justify-center rounded-full border-2 border-white font-display text-sm font-semibold ${cls}`}
+                    >
+                      {String.fromCharCode(65 + i)}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-3 text-sm text-slate">Trusted by 120+ businesses & institutions</p>
               </div>
             </div>
 
@@ -130,7 +157,7 @@ export default function Contact() {
                     type="text"
                     value={form.name}
                     onChange={update('name')}
-                    className="w-full rounded-xl border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none transition-colors focus:border-amber"
+                    className="w-full rounded-xl border border-slate-200 bg-paper px-4 py-3 text-sm text-graphite outline-none transition-all focus:border-amber focus:ring-4 focus:ring-amber/10"
                   />
                 </Field>
                 <Field label="Email" required>
@@ -139,7 +166,7 @@ export default function Contact() {
                     type="email"
                     value={form.email}
                     onChange={update('email')}
-                    className="w-full rounded-xl border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none transition-colors focus:border-amber"
+                    className="w-full rounded-xl border border-slate-200 bg-paper px-4 py-3 text-sm text-graphite outline-none transition-all focus:border-amber focus:ring-4 focus:ring-amber/10"
                   />
                 </Field>
               </div>
@@ -149,7 +176,7 @@ export default function Contact() {
                     type="tel"
                     value={form.phone}
                     onChange={update('phone')}
-                    className="w-full rounded-xl border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none transition-colors focus:border-amber"
+                    className="w-full rounded-xl border border-slate-200 bg-paper px-4 py-3 text-sm text-graphite outline-none transition-all focus:border-amber focus:ring-4 focus:ring-amber/10"
                   />
                 </Field>
               </div>
@@ -160,7 +187,7 @@ export default function Contact() {
                     rows={4}
                     value={form.message}
                     onChange={update('message')}
-                    className="w-full rounded-xl border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none transition-colors focus:border-amber"
+                    className="w-full rounded-xl border border-slate-200 bg-paper px-4 py-3 text-sm text-graphite outline-none transition-all focus:border-amber focus:ring-4 focus:ring-amber/10"
                   />
                 </Field>
               </div>
