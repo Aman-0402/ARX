@@ -178,7 +178,7 @@ export default function AdminTeam() {
               <li key={member.id} className="flex items-center justify-between gap-4 py-4">
                 <div className="flex items-center gap-3">
                   {member.photo ? (
-                    <img src={member.photo} alt="" className="h-10 w-10 rounded-full object-cover" />
+                    <img src={member.photo} alt="" loading="lazy" className="h-10 w-10 rounded-full object-cover" />
                   ) : (
                     <div className="h-10 w-10 rounded-full bg-slate-200" />
                   )}

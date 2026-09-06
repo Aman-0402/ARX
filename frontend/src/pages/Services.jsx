@@ -83,6 +83,7 @@ export default function Services() {
                           <img
                             src={group.image}
                             alt=""
+                            loading="lazy"
                             className="h-44 w-full object-cover transition-transform duration-500 hover:scale-110"
                           />
                         </div>

@@ -167,7 +167,7 @@ export default function AdminServices() {
               <li key={group.id} className="flex items-center justify-between gap-4 py-4">
                 <div className="flex items-center gap-3">
                   {group.image && (
-                    <img src={group.image} alt="" className="h-10 w-10 rounded-sm object-cover" />
+                    <img src={group.image} alt="" loading="lazy" className="h-10 w-10 rounded-sm object-cover" />
                   )}
                   <div>
                     <p className="text-sm font-medium text-graphite">{group.name}</p>

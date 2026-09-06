@@ -206,6 +206,7 @@ export default function About() {
                       <img
                         src={member.photo}
                         alt={member.name}
+                        loading="lazy"
                         className={`h-40 w-40 rounded-full object-cover ring-4 ring-offset-4 ring-offset-paper transition-transform hover:scale-105 ${
                           ringAccents[i % ringAccents.length]
                         }`}
