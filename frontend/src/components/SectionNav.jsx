@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 export default function SectionNav({ sections }) {
   const [active, setActive] = useState(sections[0]?.id)
+  const activeIndex = Math.max(sections.findIndex((s) => s.id === active), 0)
 
   useEffect(() => {
     const elements = sections
@@ -27,8 +29,20 @@ export default function SectionNav({ sections }) {
   }
 
   return (
-    <nav className="fixed left-6 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-1 rounded-full border border-slate-200 bg-white p-2 shadow-lg lg:flex">
-      {sections.map((s) => (
+    <motion.nav
+      initial={{ opacity: 0, x: -24 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed left-4 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-1 rounded-full border border-slate-200 bg-white p-2 shadow-lg 2xl:flex"
+    >
+      <motion.span
+        aria-hidden
+        className="absolute left-1/2 top-2 w-0.5 -translate-x-1/2 rounded-full bg-amber/30"
+        initial={false}
+        animate={{ height: activeIndex * 36 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+      />
+      {sections.map((s, i) => (
         <button
           key={s.id}
           onClick={() => scrollTo(s.id)}
@@ -36,8 +50,16 @@ export default function SectionNav({ sections }) {
           aria-label={s.label}
           aria-current={active === s.id}
         >
+          {active === s.id && (
+            <motion.span
+              layoutId="section-nav-ring"
+              className="absolute h-6 w-6 rounded-full bg-amber/20"
+              animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          )}
           <span
-            className={`h-3 w-3 rounded-full border-2 transition-all duration-300 ${
+            className={`relative h-3 w-3 rounded-full border-2 transition-all duration-300 ${
               active === s.id
                 ? 'scale-125 border-amber bg-amber shadow-sm shadow-amber/50'
                 : 'border-slate-300 bg-white group-hover:border-slate-500'
@@ -52,6 +74,6 @@ export default function SectionNav({ sections }) {
           </span>
         </button>
       ))}
-    </nav>
+    </motion.nav>
   )
 }
