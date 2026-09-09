@@ -358,9 +358,13 @@ export default function Home() {
                       <blockquote className="-mt-4 text-base leading-relaxed text-graphite">{t.quote}</blockquote>
                     </div>
                     <figcaption className="mt-8 flex items-center gap-3 border-t border-slate-200 pt-5">
-                      <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-base font-semibold ${a.avatar}`}>
-                        {t.name.charAt(0)}
-                      </span>
+                      {t.photo ? (
+                        <img src={t.photo} alt="" loading="lazy" className="h-11 w-11 shrink-0 rounded-full object-cover" />
+                      ) : (
+                        <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-base font-semibold ${a.avatar}`}>
+                          {t.name.charAt(0)}
+                        </span>
+                      )}
                       <div className="text-sm">
                         <div className="font-medium text-graphite">{t.name}</div>
                         <div className="text-slate">{t.org}</div>

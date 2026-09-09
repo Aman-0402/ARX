@@ -124,10 +124,10 @@ class TeamMemberAdminSerializer(serializers.ModelSerializer):
 class TestimonialPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
-        fields = ['quote', 'name', 'org']
+        fields = ['quote', 'name', 'org', 'photo']
 
 
 class TestimonialAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
-        fields = ['id', 'quote', 'name', 'org', 'order', 'published']
+        fields = ['id', 'quote', 'name', 'org', 'photo', 'order', 'published']

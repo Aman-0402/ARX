@@ -7,7 +7,7 @@ import {
   deleteTestimonial,
 } from '../../lib/api.js'
 
-const emptyForm = { quote: '', name: '', org: '', order: 0, published: true }
+const emptyForm = { quote: '', name: '', org: '', order: 0, published: true, photo: null }
 
 export default function AdminTestimonials() {
   const [testimonials, setTestimonials] = useState([])
@@ -39,9 +39,13 @@ export default function AdminTestimonials() {
     }
   }
 
+  function updateFile(e) {
+    setForm((f) => ({ ...f, photo: e.target.files[0] || null }))
+  }
+
   function startEdit(t) {
     setEditingId(t.id)
-    setForm({ quote: t.quote, name: t.name, org: t.org || '', order: t.order, published: t.published })
+    setForm({ quote: t.quote, name: t.name, org: t.org || '', order: t.order, published: t.published, photo: null })
   }
 
   function cancelEdit() {
@@ -53,12 +57,18 @@ export default function AdminTestimonials() {
     e.preventDefault()
     setSaving(true)
     setError('')
-    const payload = { ...form, order: Number(form.order) || 0 }
+    const formData = new FormData()
+    formData.set('quote', form.quote)
+    formData.set('name', form.name)
+    formData.set('org', form.org)
+    formData.set('order', String(Number(form.order) || 0))
+    formData.set('published', String(form.published))
+    if (form.photo) formData.set('photo', form.photo)
     try {
       if (editingId) {
-        await updateTestimonial(editingId, payload)
+        await updateTestimonial(editingId, formData)
       } else {
-        await createTestimonial(payload)
+        await createTestimonial(formData)
       }
       cancelEdit()
       load()
@@ -130,6 +140,14 @@ export default function AdminTestimonials() {
                 className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
               />
             </Field>
+            <Field label="Photo (optional)">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={updateFile}
+                className="w-full text-sm text-graphite"
+              />
+            </Field>
             <label className="flex items-center gap-2 text-sm text-graphite">
               <input type="checkbox" checked={form.published} onChange={update('published')} />
               Published (visible on the homepage)
@@ -165,12 +183,19 @@ export default function AdminTestimonials() {
           <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
             {testimonials.map((t) => (
               <li key={t.id} className="flex items-center justify-between gap-4 py-4">
-                <div>
-                  <p className="text-sm font-medium text-graphite">
-                    {t.name}
-                    {!t.published && <span className="ml-2 font-mono text-xs text-slate">hidden</span>}
-                  </p>
-                  <p className="text-xs text-slate">{t.org} · order {t.order}</p>
+                <div className="flex items-center gap-3">
+                  {t.photo ? (
+                    <img src={t.photo} alt="" loading="lazy" className="h-10 w-10 rounded-full object-cover" />
+                  ) : (
+                    <div className="h-10 w-10 rounded-full bg-slate-200" />
+                  )}
+                  <div>
+                    <p className="text-sm font-medium text-graphite">
+                      {t.name}
+                      {!t.published && <span className="ml-2 font-mono text-xs text-slate">hidden</span>}
+                    </p>
+                    <p className="text-xs text-slate">{t.org} · order {t.order}</p>
+                  </div>
                 </div>
                 <div className="flex shrink-0 gap-3 text-sm">
                   <button onClick={() => startEdit(t)} className="text-graphite hover:text-ink">

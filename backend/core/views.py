@@ -189,6 +189,7 @@ class TestimonialAdminViewSet(viewsets.ModelViewSet):
     queryset = Testimonial.objects.all()
     serializer_class = TestimonialAdminSerializer
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
 
 class AdminStatsView(APIView):

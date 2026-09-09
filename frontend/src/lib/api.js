@@ -258,8 +258,8 @@ export async function fetchAdminTestimonials() {
   return res.json()
 }
 
-export async function createTestimonial(payload) {
-  const res = await apiFetch('/admin/testimonials/', { method: 'POST', body: payload })
+export async function createTestimonial(formData) {
+  const res = await apiFetchForm('/admin/testimonials/', { method: 'POST', formData })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(Object.values(err)[0]?.[0] || 'Could not create testimonial.')
@@ -267,8 +267,8 @@ export async function createTestimonial(payload) {
   return res.json()
 }
 
-export async function updateTestimonial(id, payload) {
-  const res = await apiFetch(`/admin/testimonials/${id}/`, { method: 'PATCH', body: payload })
+export async function updateTestimonial(id, formData) {
+  const res = await apiFetchForm(`/admin/testimonials/${id}/`, { method: 'PATCH', formData })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(Object.values(err)[0]?.[0] || 'Could not update testimonial.')
