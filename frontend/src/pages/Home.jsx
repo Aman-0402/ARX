@@ -6,8 +6,17 @@ import Earth from '../components/Earth.jsx'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import StarField from '../components/motion/StarField.jsx'
+import Counter from '../components/motion/Counter.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
-import { fetchTestimonials, fetchClients } from '../lib/api.js'
+import {
+  fetchTestimonials,
+  fetchClients,
+  industryApi,
+  caseStudyApi,
+  techStackApi,
+  processStepApi,
+  faqApi,
+} from '../lib/api.js'
 
 const testimonialAccents = [
   { avatar: 'bg-amber/15 text-amber-dim', quoteMark: 'text-amber/40', border: 'border-amber/30', top: 'bg-amber', tint: 'from-amber/10' },
@@ -15,6 +24,14 @@ const testimonialAccents = [
   { avatar: 'bg-mint/15 text-mint', quoteMark: 'text-mint/40', border: 'border-mint/30', top: 'bg-mint', tint: 'from-mint/10' },
   { avatar: 'bg-sunbeam/15 text-amber-dim', quoteMark: 'text-sunbeam/50', border: 'border-sunbeam/40', top: 'bg-sunbeam', tint: 'from-sunbeam/10' },
   { avatar: 'bg-grape/15 text-grape', quoteMark: 'text-grape/40', border: 'border-grape/30', top: 'bg-grape', tint: 'from-grape/10' },
+]
+
+const cardAccents = [
+  { border: 'border-t-amber', ring: 'hover:border-amber', glow: 'hover:shadow-amber/20', chip: 'bg-amber/15 text-amber-dim' },
+  { border: 'border-t-coral', ring: 'hover:border-coral', glow: 'hover:shadow-coral/20', chip: 'bg-coral/15 text-coral' },
+  { border: 'border-t-mint', ring: 'hover:border-mint', glow: 'hover:shadow-mint/20', chip: 'bg-mint/15 text-mint' },
+  { border: 'border-t-sunbeam', ring: 'hover:border-sunbeam', glow: 'hover:shadow-sunbeam/20', chip: 'bg-sunbeam/15 text-amber-dim' },
+  { border: 'border-t-grape', ring: 'hover:border-grape', glow: 'hover:shadow-grape/20', chip: 'bg-grape/15 text-grape' },
 ]
 
 const whyPoints = [
@@ -29,6 +46,12 @@ const metrics = [
   { value: '100%', label: 'Client focus', accent: 'border-t-coral' },
   { value: 'Secure', label: 'Solutions', accent: 'border-t-mint' },
   { value: 'Fast', label: 'Delivery', accent: 'border-t-grape' },
+]
+
+const aboutStats = [
+  { value: '120', suffix: '+', decimals: 0, static: null, label: 'Businesses served', accent: 'border-amber/40 bg-amber/5' },
+  { value: null, static: '24/7', label: 'Support coverage', accent: 'border-coral/40 bg-coral/5' },
+  { value: '99.98', suffix: '%', decimals: 2, static: null, label: 'Infrastructure uptime', accent: 'border-mint/40 bg-mint/5' },
 ]
 
 const services = [
@@ -66,41 +89,43 @@ const services = [
   },
 ]
 
-const deliverables = [
-  {
-    title: 'IT infrastructure & support',
-    copy: 'We manage IT infrastructure, servers, network monitoring, backups, troubleshooting, performance optimization, and maintenance for businesses.',
-    items: ['Server monitoring', 'Network management', 'Backup & recovery', 'System optimization'],
-    accent: 'border-t-amber',
-    ring: 'hover:border-amber',
-    glow: 'hover:shadow-amber/20',
-    chip: 'bg-amber/10 text-amber-dim',
-    tint: 'from-amber/15 via-white to-white',
-    blob: 'bg-amber/30',
-    icon: <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />,
-  },
-  {
-    title: 'Development & automation',
-    copy: 'We create custom digital solutions that automate workflows, improve productivity, and enhance customer experience through modern technology.',
-    items: ['Web application development', 'Automation systems', 'UI/UX design', 'API development'],
-    accent: 'border-t-coral',
-    ring: 'hover:border-coral',
-    glow: 'hover:shadow-coral/20',
-    chip: 'bg-coral/10 text-coral',
-    tint: 'from-coral/15 via-white to-white',
-    blob: 'bg-coral/30',
-    icon: <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" />,
-  },
-]
-
+function FAQItem({ faq, open, onToggle }) {
+  return (
+    <div className="border-b border-slate-200">
+      <button
+        onClick={onToggle}
+        className="flex w-full items-center justify-between gap-4 py-5 text-left"
+      >
+        <span className="font-display text-lg font-medium text-graphite">{faq.question}</span>
+        <span className={`shrink-0 text-2xl text-slate transition-transform duration-300 ${open ? 'rotate-45' : ''}`}>+</span>
+      </button>
+      <div className={`grid transition-all duration-300 ${open ? 'grid-rows-[1fr] pb-5 opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+        <div className="overflow-hidden">
+          <p className="text-base leading-relaxed text-slate">{faq.answer}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function Home() {
   const [testimonials, setTestimonials] = useState([])
   const [clients, setClients] = useState([])
+  const [industries, setIndustries] = useState([])
+  const [caseStudies, setCaseStudies] = useState([])
+  const [techStack, setTechStack] = useState([])
+  const [processSteps, setProcessSteps] = useState([])
+  const [faqs, setFaqs] = useState([])
+  const [openFaq, setOpenFaq] = useState(0)
 
   useEffect(() => {
     fetchTestimonials().then(setTestimonials).catch(() => {})
     fetchClients().then(setClients).catch(() => {})
+    industryApi.fetchPublic().then(setIndustries).catch(() => {})
+    caseStudyApi.fetchPublic().then(setCaseStudies).catch(() => {})
+    techStackApi.fetchPublic().then(setTechStack).catch(() => {})
+    processStepApi.fetchPublic().then(setProcessSteps).catch(() => {})
+    faqApi.fetchPublic().then(setFaqs).catch(() => {})
   }, [])
 
   return (
@@ -128,7 +153,8 @@ export default function Home() {
             'Managed IT services, cloud infrastructure, cybersecurity, product development, and academic automation.',
         }}
       />
-      {/* Hero */}
+
+      {/* Hero + CTA */}
       <section className="relative overflow-hidden border-b border-slate-200">
         <GradientBlobs variant="blue" />
         <StarField count={80} />
@@ -172,106 +198,61 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Clients */}
-      {clients.length > 0 && (
-        <section className="border-b border-slate-200 bg-paper py-14">
-          <div className="mx-auto max-w-[1400px] px-4">
-            <Reveal>
-              <p className="text-center text-sm font-medium uppercase tracking-wide text-slate">
-                Trusted by businesses and institutions
-              </p>
-            </Reveal>
-            <StaggerGrid className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
-              {clients.map((c) => {
-                const logo = (
-                  <img
-                    src={c.logo}
-                    alt={c.name}
-                    loading="lazy"
-                    className="h-10 max-w-[140px] object-contain grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
-                  />
-                )
-                return (
-                  <StaggerItem key={c.name}>
-                    {c.website ? (
-                      <a href={c.website} target="_blank" rel="noopener noreferrer">
-                        {logo}
-                      </a>
-                    ) : (
-                      logo
-                    )}
-                  </StaggerItem>
-                )
-              })}
-            </StaggerGrid>
-          </div>
-        </section>
-      )}
+      {/* Client logos / key metrics */}
+      <section className="border-b border-slate-200 bg-paper py-16">
+        <div className="mx-auto max-w-[1400px] px-4">
+          {clients.length > 0 && (
+            <>
+              <Reveal>
+                <p className="text-center text-sm font-medium uppercase tracking-wide text-slate">
+                  Trusted by businesses and institutions
+                </p>
+              </Reveal>
+              <StaggerGrid className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
+                {clients.map((c) => {
+                  const logo = (
+                    <img
+                      src={c.logo}
+                      alt={c.name}
+                      loading="lazy"
+                      className="h-10 max-w-[140px] object-contain grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+                    />
+                  )
+                  return (
+                    <StaggerItem key={c.name}>
+                      {c.website ? (
+                        <a href={c.website} target="_blank" rel="noopener noreferrer">
+                          {logo}
+                        </a>
+                      ) : (
+                        logo
+                      )}
+                    </StaggerItem>
+                  )
+                })}
+              </StaggerGrid>
+            </>
+          )}
 
-      {/* Why choose */}
-      <section className="border-b border-slate-200 bg-paper-dim">
-        <div className="mx-auto grid max-w-[1400px] gap-16 px-4 py-24 md:grid-cols-[1fr_1fr] md:items-center">
-          <Reveal>
-            <h2 className="font-display text-4xl font-semibold leading-tight text-graphite md:text-5xl">
-              Why organizations{' '}
-              <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
-                choose ARX
-              </span>{' '}
-              Infotech
-            </h2>
-            <p className="mt-5 max-w-md text-lg text-slate">
-              We focus on delivering secure, scalable, and high-performance
-              solutions with a client-first approach.
-            </p>
-            <StaggerGrid className="mt-10 space-y-3">
-              {whyPoints.map((point) => (
-                <StaggerItem key={point.text}>
-                  <motion.div
-                    whileHover={{ x: 6 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className="flex items-center gap-4 rounded-xl border border-slate-200 bg-paper px-5 py-4 text-base text-graphite shadow-sm"
-                  >
-                    <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${point.dot}`} />
-                    {point.text}
-                  </motion.div>
-                </StaggerItem>
-              ))}
-            </StaggerGrid>
-            <Link
-              to="/about"
-              className="group mt-10 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-base font-medium text-paper transition-all hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              Learn more about us
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </Link>
-          </Reveal>
-
-          <Reveal delay={0.15}>
-            <h3 className="font-display text-2xl font-semibold text-graphite">We build future-ready systems</h3>
-            <p className="mt-3 max-w-md text-base leading-relaxed text-slate">
-              Cloud migration, automation, IT services, software products, and
-              digital platforms designed for growth.
-            </p>
-            <StaggerGrid className="mt-8 grid grid-cols-2 gap-4 font-mono">
-              {metrics.map((metric) => (
-                <StaggerItem key={metric.label}>
-                  <motion.div
-                    whileHover={{ y: -6, rotate: -1.5, scale: 1.03 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-                    className={`flex flex-col items-center rounded-2xl border-t-4 bg-ink px-6 py-6 text-center text-paper shadow-lg shadow-ink/20 ${metric.accent}`}
-                  >
-                    <div className="text-3xl font-semibold">{metric.value}</div>
-                    <div className="mt-2 h-px w-8 bg-slate-700" />
-                    <div className="mt-2 text-sm text-slate-200/60">{metric.label}</div>
-                  </motion.div>
-                </StaggerItem>
-              ))}
-            </StaggerGrid>
-          </Reveal>
+          <StaggerGrid className={`grid grid-cols-2 gap-4 font-mono sm:grid-cols-4 ${clients.length > 0 ? 'mt-14' : ''}`}>
+            {metrics.map((metric) => (
+              <StaggerItem key={metric.label}>
+                <motion.div
+                  whileHover={{ y: -6, rotate: -1.5, scale: 1.03 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+                  className={`flex flex-col items-center rounded-2xl border-t-4 bg-ink px-6 py-6 text-center text-paper shadow-lg shadow-ink/20 ${metric.accent}`}
+                >
+                  <div className="text-3xl font-semibold">{metric.value}</div>
+                  <div className="mt-2 h-px w-8 bg-slate-700" />
+                  <div className="mt-2 text-sm text-slate-200/60">{metric.label}</div>
+                </motion.div>
+              </StaggerItem>
+            ))}
+          </StaggerGrid>
         </div>
       </section>
 
-      {/* Core services */}
+      {/* Services */}
       <section className="relative overflow-hidden border-b border-slate-700 bg-ink">
         <GradientBlobs variant="mixed" />
         <div className="mx-auto max-w-[1400px] px-4 py-20">
@@ -323,52 +304,187 @@ export default function Home() {
         </div>
       </section>
 
-      {/* What we deliver */}
+      {/* Why choose us */}
       <section className="border-b border-slate-200 bg-paper-dim">
-        <div className="mx-auto max-w-[1400px] px-4 py-20">
+        <div className="mx-auto max-w-[1400px] px-4 py-24">
           <Reveal>
-            <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">What we deliver</h2>
-            <p className="mt-4 max-w-md text-lg text-slate">
-              Professional solutions designed for business growth and digital efficiency.
+            <h2 className="font-display text-4xl font-semibold leading-tight text-graphite md:text-5xl">
+              Why organizations{' '}
+              <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
+                choose ARX
+              </span>{' '}
+              Infotech
+            </h2>
+            <p className="mt-5 max-w-md text-lg text-slate">
+              We focus on delivering secure, scalable, and high-performance
+              solutions with a client-first approach.
             </p>
           </Reveal>
-
-          <StaggerGrid className="mt-12 grid gap-6 md:grid-cols-2">
-            {deliverables.map((block) => (
-              <StaggerItem key={block.title}>
+          <StaggerGrid className="mt-10 grid gap-3 md:grid-cols-2">
+            {whyPoints.map((point) => (
+              <StaggerItem key={point.text}>
                 <motion.div
-                  whileHover={{ y: -8 }}
+                  whileHover={{ x: 6 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className={`group relative isolate grid overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 shadow-md transition-shadow duration-300 hover:shadow-xl ${block.accent} ${block.ring} ${block.glow}`}
+                  className="flex items-center gap-4 rounded-xl border border-slate-200 bg-paper px-5 py-4 text-base text-graphite shadow-sm"
                 >
-                  <div className={`relative col-start-1 row-start-1 flex flex-col items-center justify-center gap-4 overflow-hidden bg-gradient-to-br p-10 text-center transition-opacity duration-300 group-hover:opacity-0 ${block.tint}`}>
-                    <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full blur-2xl ${block.blob}`} />
-                    <span className={`relative inline-flex h-16 w-16 items-center justify-center rounded-2xl ${block.chip}`}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8">
-                        {block.icon}
-                      </svg>
-                    </span>
-                    <h3 className="relative font-display text-2xl font-semibold text-graphite">{block.title}</h3>
-                    <p className="relative text-sm text-slate">Hover to see what's included</p>
-                  </div>
-
-                  <div className="col-start-1 row-start-1 flex flex-col justify-center gap-4 bg-amber/10 p-9 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <h3 className="font-display text-xl font-semibold text-graphite">{block.title}</h3>
-                    <p className="text-base leading-relaxed text-graphite/80">{block.copy}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {block.items.map((item) => (
-                        <span key={item} className="rounded-full bg-white px-3 py-1 text-xs font-medium text-graphite shadow-sm">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                  <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${point.dot}`} />
+                  {point.text}
                 </motion.div>
               </StaggerItem>
             ))}
           </StaggerGrid>
+          <Link
+            to="/about"
+            className="group mt-10 inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3.5 text-base font-medium text-paper transition-all hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            Learn more about us
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </Link>
         </div>
       </section>
+
+      {/* Industries / Solutions */}
+      {industries.length > 0 && (
+        <section className="border-b border-slate-200 bg-paper py-20">
+          <div className="mx-auto max-w-[1400px] px-4">
+            <Reveal>
+              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Industries we serve</h2>
+              <p className="mt-4 max-w-md text-lg text-slate">
+                Solutions tailored to the sectors we work with most.
+              </p>
+            </Reveal>
+            <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {industries.map((ind, i) => {
+                const a = cardAccents[i % cardAccents.length]
+                return (
+                  <StaggerItem key={ind.name}>
+                    <motion.div
+                      whileHover={{ y: -6 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                      className={`h-full rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl ${a.border} ${a.ring} ${a.glow}`}
+                    >
+                      {ind.icon && (
+                        <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl text-2xl ${a.chip}`}>
+                          {ind.icon}
+                        </span>
+                      )}
+                      <h3 className="mt-4 font-display text-xl font-semibold text-graphite">{ind.name}</h3>
+                      {ind.description && (
+                        <p className="mt-2 text-sm leading-relaxed text-slate">{ind.description}</p>
+                      )}
+                    </motion.div>
+                  </StaggerItem>
+                )
+              })}
+            </StaggerGrid>
+          </div>
+        </section>
+      )}
+
+      {/* Featured case studies */}
+      {caseStudies.length > 0 && (
+        <section className="border-b border-slate-200 bg-paper-dim py-20">
+          <div className="mx-auto max-w-[1400px] px-4">
+            <Reveal>
+              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Featured case studies</h2>
+              <p className="mt-4 max-w-md text-lg text-slate">
+                Real outcomes from real engagements.
+              </p>
+            </Reveal>
+            <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {caseStudies.map((cs, i) => {
+                const a = cardAccents[i % cardAccents.length]
+                return (
+                  <StaggerItem key={cs.title}>
+                    <motion.div
+                      whileHover={{ y: -6 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                      className={`h-full overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-xl ${a.glow}`}
+                    >
+                      {cs.image ? (
+                        <img src={cs.image} alt="" loading="lazy" className="h-40 w-full object-cover" />
+                      ) : (
+                        <div className={`h-2 ${a.border.replace('border-t-', 'bg-')}`} />
+                      )}
+                      <div className="p-7">
+                        {cs.client_name && (
+                          <p className="text-xs font-medium uppercase tracking-wide text-slate">{cs.client_name}</p>
+                        )}
+                        <h3 className="mt-1 font-display text-xl font-semibold text-graphite">{cs.title}</h3>
+                        <p className="mt-3 text-sm leading-relaxed text-slate">{cs.summary}</p>
+                        {cs.result && (
+                          <span className={`mt-4 inline-block rounded-full px-3 py-1 text-xs font-semibold ${a.chip}`}>
+                            {cs.result}
+                          </span>
+                        )}
+                      </div>
+                    </motion.div>
+                  </StaggerItem>
+                )
+              })}
+            </StaggerGrid>
+          </div>
+        </section>
+      )}
+
+      {/* Technology stack */}
+      {techStack.length > 0 && (
+        <section className="border-b border-slate-200 bg-paper py-16">
+          <div className="mx-auto max-w-[1400px] px-4">
+            <Reveal>
+              <p className="text-center text-sm font-medium uppercase tracking-wide text-slate">
+                Our technology stack
+              </p>
+            </Reveal>
+            <StaggerGrid className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
+              {techStack.map((t) => (
+                <StaggerItem key={t.name}>
+                  <img
+                    src={t.logo}
+                    alt={t.name}
+                    loading="lazy"
+                    className="h-10 max-w-[120px] object-contain grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+                  />
+                </StaggerItem>
+              ))}
+            </StaggerGrid>
+          </div>
+        </section>
+      )}
+
+      {/* Our process */}
+      {processSteps.length > 0 && (
+        <section className="border-b border-slate-200 bg-paper-dim py-20">
+          <div className="mx-auto max-w-[1400px] px-4">
+            <Reveal>
+              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Our process</h2>
+              <p className="mt-4 max-w-md text-lg text-slate">
+                How we take a project from first call to delivery.
+              </p>
+            </Reveal>
+            <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {processSteps.map((step, i) => (
+                <StaggerItem key={step.title}>
+                  <motion.div
+                    whileHover={{ y: -6 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className="relative h-full rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"
+                  >
+                    <span className="font-display text-5xl font-bold text-slate-200">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <h3 className="mt-3 font-display text-lg font-semibold text-graphite">{step.title}</h3>
+                    {step.description && (
+                      <p className="mt-2 text-sm leading-relaxed text-slate">{step.description}</p>
+                    )}
+                  </motion.div>
+                </StaggerItem>
+              ))}
+            </StaggerGrid>
+          </div>
+        </section>
+      )}
 
       {/* Testimonials */}
       <section className="overflow-hidden border-b border-slate-200 bg-paper-dim py-20">
@@ -416,7 +532,73 @@ export default function Home() {
         )}
       </section>
 
-      {/* CTA */}
+      {/* About us preview */}
+      <section className="relative overflow-hidden border-b border-slate-200 bg-paper">
+        <GradientBlobs variant="blue" />
+        <div className="mx-auto max-w-[1400px] px-4 py-24">
+          <Reveal>
+            <h2 className="max-w-2xl font-display text-4xl font-semibold leading-tight text-graphite md:text-5xl">
+              One accountable team, not a{' '}
+              <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
+                handful of vendors
+              </span>
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate">
+              ARX Infotech works with businesses and educational institutions across
+              infrastructure, software, and security — combining managed IT services
+              with product engineering so clients get one accountable partner.
+            </p>
+            <StaggerGrid className="mt-10 flex flex-wrap gap-4">
+              {aboutStats.map((stat) => (
+                <StaggerItem key={stat.label}>
+                  <motion.div
+                    whileHover={{ y: -4 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className={`rounded-2xl border-2 px-6 py-5 shadow-sm ${stat.accent}`}
+                  >
+                    <div className="font-display text-3xl font-semibold text-graphite">
+                      {stat.static ?? (
+                        <Counter value={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
+                      )}
+                    </div>
+                    <div className="mt-1 text-sm text-slate">{stat.label}</div>
+                  </motion.div>
+                </StaggerItem>
+              ))}
+            </StaggerGrid>
+            <Link
+              to="/about"
+              className="group mt-10 inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-ink px-6 py-3.5 text-base font-medium text-paper transition-all hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              More about ARX Infotech
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      {faqs.length > 0 && (
+        <section className="border-b border-slate-200 bg-paper-dim py-20">
+          <div className="mx-auto max-w-[900px] px-4">
+            <Reveal>
+              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Frequently asked questions</h2>
+            </Reveal>
+            <div className="mt-10 border-t border-slate-200">
+              {faqs.map((faq, i) => (
+                <FAQItem
+                  key={faq.question}
+                  faq={faq}
+                  open={openFaq === i}
+                  onToggle={() => setOpenFaq(openFaq === i ? -1 : i)}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Final CTA */}
       <section className="relative overflow-hidden bg-ink py-24">
         <GradientBlobs variant="warm" />
         <StarField count={60} />
