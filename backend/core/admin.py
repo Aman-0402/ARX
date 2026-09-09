@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember, Testimonial
+from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember, Testimonial, Client
 
 
 @admin.register(ContactSubmission)
@@ -39,5 +39,12 @@ class TeamMemberAdmin(admin.ModelAdmin):
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
     list_display = ['name', 'org', 'published', 'order']
+    list_filter = ['published']
+    ordering = ['order', 'name']
+
+
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ['name', 'published', 'order']
     list_filter = ['published']
     ordering = ['order', 'name']

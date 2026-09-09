@@ -87,6 +87,20 @@ class TeamMember(models.Model):
         return f'{self.name} — {self.role}'
 
 
+class Client(models.Model):
+    name = models.CharField(max_length=150)
+    logo = models.ImageField(upload_to='clients/')
+    website = models.URLField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name
+
+
 class Testimonial(models.Model):
     quote = models.TextField()
     name = models.CharField(max_length=150)

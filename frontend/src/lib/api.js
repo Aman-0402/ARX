@@ -280,3 +280,38 @@ export async function deleteTestimonial(id) {
   const res = await apiFetch(`/admin/testimonials/${id}/`, { method: 'DELETE' })
   if (!res.ok) throw new Error('Could not delete testimonial.')
 }
+
+export async function fetchClients() {
+  const res = await fetch(`${API_BASE}/clients/`)
+  if (!res.ok) throw new Error('Could not load clients.')
+  return res.json()
+}
+
+export async function fetchAdminClients() {
+  const res = await apiFetch('/admin/clients/')
+  if (!res.ok) throw new Error('Could not load clients.')
+  return res.json()
+}
+
+export async function createClient(formData) {
+  const res = await apiFetchForm('/admin/clients/', { method: 'POST', formData })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not create client.')
+  }
+  return res.json()
+}
+
+export async function updateClient(id, formData) {
+  const res = await apiFetchForm(`/admin/clients/${id}/`, { method: 'PATCH', formData })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(Object.values(err)[0]?.[0] || 'Could not update client.')
+  }
+  return res.json()
+}
+
+export async function deleteClient(id) {
+  const res = await apiFetch(`/admin/clients/${id}/`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Could not delete client.')
+}

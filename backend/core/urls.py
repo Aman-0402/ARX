@@ -6,6 +6,7 @@ from .views import (
     ServiceGroupListView,
     TeamMemberListView,
     TestimonialListView,
+    ClientListView,
     BlogPostListView,
     BlogPostDetailView,
     BlogPostAdminViewSet,
@@ -15,6 +16,7 @@ from .views import (
     ServiceGroupAdminViewSet,
     TeamMemberAdminViewSet,
     TestimonialAdminViewSet,
+    ClientAdminViewSet,
     AdminStatsView,
     CsrfCookieView,
     LoginView,
@@ -29,6 +31,7 @@ admin_router.register('verify', VerificationRecordAdminViewSet, basename='admin-
 admin_router.register('services', ServiceGroupAdminViewSet, basename='admin-services')
 admin_router.register('team', TeamMemberAdminViewSet, basename='admin-team')
 admin_router.register('testimonials', TestimonialAdminViewSet, basename='admin-testimonials')
+admin_router.register('clients', ClientAdminViewSet, basename='admin-clients')
 
 urlpatterns = [
     path('contact/', ContactSubmissionCreateView.as_view(), name='contact-create'),
@@ -36,6 +39,7 @@ urlpatterns = [
     path('services/', ServiceGroupListView.as_view(), name='services-list'),
     path('team/', TeamMemberListView.as_view(), name='team-list'),
     path('testimonials/', TestimonialListView.as_view(), name='testimonials-list'),
+    path('clients/', ClientListView.as_view(), name='clients-list'),
     path('blog/', BlogPostListView.as_view(), name='blog-list'),
     path('blog/submit/', BlogPostSubmitView.as_view(), name='blog-submit'),
     path('blog/<slug:slug>/', BlogPostDetailView.as_view(), name='blog-detail'),

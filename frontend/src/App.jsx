@@ -23,6 +23,7 @@ const AdminVerify = lazy(() => import('./pages/admin/AdminVerify.jsx'))
 const AdminServices = lazy(() => import('./pages/admin/AdminServices.jsx'))
 const AdminTeam = lazy(() => import('./pages/admin/AdminTeam.jsx'))
 const AdminTestimonials = lazy(() => import('./pages/admin/AdminTestimonials.jsx'))
+const AdminClients = lazy(() => import('./pages/admin/AdminClients.jsx'))
 
 function PageLoader() {
   // Only appears if the chunk is still loading after 300ms, so fast/cached
@@ -92,6 +93,7 @@ export default function App() {
                   <Route path="services" element={<AdminServices />} />
                   <Route path="team" element={<AdminTeam />} />
                   <Route path="testimonials" element={<AdminTestimonials />} />
+                  <Route path="clients" element={<AdminClients />} />
                 </Route>
               </Routes>
             </Suspense>

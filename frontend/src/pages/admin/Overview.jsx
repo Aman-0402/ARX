@@ -11,6 +11,7 @@ const cards = [
   { key: 'service_groups_total', label: 'Service groups', to: '/admin/services' },
   { key: 'team_total', label: 'Team members', to: '/admin/team' },
   { key: 'testimonials_total', label: 'Testimonials', to: '/admin/testimonials' },
+  { key: 'clients_total', label: 'Clients', to: '/admin/clients' },
 ]
 
 export default function Overview() {

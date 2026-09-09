@@ -7,7 +7,7 @@ import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import StarField from '../components/motion/StarField.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
-import { fetchTestimonials } from '../lib/api.js'
+import { fetchTestimonials, fetchClients } from '../lib/api.js'
 
 const testimonialAccents = [
   { avatar: 'bg-amber/15 text-amber-dim', quoteMark: 'text-amber/40', border: 'border-amber/30', top: 'bg-amber', tint: 'from-amber/10' },
@@ -96,9 +96,11 @@ const deliverables = [
 
 export default function Home() {
   const [testimonials, setTestimonials] = useState([])
+  const [clients, setClients] = useState([])
 
   useEffect(() => {
     fetchTestimonials().then(setTestimonials).catch(() => {})
+    fetchClients().then(setClients).catch(() => {})
   }, [])
 
   return (
@@ -169,6 +171,42 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      {/* Clients */}
+      {clients.length > 0 && (
+        <section className="border-b border-slate-200 bg-paper py-14">
+          <div className="mx-auto max-w-[1400px] px-4">
+            <Reveal>
+              <p className="text-center text-sm font-medium uppercase tracking-wide text-slate">
+                Trusted by businesses and institutions
+              </p>
+            </Reveal>
+            <StaggerGrid className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
+              {clients.map((c) => {
+                const logo = (
+                  <img
+                    src={c.logo}
+                    alt={c.name}
+                    loading="lazy"
+                    className="h-10 max-w-[140px] object-contain grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
+                  />
+                )
+                return (
+                  <StaggerItem key={c.name}>
+                    {c.website ? (
+                      <a href={c.website} target="_blank" rel="noopener noreferrer">
+                        {logo}
+                      </a>
+                    ) : (
+                      logo
+                    )}
+                  </StaggerItem>
+                )
+              })}
+            </StaggerGrid>
+          </div>
+        </section>
+      )}
 
       {/* Why choose */}
       <section className="border-b border-slate-200 bg-paper-dim">
