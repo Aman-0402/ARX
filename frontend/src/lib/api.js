@@ -82,6 +82,7 @@ export async function login(username, password) {
 }
 
 export async function logout() {
+  await fetchCsrfCookie()
   const res = await apiFetch('/auth/logout/', { method: 'POST' })
   if (!res.ok) throw new Error('Could not sign out. Please try again.')
 }
@@ -93,6 +94,7 @@ export async function fetchMe() {
 }
 
 export async function changePassword(currentPassword, newPassword) {
+  await fetchCsrfCookie()
   const res = await apiFetch('/auth/change-password/', {
     method: 'POST',
     body: { current_password: currentPassword, new_password: newPassword },
