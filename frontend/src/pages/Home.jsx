@@ -357,6 +357,7 @@ export default function Home() {
             <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {industries.map((ind, i) => {
                 const a = cardAccents[i % cardAccents.length]
+                const isEmojiIcon = ind.icon && [...ind.icon].length <= 2
                 return (
                   <StaggerItem key={ind.name}>
                     <motion.div
@@ -365,9 +366,15 @@ export default function Home() {
                       className={`h-full rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-xl ${a.border} ${a.ring} ${a.glow}`}
                     >
                       {ind.icon && (
-                        <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl text-2xl ${a.chip}`}>
-                          {ind.icon}
-                        </span>
+                        isEmojiIcon ? (
+                          <span className={`inline-flex h-12 w-12 items-center justify-center rounded-xl text-2xl ${a.chip}`}>
+                            {ind.icon}
+                          </span>
+                        ) : (
+                          <span className={`inline-flex items-center rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide ${a.chip}`}>
+                            {ind.icon}
+                          </span>
+                        )
                       )}
                       <h3 className="mt-4 font-display text-xl font-semibold text-graphite">{ind.name}</h3>
                       {ind.description && (
