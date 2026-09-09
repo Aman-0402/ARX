@@ -24,6 +24,11 @@ const AdminServices = lazy(() => import('./pages/admin/AdminServices.jsx'))
 const AdminTeam = lazy(() => import('./pages/admin/AdminTeam.jsx'))
 const AdminTestimonials = lazy(() => import('./pages/admin/AdminTestimonials.jsx'))
 const AdminClients = lazy(() => import('./pages/admin/AdminClients.jsx'))
+const AdminIndustries = lazy(() => import('./pages/admin/AdminIndustries.jsx'))
+const AdminCaseStudies = lazy(() => import('./pages/admin/AdminCaseStudies.jsx'))
+const AdminTechStack = lazy(() => import('./pages/admin/AdminTechStack.jsx'))
+const AdminProcessSteps = lazy(() => import('./pages/admin/AdminProcessSteps.jsx'))
+const AdminFAQ = lazy(() => import('./pages/admin/AdminFAQ.jsx'))
 
 function PageLoader() {
   // Only appears if the chunk is still loading after 300ms, so fast/cached
@@ -94,6 +99,11 @@ export default function App() {
                   <Route path="team" element={<AdminTeam />} />
                   <Route path="testimonials" element={<AdminTestimonials />} />
                   <Route path="clients" element={<AdminClients />} />
+                  <Route path="industries" element={<AdminIndustries />} />
+                  <Route path="case-studies" element={<AdminCaseStudies />} />
+                  <Route path="tech-stack" element={<AdminTechStack />} />
+                  <Route path="process-steps" element={<AdminProcessSteps />} />
+                  <Route path="faq" element={<AdminFAQ />} />
                 </Route>
               </Routes>
             </Suspense>

@@ -114,3 +114,77 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return f'{self.name} — {self.org}'
+
+
+class Industry(models.Model):
+    name = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
+    icon = models.CharField(max_length=50, blank=True, help_text='Optional emoji or short label.')
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name_plural = 'industries'
+
+    def __str__(self):
+        return self.name
+
+
+class CaseStudy(models.Model):
+    title = models.CharField(max_length=200)
+    client_name = models.CharField(max_length=150, blank=True)
+    summary = models.TextField()
+    result = models.CharField(max_length=200, blank=True, help_text='e.g. "40% faster reporting"')
+    image = models.ImageField(upload_to='case-studies/', blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'title']
+        verbose_name_plural = 'case studies'
+
+    def __str__(self):
+        return self.title
+
+
+class TechStackItem(models.Model):
+    name = models.CharField(max_length=150)
+    logo = models.ImageField(upload_to='tech-stack/')
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name_plural = 'tech stack items'
+
+    def __str__(self):
+        return self.name
+
+
+class ProcessStep(models.Model):
+    title = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'title']
+
+    def __str__(self):
+        return self.title
+
+
+class FAQ(models.Model):
+    question = models.CharField(max_length=250)
+    answer = models.TextField()
+    order = models.PositiveIntegerField(default=0)
+    published = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['order', 'question']
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQs'
+
+    def __str__(self):
+        return self.question

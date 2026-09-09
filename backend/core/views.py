@@ -8,7 +8,20 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember, Testimonial, Client
+from .models import (
+    ContactSubmission,
+    VerificationRecord,
+    BlogPost,
+    ServiceGroup,
+    TeamMember,
+    Testimonial,
+    Client,
+    Industry,
+    CaseStudy,
+    TechStackItem,
+    ProcessStep,
+    FAQ,
+)
 from .serializers import (
     ContactSubmissionSerializer,
     ContactSubmissionAdminSerializer,
@@ -26,6 +39,16 @@ from .serializers import (
     TestimonialAdminSerializer,
     ClientPublicSerializer,
     ClientAdminSerializer,
+    IndustryPublicSerializer,
+    IndustryAdminSerializer,
+    CaseStudyPublicSerializer,
+    CaseStudyAdminSerializer,
+    TechStackItemPublicSerializer,
+    TechStackItemAdminSerializer,
+    ProcessStepPublicSerializer,
+    ProcessStepAdminSerializer,
+    FAQPublicSerializer,
+    FAQAdminSerializer,
 )
 
 
@@ -73,6 +96,41 @@ class ClientListView(generics.ListAPIView):
 
     queryset = Client.objects.filter(published=True)
     serializer_class = ClientPublicSerializer
+
+
+class IndustryListView(generics.ListAPIView):
+    """GET /api/industries/ — published industries in display order."""
+
+    queryset = Industry.objects.filter(published=True)
+    serializer_class = IndustryPublicSerializer
+
+
+class CaseStudyListView(generics.ListAPIView):
+    """GET /api/case-studies/ — published case studies in display order."""
+
+    queryset = CaseStudy.objects.filter(published=True)
+    serializer_class = CaseStudyPublicSerializer
+
+
+class TechStackItemListView(generics.ListAPIView):
+    """GET /api/tech-stack/ — published tech stack items in display order."""
+
+    queryset = TechStackItem.objects.filter(published=True)
+    serializer_class = TechStackItemPublicSerializer
+
+
+class ProcessStepListView(generics.ListAPIView):
+    """GET /api/process-steps/ — published process steps in display order."""
+
+    queryset = ProcessStep.objects.filter(published=True)
+    serializer_class = ProcessStepPublicSerializer
+
+
+class FAQListView(generics.ListAPIView):
+    """GET /api/faqs/ — published FAQs in display order."""
+
+    queryset = FAQ.objects.filter(published=True)
+    serializer_class = FAQPublicSerializer
 
 
 class BlogPostListView(generics.ListAPIView):
@@ -210,6 +268,48 @@ class ClientAdminViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
 
+class IndustryAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/industries/ — all industries, published or not."""
+
+    queryset = Industry.objects.all()
+    serializer_class = IndustryAdminSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class CaseStudyAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/case-studies/ — all case studies, published or not."""
+
+    queryset = CaseStudy.objects.all()
+    serializer_class = CaseStudyAdminSerializer
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+
+class TechStackItemAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/tech-stack/ — all tech stack items, published or not."""
+
+    queryset = TechStackItem.objects.all()
+    serializer_class = TechStackItemAdminSerializer
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+
+class ProcessStepAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/process-steps/ — all process steps, published or not."""
+
+    queryset = ProcessStep.objects.all()
+    serializer_class = ProcessStepAdminSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class FAQAdminViewSet(viewsets.ModelViewSet):
+    """CRUD at /api/admin/faqs/ — all FAQs, published or not."""
+
+    queryset = FAQ.objects.all()
+    serializer_class = FAQAdminSerializer
+    permission_classes = [IsAuthenticated]
+
+
 class AdminStatsView(APIView):
     """GET /api/admin/stats/ — counts for the dashboard overview."""
 
@@ -227,4 +327,9 @@ class AdminStatsView(APIView):
             'team_total': TeamMember.objects.count(),
             'testimonials_total': Testimonial.objects.count(),
             'clients_total': Client.objects.count(),
+            'industries_total': Industry.objects.count(),
+            'case_studies_total': CaseStudy.objects.count(),
+            'tech_stack_total': TechStackItem.objects.count(),
+            'process_steps_total': ProcessStep.objects.count(),
+            'faqs_total': FAQ.objects.count(),
         })

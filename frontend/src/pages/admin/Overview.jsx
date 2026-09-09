@@ -12,6 +12,11 @@ const cards = [
   { key: 'team_total', label: 'Team members', to: '/admin/team' },
   { key: 'testimonials_total', label: 'Testimonials', to: '/admin/testimonials' },
   { key: 'clients_total', label: 'Clients', to: '/admin/clients' },
+  { key: 'industries_total', label: 'Industries', to: '/admin/industries' },
+  { key: 'case_studies_total', label: 'Case studies', to: '/admin/case-studies' },
+  { key: 'tech_stack_total', label: 'Tech stack items', to: '/admin/tech-stack' },
+  { key: 'process_steps_total', label: 'Process steps', to: '/admin/process-steps' },
+  { key: 'faqs_total', label: 'FAQs', to: '/admin/faq' },
 ]
 
 export default function Overview() {

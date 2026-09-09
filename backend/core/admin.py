@@ -1,5 +1,18 @@
 from django.contrib import admin
-from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember, Testimonial, Client
+from .models import (
+    ContactSubmission,
+    VerificationRecord,
+    BlogPost,
+    ServiceGroup,
+    TeamMember,
+    Testimonial,
+    Client,
+    Industry,
+    CaseStudy,
+    TechStackItem,
+    ProcessStep,
+    FAQ,
+)
 
 
 @admin.register(ContactSubmission)
@@ -48,3 +61,38 @@ class ClientAdmin(admin.ModelAdmin):
     list_display = ['name', 'published', 'order']
     list_filter = ['published']
     ordering = ['order', 'name']
+
+
+@admin.register(Industry)
+class IndustryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'published', 'order']
+    list_filter = ['published']
+    ordering = ['order', 'name']
+
+
+@admin.register(CaseStudy)
+class CaseStudyAdmin(admin.ModelAdmin):
+    list_display = ['title', 'client_name', 'published', 'order']
+    list_filter = ['published']
+    ordering = ['order', 'title']
+
+
+@admin.register(TechStackItem)
+class TechStackItemAdmin(admin.ModelAdmin):
+    list_display = ['name', 'published', 'order']
+    list_filter = ['published']
+    ordering = ['order', 'name']
+
+
+@admin.register(ProcessStep)
+class ProcessStepAdmin(admin.ModelAdmin):
+    list_display = ['title', 'published', 'order']
+    list_filter = ['published']
+    ordering = ['order', 'title']
+
+
+@admin.register(FAQ)
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ['question', 'published', 'order']
+    list_filter = ['published']
+    ordering = ['order', 'question']

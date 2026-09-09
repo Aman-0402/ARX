@@ -7,6 +7,11 @@ from .views import (
     TeamMemberListView,
     TestimonialListView,
     ClientListView,
+    IndustryListView,
+    CaseStudyListView,
+    TechStackItemListView,
+    ProcessStepListView,
+    FAQListView,
     BlogPostListView,
     BlogPostDetailView,
     BlogPostAdminViewSet,
@@ -17,6 +22,11 @@ from .views import (
     TeamMemberAdminViewSet,
     TestimonialAdminViewSet,
     ClientAdminViewSet,
+    IndustryAdminViewSet,
+    CaseStudyAdminViewSet,
+    TechStackItemAdminViewSet,
+    ProcessStepAdminViewSet,
+    FAQAdminViewSet,
     AdminStatsView,
     CsrfCookieView,
     LoginView,
@@ -32,6 +42,11 @@ admin_router.register('services', ServiceGroupAdminViewSet, basename='admin-serv
 admin_router.register('team', TeamMemberAdminViewSet, basename='admin-team')
 admin_router.register('testimonials', TestimonialAdminViewSet, basename='admin-testimonials')
 admin_router.register('clients', ClientAdminViewSet, basename='admin-clients')
+admin_router.register('industries', IndustryAdminViewSet, basename='admin-industries')
+admin_router.register('case-studies', CaseStudyAdminViewSet, basename='admin-case-studies')
+admin_router.register('tech-stack', TechStackItemAdminViewSet, basename='admin-tech-stack')
+admin_router.register('process-steps', ProcessStepAdminViewSet, basename='admin-process-steps')
+admin_router.register('faqs', FAQAdminViewSet, basename='admin-faqs')
 
 urlpatterns = [
     path('contact/', ContactSubmissionCreateView.as_view(), name='contact-create'),
@@ -40,6 +55,11 @@ urlpatterns = [
     path('team/', TeamMemberListView.as_view(), name='team-list'),
     path('testimonials/', TestimonialListView.as_view(), name='testimonials-list'),
     path('clients/', ClientListView.as_view(), name='clients-list'),
+    path('industries/', IndustryListView.as_view(), name='industries-list'),
+    path('case-studies/', CaseStudyListView.as_view(), name='case-studies-list'),
+    path('tech-stack/', TechStackItemListView.as_view(), name='tech-stack-list'),
+    path('process-steps/', ProcessStepListView.as_view(), name='process-steps-list'),
+    path('faqs/', FAQListView.as_view(), name='faqs-list'),
     path('blog/', BlogPostListView.as_view(), name='blog-list'),
     path('blog/submit/', BlogPostSubmitView.as_view(), name='blog-submit'),
     path('blog/<slug:slug>/', BlogPostDetailView.as_view(), name='blog-detail'),

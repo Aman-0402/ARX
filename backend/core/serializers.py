@@ -1,6 +1,19 @@
 from django.utils.text import slugify
 from rest_framework import serializers
-from .models import ContactSubmission, VerificationRecord, BlogPost, ServiceGroup, TeamMember, Testimonial, Client
+from .models import (
+    ContactSubmission,
+    VerificationRecord,
+    BlogPost,
+    ServiceGroup,
+    TeamMember,
+    Testimonial,
+    Client,
+    Industry,
+    CaseStudy,
+    TechStackItem,
+    ProcessStep,
+    FAQ,
+)
 
 
 class ContactSubmissionSerializer(serializers.ModelSerializer):
@@ -143,3 +156,63 @@ class TestimonialAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
         fields = ['id', 'quote', 'name', 'org', 'photo', 'order', 'published']
+
+
+class IndustryPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Industry
+        fields = ['name', 'description', 'icon']
+
+
+class IndustryAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Industry
+        fields = ['id', 'name', 'description', 'icon', 'order', 'published']
+
+
+class CaseStudyPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CaseStudy
+        fields = ['title', 'client_name', 'summary', 'result', 'image']
+
+
+class CaseStudyAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CaseStudy
+        fields = ['id', 'title', 'client_name', 'summary', 'result', 'image', 'order', 'published']
+
+
+class TechStackItemPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TechStackItem
+        fields = ['name', 'logo']
+
+
+class TechStackItemAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TechStackItem
+        fields = ['id', 'name', 'logo', 'order', 'published']
+
+
+class ProcessStepPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProcessStep
+        fields = ['title', 'description']
+
+
+class ProcessStepAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProcessStep
+        fields = ['id', 'title', 'description', 'order', 'published']
+
+
+class FAQPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQ
+        fields = ['question', 'answer']
+
+
+class FAQAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQ
+        fields = ['id', 'question', 'answer', 'order', 'published']

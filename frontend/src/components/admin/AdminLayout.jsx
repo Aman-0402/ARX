@@ -10,6 +10,11 @@ const links = [
   { to: '/admin/team', label: 'Team' },
   { to: '/admin/testimonials', label: 'Testimonials' },
   { to: '/admin/clients', label: 'Clients' },
+  { to: '/admin/industries', label: 'Industries' },
+  { to: '/admin/case-studies', label: 'Case studies' },
+  { to: '/admin/tech-stack', label: 'Technology stack' },
+  { to: '/admin/process-steps', label: 'Our process' },
+  { to: '/admin/faq', label: 'FAQ' },
 ]
 
 export default function AdminLayout() {

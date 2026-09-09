@@ -315,3 +315,50 @@ export async function deleteClient(id) {
   const res = await apiFetch(`/admin/clients/${id}/`, { method: 'DELETE' })
   if (!res.ok) throw new Error('Could not delete client.')
 }
+
+/**
+ * Factory for simple public-list + admin-CRUD resources (Industry, CaseStudy,
+ * TechStackItem, ProcessStep, FAQ) that all follow the same shape as
+ * Client/Testimonial above — avoids repeating the same 5 functions per resource.
+ */
+function makeSimpleResource(path, label, { multipart = false } = {}) {
+  const send = multipart ? apiFetchForm : apiFetch
+  return {
+    async fetchPublic() {
+      const res = await fetch(`${API_BASE}/${path}/`)
+      if (!res.ok) throw new Error(`Could not load ${label}.`)
+      return res.json()
+    },
+    async fetchAdmin() {
+      const res = await apiFetch(`/admin/${path}/`)
+      if (!res.ok) throw new Error(`Could not load ${label}.`)
+      return res.json()
+    },
+    async create(body) {
+      const res = await send(`/admin/${path}/`, { method: 'POST', ...(multipart ? { formData: body } : { body }) })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(Object.values(err)[0]?.[0] || `Could not create ${label} entry.`)
+      }
+      return res.json()
+    },
+    async update(id, body) {
+      const res = await send(`/admin/${path}/${id}/`, { method: 'PATCH', ...(multipart ? { formData: body } : { body }) })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(Object.values(err)[0]?.[0] || `Could not update ${label} entry.`)
+      }
+      return res.json()
+    },
+    async remove(id) {
+      const res = await apiFetch(`/admin/${path}/${id}/`, { method: 'DELETE' })
+      if (!res.ok) throw new Error(`Could not delete ${label} entry.`)
+    },
+  }
+}
+
+export const industryApi = makeSimpleResource('industries', 'industries')
+export const caseStudyApi = makeSimpleResource('case-studies', 'case studies', { multipart: true })
+export const techStackApi = makeSimpleResource('tech-stack', 'tech stack', { multipart: true })
+export const processStepApi = makeSimpleResource('process-steps', 'process steps')
+export const faqApi = makeSimpleResource('faqs', 'FAQs')
