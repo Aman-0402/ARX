@@ -125,8 +125,20 @@ CORS_ALLOW_CREDENTIALS = True
 # this backend (e.g. a subdomain split). The current prod setup serves both
 # from the same origin (arxinfo.tech), so this is empty by default — set
 # DJANGO_CSRF_TRUSTED_ORIGINS if that ever changes.
+#
+# In dev, Vite's proxy (changeOrigin: true) rewrites the Host header to
+# 127.0.0.1:8000 when forwarding to Django, but the browser's Origin header
+# still says localhost:5173 — Django's CSRF Origin check rejects that
+# mismatch unless it's explicitly trusted. Default to the Vite dev origin
+# when DEBUG and nothing else is configured, so `npm run dev` works out of
+# the box without every contributor needing to edit .env.
 csrf_trusted = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '')
-CSRF_TRUSTED_ORIGINS = csrf_trusted.split(',') if csrf_trusted else []
+if csrf_trusted:
+    CSRF_TRUSTED_ORIGINS = csrf_trusted.split(',')
+elif DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173']
+else:
+    CSRF_TRUSTED_ORIGINS = []
 
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
