@@ -80,12 +80,10 @@ export default function Login() {
           </Link>
         </motion.div>
 
-        {/* Rotating gradient border */}
-        <div className="relative overflow-hidden rounded-2xl p-[1.5px] shadow-xl shadow-ink/10">
-          <div className="animate-spin-slow absolute inset-[-60%] bg-[conic-gradient(from_0deg,transparent_0%,#2F6FED_15%,transparent_30%,transparent_60%,#FF6B6B_75%,transparent_90%)]" />
+        <div className="shadow-xl shadow-ink/10">
           <form
             onSubmit={handleSubmit}
-            className="relative rounded-2xl border border-slate-200 bg-paper/85 p-8"
+            className="rounded-2xl border border-slate-200 bg-paper/85 p-8"
           >
             <motion.div
               initial={{ scale: 0, rotate: -20 }}
