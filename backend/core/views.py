@@ -203,7 +203,9 @@ class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({'username': request.user.username, 'email': request.user.email})
+        response = Response({'username': request.user.username, 'email': request.user.email})
+        response['Cache-Control'] = 'no-store'
+        return response
 
 
 class ChangePasswordView(APIView):

@@ -14,6 +14,7 @@ async function apiFetch(path, { method = 'GET', body } = {}) {
     method,
     headers,
     credentials: 'include',
+    cache: 'no-store',
     body: body ? JSON.stringify(body) : undefined,
   })
   return res
@@ -24,6 +25,7 @@ async function apiFetchForm(path, { method = 'POST', formData }) {
     method,
     headers: { 'X-CSRFToken': getCookie('csrftoken') },
     credentials: 'include',
+    cache: 'no-store',
     body: formData,
   })
   return res
@@ -80,7 +82,8 @@ export async function login(username, password) {
 }
 
 export async function logout() {
-  await apiFetch('/auth/logout/', { method: 'POST' })
+  const res = await apiFetch('/auth/logout/', { method: 'POST' })
+  if (!res.ok) throw new Error('Could not sign out. Please try again.')
 }
 
 export async function fetchMe() {

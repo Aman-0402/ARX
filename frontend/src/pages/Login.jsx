@@ -6,7 +6,7 @@ import PasswordInput from '../components/PasswordInput.jsx'
 import LoginBackground from '../components/LoginBackground.jsx'
 
 export default function Login() {
-  const { status, login } = useAuth()
+  const { status, login, timedOut, clearTimedOut } = useAuth()
   const navigate = useNavigate()
   const [form, setForm] = useState({ username: '', password: '' })
   const [error, setError] = useState('')
@@ -26,6 +26,7 @@ export default function Login() {
     setError('')
     try {
       await login(form.username, form.password)
+      clearTimedOut()
       navigate('/admin', { replace: true })
     } catch (err) {
       setError(err.message)
@@ -48,6 +49,12 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="border border-slate-200 bg-paper/90 p-8 shadow-xl shadow-ink/5 backdrop-blur-sm">
           <span className="font-mono text-xs text-slate">Admin</span>
         <h1 className="mt-2 font-display text-2xl font-semibold text-graphite">Sign in</h1>
+
+        {timedOut && (
+          <p className="mt-4 border border-amber/30 bg-amber/10 px-3 py-2.5 text-sm text-amber-dim">
+            You were signed out due to inactivity. Please sign in again.
+          </p>
+        )}
 
         <div className="mt-6 space-y-4">
           <label className="block">

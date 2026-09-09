@@ -21,6 +21,14 @@ const links = [
 export default function AdminLayout() {
   const { user, logout } = useAuth()
 
+  async function handleSignOut() {
+    try {
+      await logout()
+    } catch (err) {
+      alert(err.message)
+    }
+  }
+
   return (
     <div className="flex min-h-screen bg-paper">
       <aside className="w-64 shrink-0 border-r border-slate-200 bg-paper">
@@ -58,7 +66,7 @@ export default function AdminLayout() {
           </a>
           <div className="flex items-center gap-4 text-sm">
             <span className="text-graphite">{user?.username}</span>
-            <button onClick={logout} className="text-slate hover:text-ink">
+            <button onClick={handleSignOut} className="text-slate hover:text-ink">
               Sign out
             </button>
           </div>

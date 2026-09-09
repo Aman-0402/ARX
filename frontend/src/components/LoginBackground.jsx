@@ -1,3 +1,6 @@
+import GradientBlobs from './motion/GradientBlobs.jsx'
+import StarField from './motion/StarField.jsx'
+
 const rows = [
   { text: 'SYS_STATUS: ONLINE   //   UPTIME: 99.98%   //   SECURE_ACCESS   //   ARX_INFOTECH   //   ', duration: 34, size: 'text-sm', opacity: 'opacity-[0.07]' },
   { text: 'AUTH_SERVICE: READY   //   ENCRYPTION: AES-256   //   SESSION: PROTECTED   //   ', duration: 46, size: 'text-lg', opacity: 'opacity-[0.06]', reverse: true },
@@ -9,6 +12,17 @@ const rows = [
 export default function LoginBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <GradientBlobs variant="blue" />
+      <StarField count={70} />
+
+      {/* Radar rings */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="animate-spin-slow h-[560px] w-[560px] rounded-full border border-dashed border-amber/20" />
+        <div className="animate-spin-slow-reverse absolute inset-0 m-auto h-[400px] w-[400px] rounded-full border border-dashed border-grape/20" />
+        <div className="animate-spin-slow absolute inset-0 m-auto h-[260px] w-[260px] rounded-full border border-dashed border-coral/20" />
+      </div>
+
+      {/* Drifting status text */}
       <div className="absolute inset-0 flex flex-col justify-around">
         {rows.map((row, i) => (
           <div
@@ -21,6 +35,7 @@ export default function LoginBackground() {
           </div>
         ))}
       </div>
+
       <div className="absolute inset-0 bg-gradient-to-b from-paper via-transparent to-paper" />
     </div>
   )
