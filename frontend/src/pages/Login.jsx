@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/use-auth.jsx'
 import SEO from '../components/SEO.jsx'
+import PasswordInput from '../components/PasswordInput.jsx'
+import LoginBackground from '../components/LoginBackground.jsx'
 
 export default function Login() {
   const { status, login } = useAuth()
@@ -33,16 +35,17 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-paper px-4">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-paper px-4">
       <SEO path="/login" title="Sign in" noindex />
-      <div className="w-full max-w-sm">
+      <LoginBackground />
+      <div className="relative z-10 w-full max-w-sm">
         <Link
           to="/"
           className="mb-4 inline-flex items-center gap-1.5 font-mono text-xs text-slate transition-colors hover:text-ink"
         >
           ← Back to site
         </Link>
-        <form onSubmit={handleSubmit} className="border border-slate-200 p-8">
+        <form onSubmit={handleSubmit} className="border border-slate-200 bg-paper/90 p-8 shadow-xl shadow-ink/5 backdrop-blur-sm">
           <span className="font-mono text-xs text-slate">Admin</span>
         <h1 className="mt-2 font-display text-2xl font-semibold text-graphite">Sign in</h1>
 
@@ -59,12 +62,10 @@ export default function Login() {
           </label>
           <label className="block">
             <span className="mb-1.5 block text-sm font-medium text-graphite">Password</span>
-            <input
+            <PasswordInput
               required
-              type="password"
               value={form.password}
               onChange={update('password')}
-              className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm text-graphite outline-none focus:border-ink"
             />
           </label>
         </div>

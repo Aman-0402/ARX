@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Field from '../../components/admin/Field.jsx'
+import PasswordInput from '../../components/PasswordInput.jsx'
 import { changePassword } from '../../lib/api.js'
 
 export default function AdminSettings() {
@@ -42,35 +43,29 @@ export default function AdminSettings() {
       <div className="mt-6 max-w-md">
         <form onSubmit={handleSubmit} className="space-y-4">
           <Field label="Current password" required>
-            <input
+            <PasswordInput
               required
-              type="password"
               autoComplete="current-password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
             />
           </Field>
           <Field label="New password" required>
-            <input
+            <PasswordInput
               required
-              type="password"
               autoComplete="new-password"
               minLength={8}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
             />
           </Field>
           <Field label="Confirm new password" required>
-            <input
+            <PasswordInput
               required
-              type="password"
               autoComplete="new-password"
               minLength={8}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
             />
           </Field>
 
