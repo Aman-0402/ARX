@@ -46,9 +46,8 @@ export default function Footer() {
       <div className="mx-auto max-w-[1400px] px-4 py-14">
         <StaggerGrid className="grid gap-10 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <StaggerItem>
-            <Link to="/" className="flex items-center gap-2.5">
-              <img src="/logo.png" alt="ARX Infotech" className="h-9 w-9 object-contain" />
-              <span className="font-display text-lg font-semibold">ARX Infotech</span>
+            <Link to="/" className="flex items-center">
+              <img src="/logo-full-white.png" alt="ARX Infotech — AI Powered Smart Innovation Company" className="h-11 object-contain" />
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-200/70">
               Technology-driven IT services and academic automation for businesses and

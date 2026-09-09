@@ -74,15 +74,15 @@ export default function Services() {
             <p className="rounded-2xl border border-slate-200 p-6 text-sm text-red-700">{error}</p>
           )}
           {status === 'ready' && (
-            <StaggerGrid className="grid gap-6 md:grid-cols-2">
+            <StaggerGrid className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {groups.map((group, i) => {
                 const a = accents[i % accents.length]
                 return (
                   <StaggerItem key={group.name}>
                     <motion.div
-                      whileHover={{ y: -8, rotate: -0.5 }}
+                      whileHover={{ y: -6 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                      className={`h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 bg-white shadow-md transition-all duration-300 hover:shadow-xl ${a.border} ${a.ring} ${a.glow}`}
+                      className={`h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-xl ${a.glow}`}
                     >
                       {group.image ? (
                         <div className="overflow-hidden">
@@ -90,27 +90,29 @@ export default function Services() {
                             src={group.image}
                             alt=""
                             loading="lazy"
-                            className="h-44 w-full object-cover transition-transform duration-500 hover:scale-110"
+                            className="h-36 w-full object-cover transition-transform duration-500 hover:scale-110"
                           />
                         </div>
                       ) : (
-                        <div className={`flex h-32 items-center justify-center bg-gradient-to-br to-white ${a.tint}`}>
-                          <span className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${a.chip}`}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
-                              {icons[i % icons.length]}
-                            </svg>
-                          </span>
-                        </div>
+                        <div className={`h-20 bg-gradient-to-br to-white ${a.tint}`} />
                       )}
-                      <div className="p-8">
-                        <h2 className="font-display text-2xl font-semibold text-graphite">{group.name}</h2>
-                        <div className="mt-5 flex flex-wrap gap-2">
+                      <div className="relative px-7 pb-7">
+                        <span className={`absolute -top-7 left-7 inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-md ${a.chip}`}>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                            {icons[i % icons.length]}
+                          </svg>
+                        </span>
+                        <h2 className="pt-11 font-display text-xl font-semibold text-graphite">{group.name}</h2>
+                        <ul className="mt-4 space-y-2.5 border-t border-slate-100 pt-4">
                           {group.items.map((item) => (
-                            <span key={item} className={`rounded-full px-3.5 py-1.5 text-sm font-medium ${a.chip}`}>
+                            <li key={item} className="flex items-start gap-2.5 text-sm text-slate">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`mt-0.5 h-4 w-4 flex-shrink-0 ${a.chip.split(' ')[1]}`}>
+                                <path d="M20 6 9 17l-5-5" />
+                              </svg>
                               {item}
-                            </span>
+                            </li>
                           ))}
-                        </div>
+                        </ul>
                       </div>
                     </motion.div>
                   </StaggerItem>

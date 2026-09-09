@@ -39,13 +39,12 @@ export default function Navbar() {
         }`}
       >
         <div className="flex items-center justify-between px-4 py-3">
-          <NavLink to="/" className="group flex items-center gap-2.5" onClick={() => setOpen(false)}>
+          <NavLink to="/" className="group flex items-center" onClick={() => setOpen(false)}>
             <img
-              src="/logo.png"
-              alt="ARX Infotech"
-              className="h-8 w-8 object-contain transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
+              src="/logo-full.png"
+              alt="ARX Infotech — AI Powered Smart Innovation Company"
+              className="h-9 object-contain transition-transform duration-300 group-hover:scale-105"
             />
-            <span className="font-display text-lg font-semibold text-graphite">ARX Infotech</span>
           </NavLink>
 
           <nav className="hidden items-center gap-1 md:flex">

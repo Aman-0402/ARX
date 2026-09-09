@@ -30,11 +30,8 @@ async function apiFetchForm(path, { method = 'POST', formData }) {
 }
 
 export async function submitContact(payload) {
-  const res = await fetch(`${API_BASE}/contact/`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  })
+  await fetchCsrfCookie()
+  const res = await apiFetch('/contact/', { method: 'POST', body: payload })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(err.detail || 'Could not send your message. Please try again.')

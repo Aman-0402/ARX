@@ -133,17 +133,14 @@ export default function Home() {
         <div className="mx-auto grid max-w-[1400px] gap-12 px-4 pb-16 pt-6 md:grid-cols-[1.15fr_1fr] md:items-center md:pb-20 md:pt-8">
           <div>
             <Reveal as="h1" className="font-display text-3xl font-semibold leading-[1.1] text-graphite sm:text-4xl md:text-6xl lg:text-7xl">
-              IT services and{' '}
+              Modern tech,{' '}
               <span className="bg-gradient-to-r from-amber via-grape to-coral bg-clip-text text-transparent">
-                modern tech
-              </span>{' '}
-              solutions for growing businesses
+                built to scale
+              </span>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mt-7 max-w-lg text-lg leading-relaxed text-slate">
-                ARX Infotech delivers scalable IT services, software development, cloud
-                migration, and academic automation solutions to help organizations
-                grow faster.
+                IT services, software, and cloud solutions engineered for growth.
               </p>
             </Reveal>
             <Reveal delay={0.25} className="mt-10 flex flex-wrap gap-4">
@@ -378,33 +375,43 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden bg-ink">
+      <section className="relative overflow-hidden bg-ink py-24">
         <GradientBlobs variant="warm" />
-        <Reveal className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-8 px-4 py-24 md:flex-row md:items-center">
-          <div>
-            <h2 className="font-display text-4xl font-semibold leading-tight text-paper md:text-5xl">
-              Need IT support or custom software?
-            </h2>
-            <p className="mt-4 max-w-md text-lg text-slate-200/70">
-              Get a free consultation and discover the best technology solution for your business.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-4">
-            <Link
-              to="/contact"
-              className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-amber bg-amber px-7 py-4 text-base font-semibold text-ink shadow-lg shadow-amber/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber/50"
-            >
-              <span className="absolute inset-0 origin-right scale-x-0 bg-paper transition-transform duration-300 ease-out group-hover:scale-x-100" />
-              <span className="relative">Get consultation</span>
-              <span className="relative transition-transform duration-300 group-hover:translate-x-1.5">→</span>
-            </Link>
-            <a
-              href="tel:+918317818107"
-              className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-slate-700 px-7 py-4 text-base font-medium text-paper transition-all duration-300 hover:-translate-y-0.5 hover:border-paper"
-            >
-              <span className="absolute inset-0 origin-right scale-x-0 bg-paper transition-transform duration-300 ease-out group-hover:scale-x-100" />
-              <span className="relative transition-colors duration-300 group-hover:text-ink">Call now</span>
-            </a>
+        <StarField count={60} />
+        <Reveal className="relative mx-auto max-w-[1100px] px-4">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-700/60 bg-gradient-to-br from-slate-900/80 via-ink to-slate-900/80 px-8 py-14 shadow-2xl shadow-black/40 sm:px-14 sm:py-16">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-amber/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-grape/20 blur-3xl" />
+            <div className="relative flex flex-col items-start gap-8 md:flex-row md:items-center md:justify-between">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-amber/30 bg-amber/10 px-4 py-1.5 text-sm font-medium text-amber">
+                  Free consultation
+                </span>
+                <h2 className="mt-5 max-w-lg font-display text-4xl font-semibold leading-tight text-paper md:text-5xl">
+                  Need IT support or custom software?
+                </h2>
+                <p className="mt-4 max-w-md text-lg text-slate-200/70">
+                  Let's find the right technology solution for your business — no obligation.
+                </p>
+              </div>
+              <div className="flex flex-shrink-0 flex-wrap gap-4">
+                <Link
+                  to="/contact"
+                  className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-amber bg-amber px-7 py-4 text-base font-semibold text-ink shadow-lg shadow-amber/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber/50"
+                >
+                  <span className="absolute inset-0 origin-right scale-x-0 bg-paper transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                  <span className="relative">Get consultation</span>
+                  <span className="relative transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                </Link>
+                <a
+                  href="tel:+918317818107"
+                  className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-xl border-2 border-slate-700 px-7 py-4 text-base font-medium text-paper transition-all duration-300 hover:-translate-y-0.5 hover:border-paper"
+                >
+                  <span className="absolute inset-0 origin-right scale-x-0 bg-paper transition-transform duration-300 ease-out group-hover:scale-x-100" />
+                  <span className="relative transition-colors duration-300 group-hover:text-ink">Call now</span>
+                </a>
+              </div>
+            </div>
           </div>
         </Reveal>
       </section>
