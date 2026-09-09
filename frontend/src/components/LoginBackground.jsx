@@ -48,9 +48,6 @@ export default function LoginBackground() {
         />
       ))}
 
-      {/* Scanning beam sweep */}
-      <div className="animate-scan absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-transparent via-amber/[0.08] to-transparent" />
-
       <div className="absolute inset-0 bg-gradient-to-b from-ink via-transparent to-ink" />
     </div>
   )
