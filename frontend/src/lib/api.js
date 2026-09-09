@@ -89,6 +89,17 @@ export async function fetchMe() {
   return res.json()
 }
 
+export async function changePassword(currentPassword, newPassword) {
+  const res = await apiFetch('/auth/change-password/', {
+    method: 'POST',
+    body: { current_password: currentPassword, new_password: newPassword },
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.detail || 'Could not change password.')
+  }
+}
+
 export async function fetchAdminPosts() {
   const res = await apiFetch('/admin/blog/')
   if (!res.ok) throw new Error('Could not load posts.')

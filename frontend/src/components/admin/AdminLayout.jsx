@@ -15,6 +15,7 @@ const links = [
   { to: '/admin/tech-stack', label: 'Technology stack' },
   { to: '/admin/process-steps', label: 'Our process' },
   { to: '/admin/faq', label: 'FAQ' },
+  { to: '/admin/settings', label: 'Settings' },
 ]
 
 export default function AdminLayout() {

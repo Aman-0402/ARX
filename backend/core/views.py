@@ -1,4 +1,6 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -202,6 +204,29 @@ class MeView(APIView):
 
     def get(self, request):
         return Response({'username': request.user.username, 'email': request.user.email})
+
+
+class ChangePasswordView(APIView):
+    """POST /api/auth/change-password/ — { current_password, new_password }."""
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        current_password = request.data.get('current_password', '')
+        new_password = request.data.get('new_password', '')
+
+        if not request.user.check_password(current_password):
+            return Response({'detail': 'Current password is incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            validate_password(new_password, user=request.user)
+        except DjangoValidationError as exc:
+            return Response({'detail': ' '.join(exc.messages)}, status=status.HTTP_400_BAD_REQUEST)
+
+        request.user.set_password(new_password)
+        request.user.save()
+        update_session_auth_hash(request, request.user)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BlogPostAdminViewSet(viewsets.ModelViewSet):

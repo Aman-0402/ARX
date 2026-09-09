@@ -29,6 +29,7 @@ const AdminCaseStudies = lazy(() => import('./pages/admin/AdminCaseStudies.jsx')
 const AdminTechStack = lazy(() => import('./pages/admin/AdminTechStack.jsx'))
 const AdminProcessSteps = lazy(() => import('./pages/admin/AdminProcessSteps.jsx'))
 const AdminFAQ = lazy(() => import('./pages/admin/AdminFAQ.jsx'))
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings.jsx'))
 
 function PageLoader() {
   // Only appears if the chunk is still loading after 300ms, so fast/cached
@@ -104,6 +105,7 @@ export default function App() {
                   <Route path="tech-stack" element={<AdminTechStack />} />
                   <Route path="process-steps" element={<AdminProcessSteps />} />
                   <Route path="faq" element={<AdminFAQ />} />
+                  <Route path="settings" element={<AdminSettings />} />
                 </Route>
               </Routes>
             </Suspense>

@@ -32,6 +32,7 @@ from .views import (
     LoginView,
     LogoutView,
     MeView,
+    ChangePasswordView,
 )
 
 admin_router = DefaultRouter()
@@ -67,6 +68,7 @@ urlpatterns = [
     path('auth/login/', LoginView.as_view(), name='auth-login'),
     path('auth/logout/', LogoutView.as_view(), name='auth-logout'),
     path('auth/me/', MeView.as_view(), name='auth-me'),
+    path('auth/change-password/', ChangePasswordView.as_view(), name='auth-change-password'),
     path('admin/stats/', AdminStatsView.as_view(), name='admin-stats'),
     path('admin/', include(admin_router.urls)),
 ]
