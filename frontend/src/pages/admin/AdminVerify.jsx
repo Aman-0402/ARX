@@ -6,6 +6,7 @@ import {
   updateVerifyRecord,
   deleteVerifyRecord,
 } from '../../lib/api.js'
+import { confirmDelete } from '../../lib/alerts.js'
 
 const RECORD_TYPES = [
   ['certificate', 'Training certificate'],
@@ -84,7 +85,7 @@ export default function AdminVerify() {
   }
 
   async function handleDelete(code) {
-    if (!window.confirm('Delete this record?')) return
+    if (!(await confirmDelete())) return
     try {
       await deleteVerifyRecord(code)
       if (editingCode === code) cancelEdit()

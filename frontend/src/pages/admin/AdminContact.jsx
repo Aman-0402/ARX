@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { fetchAdminContacts, setContactHandled, deleteContact } from '../../lib/api.js'
+import { confirmDelete } from '../../lib/alerts.js'
 
 export default function AdminContact() {
   const [submissions, setSubmissions] = useState([])
@@ -31,7 +32,7 @@ export default function AdminContact() {
   }
 
   async function handleDelete(id) {
-    if (!window.confirm('Delete this submission?')) return
+    if (!(await confirmDelete())) return
     try {
       await deleteContact(id)
       load()

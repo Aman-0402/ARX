@@ -7,6 +7,7 @@ import {
   updateAdminPost,
   deleteAdminPost,
 } from '../../lib/api.js'
+import { confirmDelete } from '../../lib/alerts.js'
 
 const emptyForm = {
   title: '',
@@ -101,7 +102,7 @@ export default function AdminBlog() {
   }
 
   async function handleDelete(slug) {
-    if (!window.confirm('Delete this post?')) return
+    if (!(await confirmDelete())) return
     try {
       await deleteAdminPost(slug)
       if (editingSlug === slug) cancelEdit()

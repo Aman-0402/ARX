@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Field from './Field.jsx'
+import { confirmDelete } from '../../lib/alerts.js'
 
 /**
  * Generic list+form admin CRUD page for simple resources (Industry, CaseStudy,
@@ -97,7 +98,7 @@ export default function SimpleCrudPage({ title, description, api, fields, itemLa
   }
 
   async function handleDelete(id) {
-    if (!window.confirm('Delete this entry?')) return
+    if (!(await confirmDelete())) return
     try {
       await api.remove(id)
       if (editingId === id) cancelEdit()

@@ -6,6 +6,7 @@ import {
   updateServiceGroup,
   deleteServiceGroup,
 } from '../../lib/api.js'
+import { confirmDelete } from '../../lib/alerts.js'
 
 const emptyForm = { name: '', order: 0, items: '', photo: null }
 
@@ -75,7 +76,7 @@ export default function AdminServices() {
   }
 
   async function handleDelete(id) {
-    if (!window.confirm('Delete this service group?')) return
+    if (!(await confirmDelete())) return
     try {
       await deleteServiceGroup(id)
       if (editingId === id) cancelEdit()

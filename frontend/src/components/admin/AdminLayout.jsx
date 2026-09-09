@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '../../hooks/use-auth.jsx'
+import { showError } from '../../lib/alerts.js'
 
 const links = [
   { to: '/admin', label: 'Overview', end: true },
@@ -25,7 +26,7 @@ export default function AdminLayout() {
     try {
       await logout()
     } catch (err) {
-      alert(err.message)
+      showError(err.message)
     }
   }
 

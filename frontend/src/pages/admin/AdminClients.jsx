@@ -6,6 +6,7 @@ import {
   updateClient,
   deleteClient,
 } from '../../lib/api.js'
+import { confirmDelete } from '../../lib/alerts.js'
 
 const emptyForm = { name: '', website: '', order: 0, published: true, logo: null }
 
@@ -79,7 +80,7 @@ export default function AdminClients() {
   }
 
   async function handleDelete(id) {
-    if (!window.confirm('Delete this client?')) return
+    if (!(await confirmDelete())) return
     try {
       await deleteClient(id)
       if (editingId === id) cancelEdit()

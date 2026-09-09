@@ -6,6 +6,7 @@ import {
   updateTestimonial,
   deleteTestimonial,
 } from '../../lib/api.js'
+import { confirmDelete } from '../../lib/alerts.js'
 
 const emptyForm = { quote: '', name: '', org: '', order: 0, published: true, photo: null }
 
@@ -80,7 +81,7 @@ export default function AdminTestimonials() {
   }
 
   async function handleDelete(id) {
-    if (!window.confirm('Delete this testimonial?')) return
+    if (!(await confirmDelete())) return
     try {
       await deleteTestimonial(id)
       if (editingId === id) cancelEdit()

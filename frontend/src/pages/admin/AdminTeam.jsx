@@ -6,6 +6,7 @@ import {
   updateTeamMember,
   deleteTeamMember,
 } from '../../lib/api.js'
+import { confirmDelete } from '../../lib/alerts.js'
 
 const emptyForm = { name: '', role: '', bio: '', order: 0, photo: null }
 
@@ -76,7 +77,7 @@ export default function AdminTeam() {
   }
 
   async function handleDelete(id) {
-    if (!window.confirm('Delete this team member?')) return
+    if (!(await confirmDelete())) return
     try {
       await deleteTeamMember(id)
       if (editingId === id) cancelEdit()
