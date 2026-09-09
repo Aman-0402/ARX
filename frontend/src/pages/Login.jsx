@@ -85,7 +85,7 @@ export default function Login() {
           <div className="animate-spin-slow absolute inset-[-60%] bg-[conic-gradient(from_0deg,transparent_0%,#2F6FED_15%,transparent_30%,transparent_60%,#FF6B6B_75%,transparent_90%)]" />
           <form
             onSubmit={handleSubmit}
-            className="relative rounded-2xl border border-slate-200 bg-paper/95 p-8 backdrop-blur-sm"
+            className="relative rounded-2xl border border-slate-200 bg-paper/85 p-8"
           >
             <motion.div
               initial={{ scale: 0, rotate: -20 }}
