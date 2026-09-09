@@ -4,6 +4,7 @@ import { techStackApi } from '../../lib/api.js'
 const fields = [
   { key: 'name', label: 'Name', type: 'text', required: true },
   { key: 'logo', label: 'Logo', type: 'file', required: true },
+  { key: 'logo_alt', label: 'Logo alt text (optional)', type: 'text' },
   { key: 'order', label: 'Order', type: 'number', required: true },
   { key: 'published', label: 'Published', type: 'checkbox' },
 ]

@@ -88,7 +88,7 @@ export default function Services() {
                         <div className="overflow-hidden">
                           <img
                             src={group.image}
-                            alt=""
+                            alt={group.image_alt || group.name}
                             loading="lazy"
                             className="h-36 w-full object-cover transition-transform duration-500 hover:scale-110"
                           />

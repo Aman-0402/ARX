@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import Field from './Field.jsx'
-import { confirmDelete } from '../../lib/alerts.js'
+import Pagination from './Pagination.jsx'
+import SearchBox from './SearchBox.jsx'
+import { confirmDelete, showError } from '../../lib/alerts.js'
+import { useDragReorder } from '../../hooks/use-drag-reorder.js'
+
+const PAGE_SIZE = 5
 
 /**
  * Generic list+form admin CRUD page for simple resources (Industry, CaseStudy,
@@ -9,14 +14,18 @@ import { confirmDelete } from '../../lib/alerts.js'
  * "published" toggle. Config-driven so each resource page is just a fields list.
  *
  * fields: [{ key, label, type: 'text'|'textarea'|'number'|'checkbox'|'file', required }]
+ * reorderable: true if the list supports drag-drop reordering (needs an `order` field)
  */
-export default function SimpleCrudPage({ title, description, api, fields, itemLabel, imageField }) {
+export default function SimpleCrudPage({ title, description, api, fields, itemLabel, imageField, reorderable = true }) {
   const emptyForm = Object.fromEntries(
     fields.map((f) => [f.key, f.type === 'checkbox' ? true : f.type === 'number' ? 0 : f.type === 'file' ? null : ''])
   )
   const hasFile = fields.some((f) => f.type === 'file')
 
   const [items, setItems] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
   const [form, setForm] = useState(emptyForm)
@@ -25,9 +34,10 @@ export default function SimpleCrudPage({ title, description, api, fields, itemLa
 
   function load() {
     setStatus('loading')
-    api.fetchAdmin()
+    api.fetchAdmin({ page, search })
       .then((data) => {
-        setItems(data)
+        setItems(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
@@ -36,7 +46,12 @@ export default function SimpleCrudPage({ title, description, api, fields, itemLa
       })
   }
 
-  useEffect(load, [])
+  useEffect(load, [page, search])
+
+  function handleSearch(value) {
+    setSearch(value)
+    setPage(1)
+  }
 
   function update(field) {
     return (e) => {
@@ -60,33 +75,36 @@ export default function SimpleCrudPage({ title, description, api, fields, itemLa
     setForm(emptyForm)
   }
 
+  function buildBody(source) {
+    if (hasFile) {
+      const body = new FormData()
+      for (const f of fields) {
+        if (f.type === 'file') {
+          if (source[f.key]) body.set(f.key, source[f.key])
+        } else if (f.type === 'number') {
+          body.set(f.key, String(Number(source[f.key]) || 0))
+        } else {
+          body.set(f.key, String(source[f.key]))
+        }
+      }
+      return body
+    }
+    const body = {}
+    for (const f of fields) {
+      body[f.key] = f.type === 'number' ? Number(source[f.key]) || 0 : source[f.key]
+    }
+    return body
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setSaving(true)
     setError('')
-    let body
-    if (hasFile) {
-      body = new FormData()
-      for (const f of fields) {
-        if (f.type === 'file') {
-          if (form[f.key]) body.set(f.key, form[f.key])
-        } else if (f.type === 'number') {
-          body.set(f.key, String(Number(form[f.key]) || 0))
-        } else {
-          body.set(f.key, String(form[f.key]))
-        }
-      }
-    } else {
-      body = {}
-      for (const f of fields) {
-        body[f.key] = f.type === 'number' ? Number(form[f.key]) || 0 : form[f.key]
-      }
-    }
     try {
       if (editingId) {
-        await api.update(editingId, body)
+        await api.update(editingId, buildBody(form))
       } else {
-        await api.create(body)
+        await api.create(buildBody(form))
       }
       cancelEdit()
       load()
@@ -107,6 +125,30 @@ export default function SimpleCrudPage({ title, description, api, fields, itemLa
       setError(err.message)
     }
   }
+
+  async function handleReordered(newItems) {
+    setItems(newItems)
+    try {
+      await Promise.all(
+        newItems.map((item, i) => {
+          const newOrder = i
+          if (item.order === newOrder) return Promise.resolve()
+          return api.update(item.id, fields.some((f) => f.type === 'file') ? (() => {
+            const fd = new FormData()
+            fd.set('order', String(newOrder))
+            return fd
+          })() : { order: newOrder })
+        })
+      )
+      load()
+    } catch (err) {
+      showError('Could not save new order.')
+      load()
+    }
+  }
+
+  const { overIndex, onDragStart, onDragOver, onDrop, onDragEnd } = useDragReorder(items, handleReordered)
+  const canReorder = reorderable && !search && fields.some((f) => f.key === 'order')
 
   return (
     <div>
@@ -182,18 +224,33 @@ export default function SimpleCrudPage({ title, description, api, fields, itemLa
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-semibold text-graphite">All entries</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-lg font-semibold text-graphite">All entries</h2>
+            <SearchBox onSearch={handleSearch} placeholder="Search…" />
+          </div>
+          {canReorder && items.length > 1 && (
+            <p className="mt-2 text-xs text-slate">Drag rows to reorder.</p>
+          )}
           {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
           {status === 'ready' && items.length === 0 && (
-            <p className="mt-4 text-sm text-slate">Nothing yet.</p>
+            <p className="mt-4 text-sm text-slate">Nothing found.</p>
           )}
           <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
-            {items.map((item) => (
-              <li key={item.id} className="flex items-center justify-between gap-4 py-4">
+            {items.map((item, i) => (
+              <li
+                key={item.id}
+                draggable={canReorder}
+                onDragStart={canReorder ? onDragStart(i) : undefined}
+                onDragOver={canReorder ? onDragOver(i) : undefined}
+                onDrop={canReorder ? onDrop(i) : undefined}
+                onDragEnd={canReorder ? onDragEnd : undefined}
+                className={`flex items-center justify-between gap-4 py-4 ${canReorder ? 'cursor-move' : ''} ${overIndex === i ? 'bg-slate-50' : ''}`}
+              >
                 <div className="flex items-center gap-3">
+                  {canReorder && <span className="text-slate-300">⠿</span>}
                   {imageField && (
                     item[imageField] ? (
-                      <img src={item[imageField]} alt="" loading="lazy" className="h-10 w-10 rounded-sm object-contain" />
+                      <img src={item[imageField]} alt={item[`${imageField}_alt`] || ''} loading="lazy" className="h-10 w-10 rounded-sm object-contain" />
                     ) : (
                       <div className="h-10 w-10 rounded-sm bg-slate-200" />
                     )
@@ -217,6 +274,7 @@ export default function SimpleCrudPage({ title, description, api, fields, itemLa
               </li>
             ))}
           </ul>
+          <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </div>
       </div>
     </div>

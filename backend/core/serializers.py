@@ -45,13 +45,13 @@ class VerificationRecordAdminSerializer(serializers.ModelSerializer):
 class BlogPostListSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogPost
-        fields = ['slug', 'title', 'excerpt', 'cover_image', 'published_at']
+        fields = ['slug', 'title', 'excerpt', 'cover_image', 'cover_image_alt', 'published_at']
 
 
 class BlogPostDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogPost
-        fields = ['slug', 'title', 'excerpt', 'content', 'cover_image', 'published_at']
+        fields = ['slug', 'title', 'excerpt', 'content', 'cover_image', 'cover_image_alt', 'published_at']
 
 
 def _unique_blog_slug(title):
@@ -71,7 +71,7 @@ class BlogPostAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogPost
         fields = [
-            'id', 'slug', 'title', 'excerpt', 'content', 'cover_image',
+            'id', 'slug', 'title', 'excerpt', 'content', 'cover_image', 'cover_image_alt',
             'published', 'published_at', 'submitter_name', 'submitter_email',
         ]
         read_only_fields = ['submitter_name', 'submitter_email']
@@ -110,7 +110,7 @@ class ServiceGroupPublicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ServiceGroup
-        fields = ['name', 'image', 'items']
+        fields = ['name', 'image', 'image_alt', 'items']
 
     def get_items(self, obj):
         return obj.items_list()
@@ -119,43 +119,43 @@ class ServiceGroupPublicSerializer(serializers.ModelSerializer):
 class ServiceGroupAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceGroup
-        fields = ['id', 'name', 'order', 'image', 'items']
+        fields = ['id', 'name', 'order', 'image', 'image_alt', 'items']
 
 
 class TeamMemberPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMember
-        fields = ['name', 'role', 'bio', 'photo']
+        fields = ['name', 'role', 'bio', 'photo', 'photo_alt']
 
 
 class TeamMemberAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMember
-        fields = ['id', 'name', 'role', 'bio', 'photo', 'order']
+        fields = ['id', 'name', 'role', 'bio', 'photo', 'photo_alt', 'order']
 
 
 class ClientPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ['name', 'logo', 'website']
+        fields = ['name', 'logo', 'logo_alt', 'website']
 
 
 class ClientAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ['id', 'name', 'logo', 'website', 'order', 'published']
+        fields = ['id', 'name', 'logo', 'logo_alt', 'website', 'order', 'published']
 
 
 class TestimonialPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
-        fields = ['quote', 'name', 'org', 'photo']
+        fields = ['quote', 'name', 'org', 'photo', 'photo_alt']
 
 
 class TestimonialAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
-        fields = ['id', 'quote', 'name', 'org', 'photo', 'order', 'published']
+        fields = ['id', 'quote', 'name', 'org', 'photo', 'photo_alt', 'order', 'published']
 
 
 class IndustryPublicSerializer(serializers.ModelSerializer):
@@ -170,28 +170,65 @@ class IndustryAdminSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'icon', 'order', 'published']
 
 
-class CaseStudyPublicSerializer(serializers.ModelSerializer):
+class CaseStudyListSerializer(serializers.ModelSerializer):
     class Meta:
         model = CaseStudy
-        fields = ['title', 'client_name', 'summary', 'result', 'image']
+        fields = ['slug', 'title', 'client_name', 'summary', 'result', 'image', 'image_alt']
+
+
+class CaseStudyDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CaseStudy
+        fields = ['slug', 'title', 'client_name', 'summary', 'content', 'result', 'image', 'image_alt']
+
+
+def _unique_case_study_slug(title):
+    base = slugify(title)[:220]
+    slug = base
+    n = 2
+    while CaseStudy.objects.filter(slug=slug).exists():
+        suffix = f'-{n}'
+        slug = f'{base[:220 - len(suffix)]}{suffix}'
+        n += 1
+    return slug
 
 
 class CaseStudyAdminSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(max_length=220, required=False)
+
     class Meta:
         model = CaseStudy
-        fields = ['id', 'title', 'client_name', 'summary', 'result', 'image', 'order', 'published']
+        fields = [
+            'id', 'slug', 'title', 'client_name', 'summary', 'content', 'result',
+            'image', 'image_alt', 'order', 'published',
+        ]
+
+    def validate_slug(self, value):
+        if not value:
+            return value
+        qs = CaseStudy.objects.filter(slug=value)
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise serializers.ValidationError('A case study with this slug already exists.')
+        return value
+
+    def create(self, validated_data):
+        if not validated_data.get('slug'):
+            validated_data['slug'] = _unique_case_study_slug(validated_data['title'])
+        return super().create(validated_data)
 
 
 class TechStackItemPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = TechStackItem
-        fields = ['name', 'logo']
+        fields = ['name', 'logo', 'logo_alt']
 
 
 class TechStackItemAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = TechStackItem
-        fields = ['id', 'name', 'logo', 'order', 'published']
+        fields = ['id', 'name', 'logo', 'logo_alt', 'order', 'published']
 
 
 class ProcessStepPublicSerializer(serializers.ModelSerializer):

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import Field from '../../components/admin/Field.jsx'
+import Pagination from '../../components/admin/Pagination.jsx'
+import SearchBox from '../../components/admin/SearchBox.jsx'
 import {
   fetchAdminVerifyRecords,
   createVerifyRecord,
@@ -7,6 +9,8 @@ import {
   deleteVerifyRecord,
 } from '../../lib/api.js'
 import { confirmDelete } from '../../lib/alerts.js'
+
+const PAGE_SIZE = 5
 
 const RECORD_TYPES = [
   ['certificate', 'Training certificate'],
@@ -24,6 +28,9 @@ const emptyForm = {
 
 export default function AdminVerify() {
   const [records, setRecords] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [error, setError] = useState('')
   const [form, setForm] = useState(emptyForm)
@@ -32,9 +39,10 @@ export default function AdminVerify() {
 
   function load() {
     setStatus('loading')
-    fetchAdminVerifyRecords()
+    fetchAdminVerifyRecords({ page, search })
       .then((data) => {
-        setRecords(data)
+        setRecords(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
@@ -43,7 +51,12 @@ export default function AdminVerify() {
       })
   }
 
-  useEffect(load, [])
+  useEffect(load, [page, search])
+
+  function handleSearch(value) {
+    setSearch(value)
+    setPage(1)
+  }
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
@@ -179,10 +192,13 @@ export default function AdminVerify() {
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-semibold text-graphite">All records</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-lg font-semibold text-graphite">All records</h2>
+            <SearchBox onSearch={handleSearch} placeholder="Search records…" />
+          </div>
           {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
           {status === 'ready' && records.length === 0 && (
-            <p className="mt-4 text-sm text-slate">No records yet.</p>
+            <p className="mt-4 text-sm text-slate">No records found.</p>
           )}
           <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
             {records.map((record) => (
@@ -202,6 +218,7 @@ export default function AdminVerify() {
               </li>
             ))}
           </ul>
+          <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </div>
       </div>
     </div>

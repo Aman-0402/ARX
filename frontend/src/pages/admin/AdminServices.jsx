@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react'
 import Field from '../../components/admin/Field.jsx'
+import Pagination from '../../components/admin/Pagination.jsx'
+import SearchBox from '../../components/admin/SearchBox.jsx'
 import {
   fetchAdminServiceGroups,
   createServiceGroup,
   updateServiceGroup,
   deleteServiceGroup,
 } from '../../lib/api.js'
-import { confirmDelete } from '../../lib/alerts.js'
+import { confirmDelete, showError } from '../../lib/alerts.js'
+import { useDragReorder } from '../../hooks/use-drag-reorder.js'
 
-const emptyForm = { name: '', order: 0, items: '', photo: null }
+const PAGE_SIZE = 5
+
+const emptyForm = { name: '', order: 0, items: '', photo: null, image_alt: '' }
 
 export default function AdminServices() {
   const [groups, setGroups] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [error, setError] = useState('')
   const [form, setForm] = useState(emptyForm)
@@ -20,9 +28,10 @@ export default function AdminServices() {
 
   function load() {
     setStatus('loading')
-    fetchAdminServiceGroups()
+    fetchAdminServiceGroups({ page, search })
       .then((data) => {
-        setGroups(data)
+        setGroups(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
@@ -31,7 +40,33 @@ export default function AdminServices() {
       })
   }
 
-  useEffect(load, [])
+  useEffect(load, [page, search])
+
+  function handleSearch(value) {
+    setSearch(value)
+    setPage(1)
+  }
+
+  async function handleReordered(newGroups) {
+    setGroups(newGroups)
+    try {
+      await Promise.all(
+        newGroups.map((g, i) => {
+          if (g.order === i) return Promise.resolve()
+          const fd = new FormData()
+          fd.set('order', String(i))
+          return updateServiceGroup(g.id, fd)
+        })
+      )
+      load()
+    } catch {
+      showError('Could not save new order.')
+      load()
+    }
+  }
+
+  const { overIndex, onDragStart, onDragOver, onDrop, onDragEnd } = useDragReorder(groups, handleReordered)
+  const canReorder = !search
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
@@ -43,7 +78,7 @@ export default function AdminServices() {
 
   function startEdit(group) {
     setEditingId(group.id)
-    setForm({ name: group.name, order: group.order, items: group.items, photo: null })
+    setForm({ name: group.name, order: group.order, items: group.items, photo: null, image_alt: group.image_alt || '' })
   }
 
   function cancelEdit() {
@@ -60,6 +95,7 @@ export default function AdminServices() {
     formData.set('order', String(Number(form.order) || 0))
     formData.set('items', form.items)
     if (form.photo) formData.set('image', form.photo)
+    formData.set('image_alt', form.image_alt)
     try {
       if (editingId) {
         await updateServiceGroup(editingId, formData)
@@ -127,6 +163,14 @@ export default function AdminServices() {
                 className="w-full text-sm text-graphite"
               />
             </Field>
+            <Field label="Image alt text (optional)">
+              <input
+                type="text"
+                value={form.image_alt}
+                onChange={update('image_alt')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
             <Field label="Items (one per line)">
               <textarea
                 rows={6}
@@ -158,17 +202,32 @@ export default function AdminServices() {
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-semibold text-graphite">All groups</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-lg font-semibold text-graphite">All groups</h2>
+            <SearchBox onSearch={handleSearch} placeholder="Search groups…" />
+          </div>
+          {canReorder && groups.length > 1 && (
+            <p className="mt-2 text-xs text-slate">Drag rows to reorder.</p>
+          )}
           {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
           {status === 'ready' && groups.length === 0 && (
-            <p className="mt-4 text-sm text-slate">No groups yet.</p>
+            <p className="mt-4 text-sm text-slate">No groups found.</p>
           )}
           <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
-            {groups.map((group) => (
-              <li key={group.id} className="flex items-center justify-between gap-4 py-4">
+            {groups.map((group, i) => (
+              <li
+                key={group.id}
+                draggable={canReorder}
+                onDragStart={canReorder ? onDragStart(i) : undefined}
+                onDragOver={canReorder ? onDragOver(i) : undefined}
+                onDrop={canReorder ? onDrop(i) : undefined}
+                onDragEnd={canReorder ? onDragEnd : undefined}
+                className={`flex items-center justify-between gap-4 py-4 ${canReorder ? 'cursor-move' : ''} ${overIndex === i ? 'bg-slate-50' : ''}`}
+              >
                 <div className="flex items-center gap-3">
+                  {canReorder && <span className="text-slate-300">⠿</span>}
                   {group.image && (
-                    <img src={group.image} alt="" loading="lazy" className="h-10 w-10 rounded-sm object-cover" />
+                    <img src={group.image} alt={group.image_alt || ''} loading="lazy" className="h-10 w-10 rounded-sm object-cover" />
                   )}
                   <div>
                     <p className="text-sm font-medium text-graphite">{group.name}</p>
@@ -186,6 +245,7 @@ export default function AdminServices() {
               </li>
             ))}
           </ul>
+          <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </div>
       </div>
     </div>

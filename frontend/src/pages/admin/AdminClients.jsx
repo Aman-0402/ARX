@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react'
 import Field from '../../components/admin/Field.jsx'
+import Pagination from '../../components/admin/Pagination.jsx'
+import SearchBox from '../../components/admin/SearchBox.jsx'
 import {
   fetchAdminClients,
   createClient,
   updateClient,
   deleteClient,
 } from '../../lib/api.js'
-import { confirmDelete } from '../../lib/alerts.js'
+import { confirmDelete, showError } from '../../lib/alerts.js'
+import { useDragReorder } from '../../hooks/use-drag-reorder.js'
 
-const emptyForm = { name: '', website: '', order: 0, published: true, logo: null }
+const PAGE_SIZE = 5
+
+const emptyForm = { name: '', website: '', order: 0, published: true, logo: null, logo_alt: '' }
 
 export default function AdminClients() {
   const [clients, setClients] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [error, setError] = useState('')
   const [form, setForm] = useState(emptyForm)
@@ -20,9 +28,10 @@ export default function AdminClients() {
 
   function load() {
     setStatus('loading')
-    fetchAdminClients()
+    fetchAdminClients({ page, search })
       .then((data) => {
-        setClients(data)
+        setClients(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
@@ -31,7 +40,33 @@ export default function AdminClients() {
       })
   }
 
-  useEffect(load, [])
+  useEffect(load, [page, search])
+
+  function handleSearch(value) {
+    setSearch(value)
+    setPage(1)
+  }
+
+  async function handleReordered(newClients) {
+    setClients(newClients)
+    try {
+      await Promise.all(
+        newClients.map((c, i) => {
+          if (c.order === i) return Promise.resolve()
+          const fd = new FormData()
+          fd.set('order', String(i))
+          return updateClient(c.id, fd)
+        })
+      )
+      load()
+    } catch {
+      showError('Could not save new order.')
+      load()
+    }
+  }
+
+  const { overIndex, onDragStart, onDragOver, onDrop, onDragEnd } = useDragReorder(clients, handleReordered)
+  const canReorder = !search
 
   function update(field) {
     return (e) => {
@@ -46,7 +81,10 @@ export default function AdminClients() {
 
   function startEdit(c) {
     setEditingId(c.id)
-    setForm({ name: c.name, website: c.website || '', order: c.order, published: c.published, logo: null })
+    setForm({
+      name: c.name, website: c.website || '', order: c.order,
+      published: c.published, logo: null, logo_alt: c.logo_alt || '',
+    })
   }
 
   function cancelEdit() {
@@ -64,6 +102,7 @@ export default function AdminClients() {
     formData.set('order', String(Number(form.order) || 0))
     formData.set('published', String(form.published))
     if (form.logo) formData.set('logo', form.logo)
+    formData.set('logo_alt', form.logo_alt)
     try {
       if (editingId) {
         await updateClient(editingId, formData)
@@ -123,6 +162,14 @@ export default function AdminClients() {
                 className="w-full text-sm text-graphite"
               />
             </Field>
+            <Field label="Logo alt text (optional)">
+              <input
+                type="text"
+                value={form.logo_alt}
+                onChange={update('logo_alt')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
             <Field label="Website (optional)">
               <input
                 type="url"
@@ -168,17 +215,32 @@ export default function AdminClients() {
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-semibold text-graphite">All clients</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-lg font-semibold text-graphite">All clients</h2>
+            <SearchBox onSearch={handleSearch} placeholder="Search clients…" />
+          </div>
+          {canReorder && clients.length > 1 && (
+            <p className="mt-2 text-xs text-slate">Drag rows to reorder.</p>
+          )}
           {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
           {status === 'ready' && clients.length === 0 && (
-            <p className="mt-4 text-sm text-slate">No clients yet.</p>
+            <p className="mt-4 text-sm text-slate">No clients found.</p>
           )}
           <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
-            {clients.map((c) => (
-              <li key={c.id} className="flex items-center justify-between gap-4 py-4">
+            {clients.map((c, i) => (
+              <li
+                key={c.id}
+                draggable={canReorder}
+                onDragStart={canReorder ? onDragStart(i) : undefined}
+                onDragOver={canReorder ? onDragOver(i) : undefined}
+                onDrop={canReorder ? onDrop(i) : undefined}
+                onDragEnd={canReorder ? onDragEnd : undefined}
+                className={`flex items-center justify-between gap-4 py-4 ${canReorder ? 'cursor-move' : ''} ${overIndex === i ? 'bg-slate-50' : ''}`}
+              >
                 <div className="flex items-center gap-3">
+                  {canReorder && <span className="text-slate-300">⠿</span>}
                   {c.logo ? (
-                    <img src={c.logo} alt="" loading="lazy" className="h-10 w-10 rounded-sm object-contain" />
+                    <img src={c.logo} alt={c.logo_alt || ''} loading="lazy" className="h-10 w-10 rounded-sm object-contain" />
                   ) : (
                     <div className="h-10 w-10 rounded-sm bg-slate-200" />
                   )}
@@ -186,6 +248,13 @@ export default function AdminClients() {
                     <p className="text-sm font-medium text-graphite">
                       {c.name}
                       {!c.published && <span className="ml-2 font-mono text-xs text-slate">hidden</span>}
+                      {c.website && (
+                        <a href={c.website} target="_blank" rel="noreferrer" className="ml-2 inline-flex align-middle text-slate hover:text-ink" title={c.website}>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+                          </svg>
+                        </a>
+                      )}
                     </p>
                     <p className="text-xs text-slate">order {c.order}</p>
                   </div>
@@ -201,6 +270,7 @@ export default function AdminClients() {
               </li>
             ))}
           </ul>
+          <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </div>
       </div>
     </div>

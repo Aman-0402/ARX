@@ -42,6 +42,7 @@ class BlogPost(models.Model):
     excerpt = models.CharField(max_length=300)
     content = models.TextField(help_text='Rich text (HTML) from the writer UI.')
     cover_image = models.ImageField(upload_to='blog/', blank=True, null=True)
+    cover_image_alt = models.CharField(max_length=200, blank=True)
     published = models.BooleanField(default=True, help_text='Off = draft / pending review, not shown publicly.')
     published_at = models.DateTimeField()
     submitter_name = models.CharField(max_length=150, blank=True)
@@ -58,6 +59,7 @@ class ServiceGroup(models.Model):
     name = models.CharField(max_length=150)
     order = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='services/', blank=True, null=True)
+    image_alt = models.CharField(max_length=200, blank=True)
     items = models.TextField(
         blank=True,
         help_text='One item per line.',
@@ -78,6 +80,7 @@ class TeamMember(models.Model):
     role = models.CharField(max_length=150)
     bio = models.CharField(max_length=300, blank=True)
     photo = models.ImageField(upload_to='team/', blank=True, null=True)
+    photo_alt = models.CharField(max_length=200, blank=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
@@ -90,6 +93,7 @@ class TeamMember(models.Model):
 class Client(models.Model):
     name = models.CharField(max_length=150)
     logo = models.ImageField(upload_to='clients/')
+    logo_alt = models.CharField(max_length=200, blank=True)
     website = models.URLField(blank=True)
     order = models.PositiveIntegerField(default=0)
     published = models.BooleanField(default=True)
@@ -106,6 +110,7 @@ class Testimonial(models.Model):
     name = models.CharField(max_length=150)
     org = models.CharField(max_length=150, blank=True)
     photo = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+    photo_alt = models.CharField(max_length=200, blank=True)
     order = models.PositiveIntegerField(default=0)
     published = models.BooleanField(default=True)
 
@@ -133,10 +138,13 @@ class Industry(models.Model):
 
 class CaseStudy(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True, blank=True)
     client_name = models.CharField(max_length=150, blank=True)
     summary = models.TextField()
+    content = models.TextField(blank=True, help_text='Full case study body, shown on its detail page.')
     result = models.CharField(max_length=200, blank=True, help_text='e.g. "40% faster reporting"')
     image = models.ImageField(upload_to='case-studies/', blank=True, null=True)
+    image_alt = models.CharField(max_length=200, blank=True)
     order = models.PositiveIntegerField(default=0)
     published = models.BooleanField(default=True)
 
@@ -151,6 +159,7 @@ class CaseStudy(models.Model):
 class TechStackItem(models.Model):
     name = models.CharField(max_length=150)
     logo = models.ImageField(upload_to='tech-stack/')
+    logo_alt = models.CharField(max_length=200, blank=True)
     order = models.PositiveIntegerField(default=0)
     published = models.BooleanField(default=True)
 

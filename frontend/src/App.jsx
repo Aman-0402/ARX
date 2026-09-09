@@ -14,6 +14,7 @@ const Services = lazy(() => import('./pages/Services.jsx'))
 const Contact = lazy(() => import('./pages/Contact.jsx'))
 const Blog = lazy(() => import('./pages/Blog.jsx'))
 const BlogPost = lazy(() => import('./pages/BlogPost.jsx'))
+const CaseStudyDetail = lazy(() => import('./pages/CaseStudyDetail.jsx'))
 const BlogSubmit = lazy(() => import('./pages/BlogSubmit.jsx'))
 const Login = lazy(() => import('./pages/Login.jsx'))
 const Overview = lazy(() => import('./pages/admin/Overview.jsx'))
@@ -83,6 +84,7 @@ export default function App() {
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/submit" element={<BlogSubmit />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
                 <Route path="/login" element={<Login />} />
                 <Route
                   path="/admin"

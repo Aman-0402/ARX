@@ -4,7 +4,8 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework import generics, status, viewsets
+from rest_framework import filters, generics, status, viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -43,7 +44,8 @@ from .serializers import (
     ClientAdminSerializer,
     IndustryPublicSerializer,
     IndustryAdminSerializer,
-    CaseStudyPublicSerializer,
+    CaseStudyListSerializer,
+    CaseStudyDetailSerializer,
     CaseStudyAdminSerializer,
     TechStackItemPublicSerializer,
     TechStackItemAdminSerializer,
@@ -52,6 +54,18 @@ from .serializers import (
     FAQPublicSerializer,
     FAQAdminSerializer,
 )
+
+
+class AdminPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
+class BlogPagination(PageNumberPagination):
+    page_size = 6
+    page_size_query_param = 'page_size'
+    max_page_size = 50
 
 
 class ContactSubmissionCreateView(generics.CreateAPIView):
@@ -111,7 +125,15 @@ class CaseStudyListView(generics.ListAPIView):
     """GET /api/case-studies/ — published case studies in display order."""
 
     queryset = CaseStudy.objects.filter(published=True)
-    serializer_class = CaseStudyPublicSerializer
+    serializer_class = CaseStudyListSerializer
+
+
+class CaseStudyDetailView(generics.RetrieveAPIView):
+    """GET /api/case-studies/<slug>/ — a single published case study."""
+
+    queryset = CaseStudy.objects.filter(published=True)
+    serializer_class = CaseStudyDetailSerializer
+    lookup_field = 'slug'
 
 
 class TechStackItemListView(generics.ListAPIView):
@@ -136,10 +158,13 @@ class FAQListView(generics.ListAPIView):
 
 
 class BlogPostListView(generics.ListAPIView):
-    """GET /api/blog/ — published posts, newest first."""
+    """GET /api/blog/ — published posts, newest first. Paginated, 6/page."""
 
     queryset = BlogPost.objects.filter(published=True)
     serializer_class = BlogPostListSerializer
+    pagination_class = BlogPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'excerpt']
 
 
 class BlogPostDetailView(generics.RetrieveAPIView):
@@ -239,6 +264,9 @@ class BlogPostAdminViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     lookup_field = 'slug'
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'excerpt', 'submitter_name', 'submitter_email']
 
 
 class ContactSubmissionAdminViewSet(viewsets.ModelViewSet):
@@ -248,6 +276,9 @@ class ContactSubmissionAdminViewSet(viewsets.ModelViewSet):
     queryset = ContactSubmission.objects.all()
     serializer_class = ContactSubmissionAdminSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'email', 'message']
 
 
 class VerificationRecordAdminViewSet(viewsets.ModelViewSet):
@@ -257,6 +288,9 @@ class VerificationRecordAdminViewSet(viewsets.ModelViewSet):
     serializer_class = VerificationRecordAdminSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'code'
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['code', 'holder_name']
 
 
 class ServiceGroupAdminViewSet(viewsets.ModelViewSet):
@@ -266,6 +300,9 @@ class ServiceGroupAdminViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceGroupAdminSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
 
 class TeamMemberAdminViewSet(viewsets.ModelViewSet):
@@ -275,6 +312,9 @@ class TeamMemberAdminViewSet(viewsets.ModelViewSet):
     serializer_class = TeamMemberAdminSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'role']
 
 
 class TestimonialAdminViewSet(viewsets.ModelViewSet):
@@ -284,6 +324,9 @@ class TestimonialAdminViewSet(viewsets.ModelViewSet):
     serializer_class = TestimonialAdminSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'org', 'quote']
 
 
 class ClientAdminViewSet(viewsets.ModelViewSet):
@@ -293,6 +336,9 @@ class ClientAdminViewSet(viewsets.ModelViewSet):
     serializer_class = ClientAdminSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
 
 class IndustryAdminViewSet(viewsets.ModelViewSet):
@@ -301,6 +347,9 @@ class IndustryAdminViewSet(viewsets.ModelViewSet):
     queryset = Industry.objects.all()
     serializer_class = IndustryAdminSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'description']
 
 
 class CaseStudyAdminViewSet(viewsets.ModelViewSet):
@@ -310,6 +359,9 @@ class CaseStudyAdminViewSet(viewsets.ModelViewSet):
     serializer_class = CaseStudyAdminSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'client_name']
 
 
 class TechStackItemAdminViewSet(viewsets.ModelViewSet):
@@ -319,6 +371,9 @@ class TechStackItemAdminViewSet(viewsets.ModelViewSet):
     serializer_class = TechStackItemAdminSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
 
 class ProcessStepAdminViewSet(viewsets.ModelViewSet):
@@ -327,6 +382,9 @@ class ProcessStepAdminViewSet(viewsets.ModelViewSet):
     queryset = ProcessStep.objects.all()
     serializer_class = ProcessStepAdminSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'description']
 
 
 class FAQAdminViewSet(viewsets.ModelViewSet):
@@ -335,6 +393,9 @@ class FAQAdminViewSet(viewsets.ModelViewSet):
     queryset = FAQ.objects.all()
     serializer_class = FAQAdminSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = AdminPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['question', 'answer']
 
 
 class AdminStatsView(APIView):

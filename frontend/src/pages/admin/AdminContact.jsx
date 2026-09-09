@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react'
+import Pagination from '../../components/admin/Pagination.jsx'
+import SearchBox from '../../components/admin/SearchBox.jsx'
 import { fetchAdminContacts, setContactHandled, deleteContact } from '../../lib/api.js'
 import { confirmDelete } from '../../lib/alerts.js'
 
+const PAGE_SIZE = 5
+
 export default function AdminContact() {
   const [submissions, setSubmissions] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [error, setError] = useState('')
 
   function load() {
     setStatus('loading')
-    fetchAdminContacts()
+    fetchAdminContacts({ page, search })
       .then((data) => {
-        setSubmissions(data)
+        setSubmissions(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
@@ -20,7 +28,12 @@ export default function AdminContact() {
       })
   }
 
-  useEffect(load, [])
+  useEffect(load, [page, search])
+
+  function handleSearch(value) {
+    setSearch(value)
+    setPage(1)
+  }
 
   async function toggleHandled(item) {
     try {
@@ -43,14 +56,17 @@ export default function AdminContact() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-semibold text-graphite">Contact submissions</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-2xl font-semibold text-graphite">Contact submissions</h1>
+        <SearchBox onSearch={handleSearch} placeholder="Search submissions…" />
+      </div>
 
       {error && (
         <p className="mt-4 border border-slate-200 p-4 text-sm text-red-700">{error}</p>
       )}
       {status === 'loading' && <p className="mt-6 text-sm text-slate">Loading…</p>}
       {status === 'ready' && submissions.length === 0 && (
-        <p className="mt-6 text-sm text-slate">No submissions yet.</p>
+        <p className="mt-6 text-sm text-slate">No submissions found.</p>
       )}
 
       <ul className="mt-6 divide-y divide-slate-200 border-t border-slate-200">
@@ -83,6 +99,7 @@ export default function AdminContact() {
           </li>
         ))}
       </ul>
+      <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
     </div>
   )
 }

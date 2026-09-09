@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react'
 import Field from '../../components/admin/Field.jsx'
+import Pagination from '../../components/admin/Pagination.jsx'
+import SearchBox from '../../components/admin/SearchBox.jsx'
 import {
   fetchAdminTestimonials,
   createTestimonial,
   updateTestimonial,
   deleteTestimonial,
 } from '../../lib/api.js'
-import { confirmDelete } from '../../lib/alerts.js'
+import { confirmDelete, showError } from '../../lib/alerts.js'
+import { useDragReorder } from '../../hooks/use-drag-reorder.js'
 
-const emptyForm = { quote: '', name: '', org: '', order: 0, published: true, photo: null }
+const PAGE_SIZE = 5
+
+const emptyForm = { quote: '', name: '', org: '', order: 0, published: true, photo: null, photo_alt: '' }
 
 export default function AdminTestimonials() {
   const [testimonials, setTestimonials] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [error, setError] = useState('')
   const [form, setForm] = useState(emptyForm)
@@ -20,9 +28,10 @@ export default function AdminTestimonials() {
 
   function load() {
     setStatus('loading')
-    fetchAdminTestimonials()
+    fetchAdminTestimonials({ page, search })
       .then((data) => {
-        setTestimonials(data)
+        setTestimonials(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
@@ -31,7 +40,33 @@ export default function AdminTestimonials() {
       })
   }
 
-  useEffect(load, [])
+  useEffect(load, [page, search])
+
+  function handleSearch(value) {
+    setSearch(value)
+    setPage(1)
+  }
+
+  async function handleReordered(newTestimonials) {
+    setTestimonials(newTestimonials)
+    try {
+      await Promise.all(
+        newTestimonials.map((t, i) => {
+          if (t.order === i) return Promise.resolve()
+          const fd = new FormData()
+          fd.set('order', String(i))
+          return updateTestimonial(t.id, fd)
+        })
+      )
+      load()
+    } catch {
+      showError('Could not save new order.')
+      load()
+    }
+  }
+
+  const { overIndex, onDragStart, onDragOver, onDrop, onDragEnd } = useDragReorder(testimonials, handleReordered)
+  const canReorder = !search
 
   function update(field) {
     return (e) => {
@@ -46,7 +81,10 @@ export default function AdminTestimonials() {
 
   function startEdit(t) {
     setEditingId(t.id)
-    setForm({ quote: t.quote, name: t.name, org: t.org || '', order: t.order, published: t.published, photo: null })
+    setForm({
+      quote: t.quote, name: t.name, org: t.org || '', order: t.order,
+      published: t.published, photo: null, photo_alt: t.photo_alt || '',
+    })
   }
 
   function cancelEdit() {
@@ -65,6 +103,7 @@ export default function AdminTestimonials() {
     formData.set('order', String(Number(form.order) || 0))
     formData.set('published', String(form.published))
     if (form.photo) formData.set('photo', form.photo)
+    formData.set('photo_alt', form.photo_alt)
     try {
       if (editingId) {
         await updateTestimonial(editingId, formData)
@@ -149,6 +188,14 @@ export default function AdminTestimonials() {
                 className="w-full text-sm text-graphite"
               />
             </Field>
+            <Field label="Photo alt text (optional)">
+              <input
+                type="text"
+                value={form.photo_alt}
+                onChange={update('photo_alt')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
             <label className="flex items-center gap-2 text-sm text-graphite">
               <input type="checkbox" checked={form.published} onChange={update('published')} />
               Published (visible on the homepage)
@@ -176,17 +223,32 @@ export default function AdminTestimonials() {
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-semibold text-graphite">All testimonials</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-lg font-semibold text-graphite">All testimonials</h2>
+            <SearchBox onSearch={handleSearch} placeholder="Search testimonials…" />
+          </div>
+          {canReorder && testimonials.length > 1 && (
+            <p className="mt-2 text-xs text-slate">Drag rows to reorder.</p>
+          )}
           {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
           {status === 'ready' && testimonials.length === 0 && (
-            <p className="mt-4 text-sm text-slate">No testimonials yet.</p>
+            <p className="mt-4 text-sm text-slate">No testimonials found.</p>
           )}
           <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
-            {testimonials.map((t) => (
-              <li key={t.id} className="flex items-center justify-between gap-4 py-4">
+            {testimonials.map((t, i) => (
+              <li
+                key={t.id}
+                draggable={canReorder}
+                onDragStart={canReorder ? onDragStart(i) : undefined}
+                onDragOver={canReorder ? onDragOver(i) : undefined}
+                onDrop={canReorder ? onDrop(i) : undefined}
+                onDragEnd={canReorder ? onDragEnd : undefined}
+                className={`flex items-center justify-between gap-4 py-4 ${canReorder ? 'cursor-move' : ''} ${overIndex === i ? 'bg-slate-50' : ''}`}
+              >
                 <div className="flex items-center gap-3">
+                  {canReorder && <span className="text-slate-300">⠿</span>}
                   {t.photo ? (
-                    <img src={t.photo} alt="" loading="lazy" className="h-10 w-10 rounded-full object-cover" />
+                    <img src={t.photo} alt={t.photo_alt || ''} loading="lazy" className="h-10 w-10 rounded-full object-cover" />
                   ) : (
                     <div className="h-10 w-10 rounded-full bg-slate-200" />
                   )}
@@ -209,6 +271,7 @@ export default function AdminTestimonials() {
               </li>
             ))}
           </ul>
+          <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </div>
       </div>
     </div>

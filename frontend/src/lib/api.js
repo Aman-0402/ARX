@@ -5,6 +5,15 @@ function getCookie(name) {
   return match ? decodeURIComponent(match[1]) : ''
 }
 
+function buildQuery(params = {}) {
+  const usp = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null && value !== '') usp.set(key, value)
+  }
+  const qs = usp.toString()
+  return qs ? `?${qs}` : ''
+}
+
 async function apiFetch(path, { method = 'GET', body } = {}) {
   const headers = { 'Content-Type': 'application/json' }
   if (method !== 'GET') {
@@ -49,8 +58,8 @@ export async function fetchServices() {
   return res.json()
 }
 
-export async function fetchBlogPosts() {
-  const res = await fetch(`${API_BASE}/blog/`)
+export async function fetchBlogPosts({ page, search } = {}) {
+  const res = await fetch(`${API_BASE}/blog/${buildQuery({ page, search })}`)
   if (!res.ok) {
     throw new Error('Could not load blog posts.')
   }
@@ -64,6 +73,17 @@ export async function fetchBlogPost(slug) {
   }
   if (!res.ok) {
     throw new Error('Could not load this post.')
+  }
+  return res.json()
+}
+
+export async function fetchCaseStudy(slug) {
+  const res = await fetch(`${API_BASE}/case-studies/${encodeURIComponent(slug)}/`)
+  if (res.status === 404) {
+    return null
+  }
+  if (!res.ok) {
+    throw new Error('Could not load this case study.')
   }
   return res.json()
 }
@@ -105,8 +125,8 @@ export async function changePassword(currentPassword, newPassword) {
   }
 }
 
-export async function fetchAdminPosts() {
-  const res = await apiFetch('/admin/blog/')
+export async function fetchAdminPosts({ page, search } = {}) {
+  const res = await apiFetch(`/admin/blog/${buildQuery({ page, search })}`)
   if (!res.ok) throw new Error('Could not load posts.')
   return res.json()
 }
@@ -152,8 +172,8 @@ export async function fetchAdminStats() {
   return res.json()
 }
 
-export async function fetchAdminContacts() {
-  const res = await apiFetch('/admin/contact/')
+export async function fetchAdminContacts({ page, search } = {}) {
+  const res = await apiFetch(`/admin/contact/${buildQuery({ page, search })}`)
   if (!res.ok) throw new Error('Could not load contact submissions.')
   return res.json()
 }
@@ -169,8 +189,8 @@ export async function deleteContact(id) {
   if (!res.ok) throw new Error('Could not delete submission.')
 }
 
-export async function fetchAdminVerifyRecords() {
-  const res = await apiFetch('/admin/verify/')
+export async function fetchAdminVerifyRecords({ page, search } = {}) {
+  const res = await apiFetch(`/admin/verify/${buildQuery({ page, search })}`)
   if (!res.ok) throw new Error('Could not load verification records.')
   return res.json()
 }
@@ -198,8 +218,8 @@ export async function deleteVerifyRecord(code) {
   if (!res.ok) throw new Error('Could not delete record.')
 }
 
-export async function fetchAdminServiceGroups() {
-  const res = await apiFetch('/admin/services/')
+export async function fetchAdminServiceGroups({ page, search } = {}) {
+  const res = await apiFetch(`/admin/services/${buildQuery({ page, search })}`)
   if (!res.ok) throw new Error('Could not load service groups.')
   return res.json()
 }
@@ -233,8 +253,8 @@ export async function fetchTeam() {
   return res.json()
 }
 
-export async function fetchAdminTeam() {
-  const res = await apiFetch('/admin/team/')
+export async function fetchAdminTeam({ page, search } = {}) {
+  const res = await apiFetch(`/admin/team/${buildQuery({ page, search })}`)
   if (!res.ok) throw new Error('Could not load team members.')
   return res.json()
 }
@@ -268,8 +288,8 @@ export async function fetchTestimonials() {
   return res.json()
 }
 
-export async function fetchAdminTestimonials() {
-  const res = await apiFetch('/admin/testimonials/')
+export async function fetchAdminTestimonials({ page, search } = {}) {
+  const res = await apiFetch(`/admin/testimonials/${buildQuery({ page, search })}`)
   if (!res.ok) throw new Error('Could not load testimonials.')
   return res.json()
 }
@@ -303,8 +323,8 @@ export async function fetchClients() {
   return res.json()
 }
 
-export async function fetchAdminClients() {
-  const res = await apiFetch('/admin/clients/')
+export async function fetchAdminClients({ page, search } = {}) {
+  const res = await apiFetch(`/admin/clients/${buildQuery({ page, search })}`)
   if (!res.ok) throw new Error('Could not load clients.')
   return res.json()
 }
@@ -345,8 +365,8 @@ function makeSimpleResource(path, label, { multipart = false } = {}) {
       if (!res.ok) throw new Error(`Could not load ${label}.`)
       return res.json()
     },
-    async fetchAdmin() {
-      const res = await apiFetch(`/admin/${path}/`)
+    async fetchAdmin({ page, search } = {}) {
+      const res = await apiFetch(`/admin/${path}/${buildQuery({ page, search })}`)
       if (!res.ok) throw new Error(`Could not load ${label}.`)
       return res.json()
     },

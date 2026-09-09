@@ -213,7 +213,7 @@ export default function Home() {
                   const logo = (
                     <img
                       src={c.logo}
-                      alt={c.name}
+                      alt={c.logo_alt || c.name}
                       loading="lazy"
                       className="h-10 max-w-[140px] object-contain grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
                     />
@@ -221,8 +221,17 @@ export default function Home() {
                   return (
                     <StaggerItem key={c.name}>
                       {c.website ? (
-                        <a href={c.website} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={c.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group relative inline-flex items-center"
+                          title={c.website}
+                        >
                           {logo}
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1 h-3 w-3 text-slate opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" />
+                          </svg>
                         </a>
                       ) : (
                         logo
@@ -403,30 +412,32 @@ export default function Home() {
               {caseStudies.map((cs, i) => {
                 const a = cardAccents[i % cardAccents.length]
                 return (
-                  <StaggerItem key={cs.title}>
-                    <motion.div
-                      whileHover={{ y: -6 }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                      className={`h-full overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-xl ${a.glow}`}
-                    >
-                      {cs.image ? (
-                        <img src={cs.image} alt="" loading="lazy" className="h-40 w-full object-cover" />
-                      ) : (
-                        <div className={`h-2 ${a.border.replace('border-t-', 'bg-')}`} />
-                      )}
-                      <div className="p-7">
-                        {cs.client_name && (
-                          <p className="text-xs font-medium uppercase tracking-wide text-slate">{cs.client_name}</p>
+                  <StaggerItem key={cs.slug}>
+                    <Link to={`/case-studies/${cs.slug}`}>
+                      <motion.div
+                        whileHover={{ y: -6 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                        className={`h-full overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-xl ${a.glow}`}
+                      >
+                        {cs.image ? (
+                          <img src={cs.image} alt={cs.image_alt || cs.title} loading="lazy" className="h-40 w-full object-cover" />
+                        ) : (
+                          <div className={`h-2 ${a.border.replace('border-t-', 'bg-')}`} />
                         )}
-                        <h3 className="mt-1 font-display text-xl font-semibold text-graphite">{cs.title}</h3>
-                        <p className="mt-3 text-sm leading-relaxed text-slate">{cs.summary}</p>
-                        {cs.result && (
-                          <span className={`mt-4 inline-block rounded-full px-3 py-1 text-xs font-semibold ${a.chip}`}>
-                            {cs.result}
-                          </span>
-                        )}
-                      </div>
-                    </motion.div>
+                        <div className="p-7">
+                          {cs.client_name && (
+                            <p className="text-xs font-medium uppercase tracking-wide text-slate">{cs.client_name}</p>
+                          )}
+                          <h3 className="mt-1 font-display text-xl font-semibold text-graphite">{cs.title}</h3>
+                          <p className="mt-3 text-sm leading-relaxed text-slate">{cs.summary}</p>
+                          {cs.result && (
+                            <span className={`mt-4 inline-block rounded-full px-3 py-1 text-xs font-semibold ${a.chip}`}>
+                              {cs.result}
+                            </span>
+                          )}
+                        </div>
+                      </motion.div>
+                    </Link>
                   </StaggerItem>
                 )
               })}
@@ -449,7 +460,7 @@ export default function Home() {
                 <StaggerItem key={t.name}>
                   <img
                     src={t.logo}
-                    alt={t.name}
+                    alt={t.logo_alt || t.name}
                     loading="lazy"
                     className="h-10 max-w-[120px] object-contain grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100"
                   />
@@ -520,7 +531,7 @@ export default function Home() {
                     </div>
                     <figcaption className="mt-8 flex items-center gap-3 border-t border-slate-200 pt-5">
                       {t.photo ? (
-                        <img src={t.photo} alt="" loading="lazy" className="h-11 w-11 shrink-0 rounded-full object-cover" />
+                        <img src={t.photo} alt={t.photo_alt || t.name} loading="lazy" className="h-11 w-11 shrink-0 rounded-full object-cover" />
                       ) : (
                         <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-base font-semibold ${a.avatar}`}>
                           {t.name.charAt(0)}

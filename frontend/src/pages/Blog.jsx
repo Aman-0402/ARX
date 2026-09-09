@@ -6,6 +6,9 @@ import { fetchBlogPosts } from '../lib/api.js'
 import Reveal from '../components/motion/Reveal.jsx'
 import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
+import Pagination from '../components/admin/Pagination.jsx'
+
+const PAGE_SIZE = 6
 
 const accents = [
   { border: 'border-t-amber', ring: 'hover:border-amber', glow: 'hover:shadow-amber/20', chip: 'bg-amber/15 text-amber-dim', tint: 'from-amber/20' },
@@ -17,19 +20,23 @@ const accents = [
 export default function Blog() {
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [posts, setPosts] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetchBlogPosts()
+    setStatus('loading')
+    fetchBlogPosts({ page })
       .then((data) => {
-        setPosts(data)
+        setPosts(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
         setError(err.message)
         setStatus('error')
       })
-  }, [])
+  }, [page])
 
   return (
     <>
@@ -93,7 +100,7 @@ export default function Blog() {
                           <div className="overflow-hidden">
                             <img
                               src={post.cover_image}
-                              alt=""
+                              alt={post.cover_image_alt || ''}
                               loading="lazy"
                               className="h-40 w-full object-cover transition-transform duration-500 hover:scale-110"
                             />
@@ -124,6 +131,9 @@ export default function Blog() {
                 )
               })}
             </StaggerGrid>
+          )}
+          {status === 'ready' && posts.length > 0 && (
+            <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
           )}
         </div>
       </section>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import Field from '../../components/admin/Field.jsx'
+import Pagination from '../../components/admin/Pagination.jsx'
+import SearchBox from '../../components/admin/SearchBox.jsx'
 import RichTextEditor from '../../components/RichTextEditor.jsx'
 import {
   fetchAdminPosts,
@@ -9,18 +11,24 @@ import {
 } from '../../lib/api.js'
 import { confirmDelete } from '../../lib/alerts.js'
 
+const PAGE_SIZE = 5
+
 const emptyForm = {
   title: '',
   slug: '',
   excerpt: '',
   content: '',
   photo: null,
+  photo_alt: '',
   published: true,
   published_at: new Date().toISOString().slice(0, 16),
 }
 
 export default function AdminBlog() {
   const [posts, setPosts] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [error, setError] = useState('')
   const [form, setForm] = useState(emptyForm)
@@ -30,9 +38,10 @@ export default function AdminBlog() {
 
   function load() {
     setStatus('loading')
-    fetchAdminPosts()
+    fetchAdminPosts({ page, search })
       .then((data) => {
-        setPosts(data)
+        setPosts(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
@@ -41,7 +50,12 @@ export default function AdminBlog() {
       })
   }
 
-  useEffect(load, [])
+  useEffect(load, [page, search])
+
+  function handleSearch(value) {
+    setSearch(value)
+    setPage(1)
+  }
 
   function update(field) {
     return (e) => {
@@ -63,6 +77,7 @@ export default function AdminBlog() {
       excerpt: post.excerpt,
       content: post.content,
       photo: null,
+      photo_alt: post.cover_image_alt || '',
       published: post.published,
       published_at: post.published_at.slice(0, 16),
     })
@@ -86,6 +101,7 @@ export default function AdminBlog() {
     formData.set('published', String(form.published))
     formData.set('published_at', new Date(form.published_at).toISOString())
     if (form.photo) formData.set('cover_image', form.photo)
+    formData.set('cover_image_alt', form.photo_alt)
     try {
       if (editingSlug) {
         await updateAdminPost(editingSlug, formData)
@@ -193,6 +209,14 @@ export default function AdminBlog() {
                 className="w-full text-sm text-graphite"
               />
             </Field>
+            <Field label="Cover image alt text (optional)">
+              <input
+                type="text"
+                value={form.photo_alt}
+                onChange={update('photo_alt')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
             <Field label="Published at">
               <input
                 required
@@ -229,10 +253,13 @@ export default function AdminBlog() {
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-semibold text-graphite">All posts</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-lg font-semibold text-graphite">All posts</h2>
+            <SearchBox onSearch={handleSearch} placeholder="Search posts…" />
+          </div>
           {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
           {status === 'ready' && posts.length === 0 && (
-            <p className="mt-4 text-sm text-slate">No posts yet.</p>
+            <p className="mt-4 text-sm text-slate">No posts found.</p>
           )}
           <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
             {posts.map((post) => (
@@ -259,6 +286,7 @@ export default function AdminBlog() {
               </li>
             ))}
           </ul>
+          <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </div>
       </div>
     </div>

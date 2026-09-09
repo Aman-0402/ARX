@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react'
 import Field from '../../components/admin/Field.jsx'
+import Pagination from '../../components/admin/Pagination.jsx'
+import SearchBox from '../../components/admin/SearchBox.jsx'
 import {
   fetchAdminTeam,
   createTeamMember,
   updateTeamMember,
   deleteTeamMember,
 } from '../../lib/api.js'
-import { confirmDelete } from '../../lib/alerts.js'
+import { confirmDelete, showError } from '../../lib/alerts.js'
+import { useDragReorder } from '../../hooks/use-drag-reorder.js'
 
-const emptyForm = { name: '', role: '', bio: '', order: 0, photo: null }
+const PAGE_SIZE = 5
+
+const emptyForm = { name: '', role: '', bio: '', order: 0, photo: null, photo_alt: '' }
 
 export default function AdminTeam() {
   const [members, setMembers] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [status, setStatus] = useState('loading') // loading | ready | error
   const [error, setError] = useState('')
   const [form, setForm] = useState(emptyForm)
@@ -20,9 +28,10 @@ export default function AdminTeam() {
 
   function load() {
     setStatus('loading')
-    fetchAdminTeam()
+    fetchAdminTeam({ page, search })
       .then((data) => {
-        setMembers(data)
+        setMembers(data.results)
+        setCount(data.count)
         setStatus('ready')
       })
       .catch((err) => {
@@ -31,7 +40,33 @@ export default function AdminTeam() {
       })
   }
 
-  useEffect(load, [])
+  useEffect(load, [page, search])
+
+  function handleSearch(value) {
+    setSearch(value)
+    setPage(1)
+  }
+
+  async function handleReordered(newMembers) {
+    setMembers(newMembers)
+    try {
+      await Promise.all(
+        newMembers.map((m, i) => {
+          if (m.order === i) return Promise.resolve()
+          const fd = new FormData()
+          fd.set('order', String(i))
+          return updateTeamMember(m.id, fd)
+        })
+      )
+      load()
+    } catch {
+      showError('Could not save new order.')
+      load()
+    }
+  }
+
+  const { overIndex, onDragStart, onDragOver, onDrop, onDragEnd } = useDragReorder(members, handleReordered)
+  const canReorder = !search
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
@@ -43,7 +78,14 @@ export default function AdminTeam() {
 
   function startEdit(member) {
     setEditingId(member.id)
-    setForm({ name: member.name, role: member.role, bio: member.bio || '', order: member.order, photo: null })
+    setForm({
+      name: member.name,
+      role: member.role,
+      bio: member.bio || '',
+      order: member.order,
+      photo: null,
+      photo_alt: member.photo_alt || '',
+    })
   }
 
   function cancelEdit() {
@@ -61,6 +103,7 @@ export default function AdminTeam() {
     formData.set('bio', form.bio)
     formData.set('order', String(Number(form.order) || 0))
     if (form.photo) formData.set('photo', form.photo)
+    formData.set('photo_alt', form.photo_alt)
     try {
       if (editingId) {
         await updateTeamMember(editingId, formData)
@@ -138,6 +181,14 @@ export default function AdminTeam() {
                 className="w-full text-sm text-graphite"
               />
             </Field>
+            <Field label="Photo alt text (optional)">
+              <input
+                type="text"
+                value={form.photo_alt}
+                onChange={update('photo_alt')}
+                className="w-full border border-slate-200 bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+              />
+            </Field>
             <Field label="Bio (optional)">
               <input
                 type="text"
@@ -169,17 +220,32 @@ export default function AdminTeam() {
         </div>
 
         <div>
-          <h2 className="font-display text-lg font-semibold text-graphite">All members</h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="font-display text-lg font-semibold text-graphite">All members</h2>
+            <SearchBox onSearch={handleSearch} placeholder="Search members…" />
+          </div>
+          {canReorder && members.length > 1 && (
+            <p className="mt-2 text-xs text-slate">Drag rows to reorder.</p>
+          )}
           {status === 'loading' && <p className="mt-4 text-sm text-slate">Loading…</p>}
           {status === 'ready' && members.length === 0 && (
-            <p className="mt-4 text-sm text-slate">No team members yet.</p>
+            <p className="mt-4 text-sm text-slate">No team members found.</p>
           )}
           <ul className="mt-4 divide-y divide-slate-200 border-t border-slate-200">
-            {members.map((member) => (
-              <li key={member.id} className="flex items-center justify-between gap-4 py-4">
+            {members.map((member, i) => (
+              <li
+                key={member.id}
+                draggable={canReorder}
+                onDragStart={canReorder ? onDragStart(i) : undefined}
+                onDragOver={canReorder ? onDragOver(i) : undefined}
+                onDrop={canReorder ? onDrop(i) : undefined}
+                onDragEnd={canReorder ? onDragEnd : undefined}
+                className={`flex items-center justify-between gap-4 py-4 ${canReorder ? 'cursor-move' : ''} ${overIndex === i ? 'bg-slate-50' : ''}`}
+              >
                 <div className="flex items-center gap-3">
+                  {canReorder && <span className="text-slate-300">⠿</span>}
                   {member.photo ? (
-                    <img src={member.photo} alt="" loading="lazy" className="h-10 w-10 rounded-full object-cover" />
+                    <img src={member.photo} alt={member.photo_alt || ''} loading="lazy" className="h-10 w-10 rounded-full object-cover" />
                   ) : (
                     <div className="h-10 w-10 rounded-full bg-slate-200" />
                   )}
@@ -199,6 +265,7 @@ export default function AdminTeam() {
               </li>
             ))}
           </ul>
+          <Pagination page={page} count={count} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </div>
       </div>
     </div>
