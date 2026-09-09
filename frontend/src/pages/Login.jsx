@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/use-auth.jsx'
 import SEO from '../components/SEO.jsx'
 import PasswordInput from '../components/PasswordInput.jsx'
 import LoginBackground from '../components/LoginBackground.jsx'
+import GlowCursor from '../components/GlowCursor.jsx'
 
 const fieldVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -42,7 +43,26 @@ export default function Login() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-paper px-4">
+    <GlowCursor
+      color="#2EC4B6"
+      secondaryColor="#8B5CF6"
+      trailLength={40}
+      trailWidth={8}
+      trailTaper={0.8}
+      followSpeed={0.16}
+      glowIntensity={1.9}
+      glowSpread={1.2}
+      hotspot={0.65}
+      brightness={1.25}
+      opacity={1}
+      pulseSpeed={1.1}
+      noiseStrength={0.035}
+      idleFade
+      idleTimeout={700}
+      fadeDuration={900}
+      blendMode="screen"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-ink px-4"
+    >
       <SEO path="/login" title="Sign in" noindex />
       <LoginBackground />
       <motion.div
@@ -54,7 +74,7 @@ export default function Login() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
           <Link
             to="/"
-            className="mb-4 inline-flex items-center gap-1.5 font-mono text-xs text-slate transition-colors hover:text-ink"
+            className="mb-4 inline-flex items-center gap-1.5 font-mono text-xs text-slate-300 transition-colors hover:text-paper"
           >
             ← Back to site
           </Link>
@@ -141,6 +161,6 @@ export default function Login() {
           </form>
         </div>
       </motion.div>
-    </div>
+    </GlowCursor>
   )
 }

@@ -3,11 +3,11 @@ import GradientBlobs from './motion/GradientBlobs.jsx'
 import StarField from './motion/StarField.jsx'
 
 const rows = [
-  { text: 'SYS_STATUS: ONLINE   //   UPTIME: 99.98%   //   SECURE_ACCESS   //   ARX_INFOTECH   //   ', duration: 34, size: 'text-sm', opacity: 'opacity-[0.07]' },
-  { text: 'AUTH_SERVICE: READY   //   ENCRYPTION: AES-256   //   SESSION: PROTECTED   //   ', duration: 46, size: 'text-lg', opacity: 'opacity-[0.06]', reverse: true },
-  { text: 'ARX_INFOTECH   //   MODERN TECH, BUILT TO SCALE   //   IT SERVICES   //   CLOUD   //   ', duration: 26, size: 'text-2xl', opacity: 'opacity-[0.05]' },
-  { text: 'FIREWALL: ACTIVE   //   BACKUP: SCHEDULED   //   MONITORING: 24/7   //   ', duration: 40, size: 'text-sm', opacity: 'opacity-[0.07]', reverse: true },
-  { text: 'ADMIN CONSOLE   //   ARX_INFOTECH   //   ACCESS SECURE SYSTEMS   //   ', duration: 30, size: 'text-lg', opacity: 'opacity-[0.06]' },
+  { text: 'SYS_STATUS: ONLINE   //   UPTIME: 99.98%   //   SECURE_ACCESS   //   ARX_INFOTECH   //   ', duration: 34, size: 'text-sm', opacity: 'opacity-[0.10]' },
+  { text: 'AUTH_SERVICE: READY   //   ENCRYPTION: AES-256   //   SESSION: PROTECTED   //   ', duration: 46, size: 'text-lg', opacity: 'opacity-[0.09]', reverse: true },
+  { text: 'ARX_INFOTECH   //   MODERN TECH, BUILT TO SCALE   //   IT SERVICES   //   CLOUD   //   ', duration: 26, size: 'text-2xl', opacity: 'opacity-[0.08]' },
+  { text: 'FIREWALL: ACTIVE   //   BACKUP: SCHEDULED   //   MONITORING: 24/7   //   ', duration: 40, size: 'text-sm', opacity: 'opacity-[0.10]', reverse: true },
+  { text: 'ADMIN CONSOLE   //   ARX_INFOTECH   //   ACCESS SECURE SYSTEMS   //   ', duration: 30, size: 'text-lg', opacity: 'opacity-[0.09]' },
 ]
 
 const particleColors = ['bg-amber', 'bg-coral', 'bg-grape', 'bg-mint']
@@ -29,7 +29,7 @@ export default function LoginBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* Moving blueprint grid */}
-      <div className="animate-drift absolute inset-0 opacity-[0.35] bg-[radial-gradient(rgba(21,34,56,0.10)_1px,transparent_1px)] bg-[length:26px_26px]" />
+      <div className="animate-drift absolute inset-0 opacity-[0.5] bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[length:26px_26px]" />
 
       <GradientBlobs variant="blue" />
       <StarField count={70} />
@@ -64,7 +64,7 @@ export default function LoginBackground() {
         {rows.map((row, i) => (
           <div
             key={i}
-            className={`flex w-max whitespace-nowrap font-mono font-medium tracking-widest text-graphite ${row.size} ${row.opacity} ${row.reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`}
+            className={`flex w-max whitespace-nowrap font-mono font-medium tracking-widest text-paper ${row.size} ${row.opacity} ${row.reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`}
             style={{ animationDuration: `${row.duration}s` }}
           >
             <span className="pr-4">{row.text.repeat(4)}</span>
@@ -73,7 +73,7 @@ export default function LoginBackground() {
         ))}
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-paper via-transparent to-paper" />
+      <div className="absolute inset-0 bg-gradient-to-b from-ink via-transparent to-ink" />
     </div>
   )
 }
