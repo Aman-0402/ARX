@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import GradientBlobs from './motion/GradientBlobs.jsx'
 import StarField from './motion/StarField.jsx'
 
@@ -9,9 +10,27 @@ const rows = [
   { text: 'ADMIN CONSOLE   //   ARX_INFOTECH   //   ACCESS SECURE SYSTEMS   //   ', duration: 30, size: 'text-lg', opacity: 'opacity-[0.06]' },
 ]
 
+const particleColors = ['bg-amber', 'bg-coral', 'bg-grape', 'bg-mint']
+
 export default function LoginBackground() {
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 22 }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        size: 2 + Math.random() * 3,
+        duration: 10 + Math.random() * 12,
+        delay: Math.random() * 12,
+        color: particleColors[Math.floor(Math.random() * particleColors.length)],
+      })),
+    [],
+  )
+
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Moving blueprint grid */}
+      <div className="animate-drift absolute inset-0 opacity-[0.35] bg-[radial-gradient(rgba(21,34,56,0.10)_1px,transparent_1px)] bg-[length:26px_26px]" />
+
       <GradientBlobs variant="blue" />
       <StarField count={70} />
 
@@ -21,6 +40,24 @@ export default function LoginBackground() {
         <div className="animate-spin-slow-reverse absolute inset-0 m-auto h-[400px] w-[400px] rounded-full border border-dashed border-grape/20" />
         <div className="animate-spin-slow absolute inset-0 m-auto h-[260px] w-[260px] rounded-full border border-dashed border-coral/20" />
       </div>
+
+      {/* Rising data particles */}
+      {particles.map((p) => (
+        <span
+          key={p.id}
+          className={`animate-rise absolute bottom-0 rounded-full ${p.color} opacity-0`}
+          style={{
+            left: `${p.left}%`,
+            width: p.size,
+            height: p.size,
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`,
+          }}
+        />
+      ))}
+
+      {/* Scanning beam sweep */}
+      <div className="animate-scan absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-transparent via-amber/[0.08] to-transparent" />
 
       {/* Drifting status text */}
       <div className="absolute inset-0 flex flex-col justify-around">
