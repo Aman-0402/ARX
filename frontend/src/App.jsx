@@ -21,6 +21,8 @@ const CaseStudies = lazy(() => import('./pages/CaseStudies.jsx'))
 const TechStack = lazy(() => import('./pages/TechStack.jsx'))
 const OurProcess = lazy(() => import('./pages/OurProcess.jsx'))
 const FAQPage = lazy(() => import('./pages/FAQPage.jsx'))
+const Terms = lazy(() => import('./pages/Terms.jsx'))
+const Privacy = lazy(() => import('./pages/Privacy.jsx'))
 const BlogSubmit = lazy(() => import('./pages/BlogSubmit.jsx'))
 const Login = lazy(() => import('./pages/Login.jsx'))
 const Overview = lazy(() => import('./pages/admin/Overview.jsx'))
@@ -114,6 +116,8 @@ export default function App() {
                 <Route path="/technology" element={<TechStack />} />
                 <Route path="/process" element={<OurProcess />} />
                 <Route path="/faq" element={<FAQPage />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
                 <Route path="/login" element={<Login />} />
                 <Route
                   path="/admin"

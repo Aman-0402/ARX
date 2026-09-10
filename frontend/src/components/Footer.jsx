@@ -118,7 +118,10 @@ export default function Footer() {
       <div className="border-t border-slate-700/60 px-4 py-5">
         <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-2 text-xs text-slate-200/50 sm:flex-row">
           <p>© {new Date().getFullYear()} ARX Infotech. All rights reserved.</p>
-          <p>Built with care in Kolkata, India.</p>
+          <div className="flex items-center gap-4">
+            <Link to="/terms" className="transition-colors hover:text-amber">Terms &amp; Conditions</Link>
+            <Link to="/privacy" className="transition-colors hover:text-amber">Privacy Policy</Link>
+          </div>
         </div>
       </div>
     </footer>

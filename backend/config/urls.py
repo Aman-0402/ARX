@@ -9,6 +9,7 @@ from core.models import BlogPost, CaseStudy
 STATIC_ROUTES = [
     '', 'about', 'services', 'blog', 'contact',
     'industries', 'case-studies', 'technology', 'process', 'faq',
+    'terms', 'privacy',
 ]
 
 
