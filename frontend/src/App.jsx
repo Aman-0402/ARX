@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar.jsx'
@@ -58,10 +58,13 @@ function PageLoader() {
   )
 }
 
+const SWARM_PALETTE = ['#0EA5E9', '#22D3EE', '#2F6FED', '#8B5CF6', '#2EC4B6', '#FF6B6B', '#FFD166']
+
 export default function App() {
   const location = useLocation()
   const isBareLayout = location.pathname === '/login' || location.pathname.startsWith('/admin')
   const transitionKey = location.pathname.startsWith('/admin') ? '/admin' : location.pathname
+  const swarmColor = useMemo(() => SWARM_PALETTE[Math.floor(Math.random() * SWARM_PALETTE.length)], [])
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -69,8 +72,8 @@ export default function App() {
       {!isBareLayout && (
         <SwarmCursor
           global
-          color="#0EA5E9"
-          accentColor="#0EA5E9"
+          color={swarmColor}
+          accentColor={swarmColor}
           count={8}
           size={5}
           speed={2.5}
