@@ -123,70 +123,76 @@ export default function About() {
           <StaggerGrid className="mx-auto grid max-w-[1400px] gap-6 md:grid-cols-2">
             <StaggerItem>
               <motion.div
-                whileHover={{ y: -10, scale: 1.01 }}
+                whileHover={{ y: -6 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="group relative h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 border-t-amber bg-white p-8 shadow-md transition-all duration-300 hover:border-amber hover:shadow-2xl hover:shadow-amber/20"
+                className="group relative h-64 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-amber bg-ink shadow-md transition-all duration-500 hover:border-amber hover:bg-white hover:shadow-2xl hover:shadow-amber/20"
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-amber/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="relative flex items-center gap-4">
-                  <motion.span
-                    whileHover={{ rotate: 8, scale: 1.08 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                    className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber/25 to-amber/5 text-amber-dim shadow-sm"
-                  >
+
+                {/* Default: icon + heading, centered, light text on dark bg */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0">
+                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-amber/15 text-amber shadow-sm">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
                       <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />
                     </svg>
-                  </motion.span>
-                  <h2 className="font-display text-xl font-semibold text-graphite">What we do</h2>
+                  </span>
+                  <h2 className="font-display text-xl font-semibold text-paper">What we do</h2>
                 </div>
-                <p className="relative mt-4 text-sm leading-relaxed text-slate">
-                  We manage <span className="font-semibold text-amber-dim">infrastructure and support</span>, build{' '}
-                  <span className="font-semibold text-amber-dim">custom software products</span>, and deliver{' '}
-                  <span className="font-semibold text-amber-dim">automation platforms</span> for schools and
-                  colleges — admissions, attendance, reporting, and LMS
-                  integration — under one engineering team.
-                </p>
-                <div className="relative mt-5 flex flex-wrap gap-2">
-                  {['Infrastructure', 'Software', 'Automation'].map((tag) => (
-                    <span key={tag} className="rounded-full bg-amber/10 px-3 py-1 text-xs font-medium text-amber-dim">
-                      {tag}
-                    </span>
-                  ))}
+
+                {/* Hover: full detail */}
+                <div className="absolute inset-0 flex flex-col justify-center p-8 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                  <h2 className="relative font-display text-lg font-semibold text-graphite">What we do</h2>
+                  <p className="relative mt-3 text-sm leading-relaxed text-slate">
+                    We manage <span className="font-semibold text-amber-dim">infrastructure and support</span>, build{' '}
+                    <span className="font-semibold text-amber-dim">custom software products</span>, and deliver{' '}
+                    <span className="font-semibold text-amber-dim">automation platforms</span> for schools and
+                    colleges — admissions, attendance, reporting, and LMS
+                    integration — under one engineering team.
+                  </p>
+                  <div className="relative mt-4 flex flex-wrap gap-2">
+                    {['Infrastructure', 'Software', 'Automation'].map((tag) => (
+                      <span key={tag} className="rounded-full bg-amber/10 px-3 py-1 text-xs font-medium text-amber-dim">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             </StaggerItem>
             <StaggerItem>
               <motion.div
-                whileHover={{ y: -10, scale: 1.01 }}
+                whileHover={{ y: -6 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="group relative h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 border-t-coral bg-white p-8 shadow-md transition-all duration-300 hover:border-coral hover:shadow-2xl hover:shadow-coral/20"
+                className="group relative h-64 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-coral bg-ink shadow-md transition-all duration-500 hover:border-coral hover:bg-white hover:shadow-2xl hover:shadow-coral/20"
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-coral/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
-                <div className="relative flex items-center gap-4">
-                  <motion.span
-                    whileHover={{ rotate: 8, scale: 1.08 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                    className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-coral/25 to-coral/5 text-coral shadow-sm"
-                  >
+
+                {/* Default: icon + heading, centered, light text on dark bg */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0">
+                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-coral/15 text-coral shadow-sm">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12 10v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
-                  </motion.span>
-                  <h2 className="font-display text-xl font-semibold text-graphite">Who we work with</h2>
+                  </span>
+                  <h2 className="font-display text-xl font-semibold text-paper">Who we work with</h2>
                 </div>
-                <p className="relative mt-4 text-sm leading-relaxed text-slate">
-                  <span className="font-semibold text-coral">Small and mid-sized businesses</span> that need
-                  dependable IT support, and{' '}
-                  <span className="font-semibold text-coral">academic institutions</span> modernizing
-                  admissions, attendance, and reporting workflows.
-                </p>
-                <div className="relative mt-5 flex flex-wrap gap-2">
-                  {['SMBs', 'Schools & Colleges'].map((tag) => (
-                    <span key={tag} className="rounded-full bg-coral/10 px-3 py-1 text-xs font-medium text-coral">
-                      {tag}
-                    </span>
-                  ))}
+
+                {/* Hover: full detail */}
+                <div className="absolute inset-0 flex flex-col justify-center p-8 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                  <h2 className="relative font-display text-lg font-semibold text-graphite">Who we work with</h2>
+                  <p className="relative mt-3 text-sm leading-relaxed text-slate">
+                    <span className="font-semibold text-coral">Small and mid-sized businesses</span> that need
+                    dependable IT support, and{' '}
+                    <span className="font-semibold text-coral">academic institutions</span> modernizing
+                    admissions, attendance, and reporting workflows.
+                  </p>
+                  <div className="relative mt-4 flex flex-wrap gap-2">
+                    {['SMBs', 'Schools & Colleges'].map((tag) => (
+                      <span key={tag} className="rounded-full bg-coral/10 px-3 py-1 text-xs font-medium text-coral">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             </StaggerItem>
