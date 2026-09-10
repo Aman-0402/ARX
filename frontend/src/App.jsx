@@ -69,8 +69,8 @@ export default function App() {
       {!isBareLayout && (
         <SwarmCursor
           global
-          color="#2F6FED"
-          accentColor="#8B5CF6"
+          color="#22D3EE"
+          accentColor="#0EA5E9"
           count={8}
           size={5}
           speed={2.5}
