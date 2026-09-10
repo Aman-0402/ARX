@@ -86,7 +86,7 @@ export default function App() {
           wander={0.25}
           trail={0.75}
           scatterOnClick
-          style={{ position: 'fixed', inset: 0, zIndex: 60, pointerEvents: 'none' }}
+          style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}
         />
       )}
       {!isBareLayout && <Navbar />}
