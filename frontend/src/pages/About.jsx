@@ -125,18 +125,18 @@ export default function About() {
               <motion.div
                 whileHover={{ y: -6 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="group relative h-64 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-amber bg-ink shadow-md transition-all duration-500 hover:border-amber hover:bg-white hover:shadow-2xl hover:shadow-amber/20"
+                className="group relative h-72 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-amber bg-ink shadow-md transition-all duration-500 hover:border-amber hover:bg-white hover:shadow-2xl hover:shadow-amber/20"
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-amber/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
                 {/* Default: icon + heading, centered, light text on dark bg */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0">
-                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-amber/15 text-amber shadow-sm">
+                <div className="absolute inset-0 flex flex-row items-center justify-center gap-5 p-8 transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0">
+                  <span className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-amber/15 text-amber shadow-sm">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
                       <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />
                     </svg>
                   </span>
-                  <h2 className="font-display text-xl font-semibold text-paper">What we do</h2>
+                  <h2 className="font-display text-2xl font-semibold text-paper">What we do</h2>
                 </div>
 
                 {/* Hover: full detail */}
@@ -163,18 +163,18 @@ export default function About() {
               <motion.div
                 whileHover={{ y: -6 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="group relative h-64 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-coral bg-ink shadow-md transition-all duration-500 hover:border-coral hover:bg-white hover:shadow-2xl hover:shadow-coral/20"
+                className="group relative h-72 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-coral bg-ink shadow-md transition-all duration-500 hover:border-coral hover:bg-white hover:shadow-2xl hover:shadow-coral/20"
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-coral/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
 
                 {/* Default: icon + heading, centered, light text on dark bg */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0">
-                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-coral/15 text-coral shadow-sm">
+                <div className="absolute inset-0 flex flex-row items-center justify-center gap-5 p-8 transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0">
+                  <span className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-coral/15 text-coral shadow-sm">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12 10v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
                   </span>
-                  <h2 className="font-display text-xl font-semibold text-paper">Who we work with</h2>
+                  <h2 className="font-display text-2xl font-semibold text-paper">Who we work with</h2>
                 </div>
 
                 {/* Hover: full detail */}
