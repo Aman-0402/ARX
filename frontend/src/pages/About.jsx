@@ -7,6 +7,7 @@ import GradientBlobs from '../components/motion/GradientBlobs.jsx'
 import Counter from '../components/motion/Counter.jsx'
 import SectionNav from '../components/SectionNav.jsx'
 import { StaggerGrid, StaggerItem } from '../components/motion/StaggerGrid.jsx'
+import { useHoldActive } from '../hooks/use-hold-active.js'
 
 const heroStats = [
   { value: '120', suffix: '+', decimals: 0, static: null, label: 'Businesses served', accent: 'border-amber/40 bg-amber/5' },
@@ -42,17 +43,53 @@ const values = [
 ]
 
 const valueClasses = {
-  amber: { border: 'border-t-amber', ring: 'hover:border-amber', glow: 'hover:shadow-amber/25', chip: 'bg-amber/20 text-amber-dim' },
-  coral: { border: 'border-t-coral', ring: 'hover:border-coral', glow: 'hover:shadow-coral/25', chip: 'bg-coral/20 text-coral' },
-  mint: { border: 'border-t-mint', ring: 'hover:border-mint', glow: 'hover:shadow-mint/25', chip: 'bg-mint/20 text-mint' },
-  grape: { border: 'border-t-grape', ring: 'hover:border-grape', glow: 'hover:shadow-grape/25', chip: 'bg-grape/20 text-grape' },
+  amber: { border: 'border-t-amber', ring: 'hover:border-amber', glow: 'hover:shadow-amber/25', chip: 'bg-amber/20 text-amber-dim', activeBorder: 'border-amber', activeGlow: 'shadow-amber/25' },
+  coral: { border: 'border-t-coral', ring: 'hover:border-coral', glow: 'hover:shadow-coral/25', chip: 'bg-coral/20 text-coral', activeBorder: 'border-coral', activeGlow: 'shadow-coral/25' },
+  mint: { border: 'border-t-mint', ring: 'hover:border-mint', glow: 'hover:shadow-mint/25', chip: 'bg-mint/20 text-mint', activeBorder: 'border-mint', activeGlow: 'shadow-mint/25' },
+  grape: { border: 'border-t-grape', ring: 'hover:border-grape', glow: 'hover:shadow-grape/25', chip: 'bg-grape/20 text-grape', activeBorder: 'border-grape', activeGlow: 'shadow-grape/25' },
 }
 
 const ringAccents = ['ring-amber', 'ring-coral', 'ring-mint', 'ring-grape']
 
+function ValueCard({ v, c, i }) {
+  const { active, trigger } = useHoldActive()
+  return (
+    <motion.div
+      whileHover={{ y: -6 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      onClick={trigger}
+      className={`group relative h-56 cursor-pointer overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 bg-ink shadow-md transition-all duration-500 hover:bg-white hover:shadow-xl ${c.border} ${c.ring} ${c.glow} ${
+        active ? `bg-white shadow-xl ${c.activeBorder} ${c.activeGlow}` : ''
+      }`}
+    >
+      <span className={`pointer-events-none absolute -right-2 -top-4 font-display text-8xl font-bold text-slate-200/0 transition-colors duration-500 group-hover:text-slate-200/40 ${active ? 'text-slate-200/40' : ''}`}>
+        {String(i + 1).padStart(2, '0')}
+      </span>
+
+      {/* Default: icon + title, centered, light on dark */}
+      <div className={`absolute inset-0 flex flex-row items-center justify-center gap-4 p-7 transition-all duration-300 group-hover:-translate-y-3 group-hover:opacity-0 ${active ? '-translate-y-3 opacity-0' : ''}`}>
+        <span className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${c.chip}`}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+            {v.icon}
+          </svg>
+        </span>
+        <h3 className="font-display text-lg font-semibold text-paper">{v.title}</h3>
+      </div>
+
+      {/* Hover: full detail, dark on light */}
+      <div className={`absolute inset-0 flex flex-col justify-center p-7 opacity-0 transition-all duration-300 group-hover:opacity-100 ${active ? 'opacity-100' : ''}`}>
+        <h3 className="relative font-display text-base font-semibold text-graphite">{v.title}</h3>
+        <p className="relative mt-2 text-sm leading-relaxed text-slate">{v.copy}</p>
+      </div>
+    </motion.div>
+  )
+}
+
 export default function About() {
   const [team, setTeam] = useState([])
   const [teamStatus, setTeamStatus] = useState('loading') // loading | ready | error
+  const whatWeDo = useHoldActive()
+  const whoWeWork = useHoldActive()
 
   useEffect(() => {
     fetchTeam()
@@ -125,12 +162,13 @@ export default function About() {
               <motion.div
                 whileHover={{ y: -6 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="group relative h-72 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-amber bg-ink shadow-md transition-all duration-500 hover:border-amber hover:bg-white hover:shadow-2xl hover:shadow-amber/20"
+                onClick={whatWeDo.trigger}
+                className={`group relative h-72 cursor-pointer overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-amber bg-ink shadow-md transition-all duration-500 hover:border-amber hover:bg-white hover:shadow-2xl hover:shadow-amber/20 ${whatWeDo.active ? 'border-amber bg-white shadow-2xl shadow-amber/20' : ''}`}
               >
-                <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-amber/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
+                <div className={`pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-amber/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100 ${whatWeDo.active ? 'opacity-100' : ''}`} />
 
                 {/* Default: icon + heading, centered, light text on dark bg */}
-                <div className="absolute inset-0 flex flex-row items-center justify-center gap-5 p-8 transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0">
+                <div className={`absolute inset-0 flex flex-row items-center justify-center gap-5 p-8 transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0 ${whatWeDo.active ? '-translate-y-4 opacity-0' : ''}`}>
                   <span className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-amber/15 text-amber shadow-sm">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
                       <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />
@@ -140,7 +178,7 @@ export default function About() {
                 </div>
 
                 {/* Hover: full detail */}
-                <div className="absolute inset-0 flex flex-col justify-center p-8 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                <div className={`absolute inset-0 flex flex-col justify-center p-8 opacity-0 transition-all duration-300 group-hover:opacity-100 ${whatWeDo.active ? 'opacity-100' : ''}`}>
                   <h2 className="relative font-display text-lg font-semibold text-graphite">What we do</h2>
                   <p className="relative mt-3 text-sm leading-relaxed text-slate">
                     We manage <span className="font-semibold text-amber-dim">infrastructure and support</span>, build{' '}
@@ -163,12 +201,13 @@ export default function About() {
               <motion.div
                 whileHover={{ y: -6 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="group relative h-72 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-coral bg-ink shadow-md transition-all duration-500 hover:border-coral hover:bg-white hover:shadow-2xl hover:shadow-coral/20"
+                onClick={whoWeWork.trigger}
+                className={`group relative h-72 cursor-pointer overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 border-t-coral bg-ink shadow-md transition-all duration-500 hover:border-coral hover:bg-white hover:shadow-2xl hover:shadow-coral/20 ${whoWeWork.active ? 'border-coral bg-white shadow-2xl shadow-coral/20' : ''}`}
               >
-                <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-coral/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
+                <div className={`pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-coral/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100 ${whoWeWork.active ? 'opacity-100' : ''}`} />
 
                 {/* Default: icon + heading, centered, light text on dark bg */}
-                <div className="absolute inset-0 flex flex-row items-center justify-center gap-5 p-8 transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0">
+                <div className={`absolute inset-0 flex flex-row items-center justify-center gap-5 p-8 transition-all duration-300 group-hover:-translate-y-4 group-hover:opacity-0 ${whoWeWork.active ? '-translate-y-4 opacity-0' : ''}`}>
                   <span className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-coral/15 text-coral shadow-sm">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12 10v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75" />
@@ -178,7 +217,7 @@ export default function About() {
                 </div>
 
                 {/* Hover: full detail */}
-                <div className="absolute inset-0 flex flex-col justify-center p-8 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                <div className={`absolute inset-0 flex flex-col justify-center p-8 opacity-0 transition-all duration-300 group-hover:opacity-100 ${whoWeWork.active ? 'opacity-100' : ''}`}>
                   <h2 className="relative font-display text-lg font-semibold text-graphite">Who we work with</h2>
                   <p className="relative mt-3 text-sm leading-relaxed text-slate">
                     <span className="font-semibold text-coral">Small and mid-sized businesses</span> that need
@@ -207,38 +246,11 @@ export default function About() {
             <h2 className="font-display text-3xl font-semibold text-graphite">How we work</h2>
           </Reveal>
           <StaggerGrid className="mt-10 grid gap-5 sm:grid-cols-2">
-            {values.map((v, i) => {
-              const c = valueClasses[v.color]
-              return (
-                <StaggerItem key={v.title}>
-                  <motion.div
-                    whileHover={{ y: -6 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className={`group relative h-56 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 bg-ink shadow-md transition-all duration-500 hover:bg-white hover:shadow-xl ${c.border} ${c.ring} ${c.glow}`}
-                  >
-                    <span className="pointer-events-none absolute -right-2 -top-4 font-display text-8xl font-bold text-slate-200/0 transition-colors duration-500 group-hover:text-slate-200/40">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-
-                    {/* Default: icon + title, centered, light on dark */}
-                    <div className="absolute inset-0 flex flex-row items-center justify-center gap-4 p-7 transition-all duration-300 group-hover:-translate-y-3 group-hover:opacity-0">
-                      <span className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${c.chip}`}>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-                          {v.icon}
-                        </svg>
-                      </span>
-                      <h3 className="font-display text-lg font-semibold text-paper">{v.title}</h3>
-                    </div>
-
-                    {/* Hover: full detail, dark on light */}
-                    <div className="absolute inset-0 flex flex-col justify-center p-7 opacity-0 transition-all duration-300 group-hover:opacity-100">
-                      <h3 className="relative font-display text-base font-semibold text-graphite">{v.title}</h3>
-                      <p className="relative mt-2 text-sm leading-relaxed text-slate">{v.copy}</p>
-                    </div>
-                  </motion.div>
-                </StaggerItem>
-              )
-            })}
+            {values.map((v, i) => (
+              <StaggerItem key={v.title}>
+                <ValueCard v={v} c={valueClasses[v.color]} i={i} />
+              </StaggerItem>
+            ))}
           </StaggerGrid>
         </div>
       </section>
