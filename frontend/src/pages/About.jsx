@@ -212,20 +212,29 @@ export default function About() {
               return (
                 <StaggerItem key={v.title}>
                   <motion.div
-                    whileHover={{ y: -8, rotate: -0.5 }}
+                    whileHover={{ y: -6 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className={`relative h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 bg-white p-7 shadow-md transition-shadow duration-300 hover:shadow-xl ${c.border} ${c.ring} ${c.glow}`}
+                    className={`group relative h-56 overflow-hidden rounded-2xl border-2 border-slate-700 border-t-4 bg-ink shadow-md transition-all duration-500 hover:bg-white hover:shadow-xl ${c.border} ${c.ring} ${c.glow}`}
                   >
-                    <span className="absolute -right-2 -top-4 font-display text-8xl font-bold text-slate-200/40">
+                    <span className="pointer-events-none absolute -right-2 -top-4 font-display text-8xl font-bold text-slate-200/0 transition-colors duration-500 group-hover:text-slate-200/40">
                       {String(i + 1).padStart(2, '0')}
                     </span>
-                    <span className={`relative inline-flex h-11 w-11 items-center justify-center rounded-xl ${c.chip}`}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                        {v.icon}
-                      </svg>
-                    </span>
-                    <h3 className="relative mt-4 font-display text-base font-semibold text-graphite">{v.title}</h3>
-                    <p className="relative mt-2 text-sm leading-relaxed text-slate">{v.copy}</p>
+
+                    {/* Default: icon + title, centered, light on dark */}
+                    <div className="absolute inset-0 flex flex-row items-center justify-center gap-4 p-7 transition-all duration-300 group-hover:-translate-y-3 group-hover:opacity-0">
+                      <span className={`inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${c.chip}`}>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                          {v.icon}
+                        </svg>
+                      </span>
+                      <h3 className="font-display text-lg font-semibold text-paper">{v.title}</h3>
+                    </div>
+
+                    {/* Hover: full detail, dark on light */}
+                    <div className="absolute inset-0 flex flex-col justify-center p-7 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                      <h3 className="relative font-display text-base font-semibold text-graphite">{v.title}</h3>
+                      <p className="relative mt-2 text-sm leading-relaxed text-slate">{v.copy}</p>
+                    </div>
                   </motion.div>
                 </StaggerItem>
               )
