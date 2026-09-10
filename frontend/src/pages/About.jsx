@@ -128,17 +128,19 @@ export default function About() {
                 className="group relative h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 border-t-amber bg-white p-8 shadow-md transition-all duration-300 hover:border-amber hover:shadow-2xl hover:shadow-amber/20"
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-amber/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
-                <motion.span
-                  whileHover={{ rotate: 8, scale: 1.08 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                  className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber/25 to-amber/5 text-amber-dim shadow-sm"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
-                    <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />
-                  </svg>
-                </motion.span>
-                <h2 className="relative mt-5 font-display text-xl font-semibold text-graphite">What we do</h2>
-                <p className="relative mt-3 text-sm leading-relaxed text-slate">
+                <div className="relative flex items-center gap-4">
+                  <motion.span
+                    whileHover={{ rotate: 8, scale: 1.08 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                    className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber/25 to-amber/5 text-amber-dim shadow-sm"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
+                      <path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4Zm4-8h.01M7 17h.01" />
+                    </svg>
+                  </motion.span>
+                  <h2 className="font-display text-xl font-semibold text-graphite">What we do</h2>
+                </div>
+                <p className="relative mt-4 text-sm leading-relaxed text-slate">
                   We manage <span className="font-semibold text-amber-dim">infrastructure and support</span>, build{' '}
                   <span className="font-semibold text-amber-dim">custom software products</span>, and deliver{' '}
                   <span className="font-semibold text-amber-dim">automation platforms</span> for schools and
@@ -161,17 +163,19 @@ export default function About() {
                 className="group relative h-full overflow-hidden rounded-2xl border-2 border-slate-200 border-t-4 border-t-coral bg-white p-8 shadow-md transition-all duration-300 hover:border-coral hover:shadow-2xl hover:shadow-coral/20"
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-coral/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
-                <motion.span
-                  whileHover={{ rotate: 8, scale: 1.08 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                  className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-coral/25 to-coral/5 text-coral shadow-sm"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12 10v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
-                </motion.span>
-                <h2 className="relative mt-5 font-display text-xl font-semibold text-graphite">Who we work with</h2>
-                <p className="relative mt-3 text-sm leading-relaxed text-slate">
+                <div className="relative flex items-center gap-4">
+                  <motion.span
+                    whileHover={{ rotate: 8, scale: 1.08 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                    className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-coral/25 to-coral/5 text-coral shadow-sm"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm12 10v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  </motion.span>
+                  <h2 className="font-display text-xl font-semibold text-graphite">Who we work with</h2>
+                </div>
+                <p className="relative mt-4 text-sm leading-relaxed text-slate">
                   <span className="font-semibold text-coral">Small and mid-sized businesses</span> that need
                   dependable IT support, and{' '}
                   <span className="font-semibold text-coral">academic institutions</span> modernizing
