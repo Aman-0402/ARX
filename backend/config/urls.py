@@ -4,9 +4,12 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.urls import path, include, re_path
 from django.views.static import serve
 
-from core.models import BlogPost
+from core.models import BlogPost, CaseStudy
 
-STATIC_ROUTES = ['', 'about', 'services', 'blog', 'contact']
+STATIC_ROUTES = [
+    '', 'about', 'services', 'blog', 'contact',
+    'industries', 'case-studies', 'technology', 'process', 'faq',
+]
 
 
 def robots_view(request):
@@ -19,6 +22,10 @@ def sitemap_view(request):
     urls += [
         f'{settings.SITE_URL}/blog/{slug}'
         for slug in BlogPost.objects.filter(published=True).values_list('slug', flat=True)
+    ]
+    urls += [
+        f'{settings.SITE_URL}/case-studies/{slug}'
+        for slug in CaseStudy.objects.filter(published=True).values_list('slug', flat=True)
     ]
     body = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     body += [f'<url><loc>{url}</loc></url>' for url in urls]

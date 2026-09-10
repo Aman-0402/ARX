@@ -357,14 +357,23 @@ export default function Home() {
       {industries.length > 0 && (
         <section className="border-b border-slate-200 bg-paper py-20">
           <div className="mx-auto max-w-[1400px] px-4">
-            <Reveal>
-              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Industries we serve</h2>
-              <p className="mt-4 max-w-md text-lg text-slate">
-                Solutions tailored to the sectors we work with most.
-              </p>
+            <Reveal className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Industries we serve</h2>
+                <p className="mt-4 max-w-md text-lg text-slate">
+                  Solutions tailored to the sectors we work with most.
+                </p>
+              </div>
+              <Link
+                to="/industries"
+                className="group inline-flex items-center gap-2 text-base font-medium text-ink transition-colors hover:text-amber"
+              >
+                See all industries
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
             </Reveal>
             <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {industries.map((ind, i) => {
+              {industries.slice(0, 3).map((ind, i) => {
                 const a = cardAccents[i % cardAccents.length]
                 const isEmojiIcon = ind.icon && [...ind.icon].length <= 2
                 return (
@@ -402,14 +411,23 @@ export default function Home() {
       {caseStudies.length > 0 && (
         <section className="border-b border-slate-200 bg-paper-dim py-20">
           <div className="mx-auto max-w-[1400px] px-4">
-            <Reveal>
-              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Featured case studies</h2>
-              <p className="mt-4 max-w-md text-lg text-slate">
-                Real outcomes from real engagements.
-              </p>
+            <Reveal className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Featured case studies</h2>
+                <p className="mt-4 max-w-md text-lg text-slate">
+                  Real outcomes from real engagements.
+                </p>
+              </div>
+              <Link
+                to="/case-studies"
+                className="group inline-flex items-center gap-2 text-base font-medium text-ink transition-colors hover:text-amber"
+              >
+                See all case studies
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
             </Reveal>
             <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {caseStudies.map((cs, i) => {
+              {caseStudies.slice(0, 3).map((cs, i) => {
                 const a = cardAccents[i % cardAccents.length]
                 return (
                   <StaggerItem key={cs.slug}>
@@ -456,7 +474,7 @@ export default function Home() {
               </p>
             </Reveal>
             <StaggerGrid className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
-              {techStack.map((t) => (
+              {techStack.slice(0, 6).map((t) => (
                 <StaggerItem key={t.name}>
                   <img
                     src={t.logo}
@@ -467,6 +485,14 @@ export default function Home() {
                 </StaggerItem>
               ))}
             </StaggerGrid>
+            {techStack.length > 6 && (
+              <div className="mt-8 text-center">
+                <Link to="/technology" className="group inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-amber">
+                  See full stack
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -475,14 +501,23 @@ export default function Home() {
       {processSteps.length > 0 && (
         <section className="border-b border-slate-200 bg-paper-dim py-20">
           <div className="mx-auto max-w-[1400px] px-4">
-            <Reveal>
-              <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Our process</h2>
-              <p className="mt-4 max-w-md text-lg text-slate">
-                How we take a project from first call to delivery.
-              </p>
+            <Reveal className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Our process</h2>
+                <p className="mt-4 max-w-md text-lg text-slate">
+                  How we take a project from first call to delivery.
+                </p>
+              </div>
+              <Link
+                to="/process"
+                className="group inline-flex items-center gap-2 text-base font-medium text-ink transition-colors hover:text-amber"
+              >
+                See full process
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
             </Reveal>
-            <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {processSteps.map((step, i) => (
+            <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {processSteps.slice(0, 3).map((step, i) => (
                 <StaggerItem key={step.title}>
                   <motion.div
                     whileHover={{ y: -6 }}
@@ -603,7 +638,7 @@ export default function Home() {
               <h2 className="font-display text-4xl font-semibold text-graphite md:text-5xl">Frequently asked questions</h2>
             </Reveal>
             <div className="mt-10 border-t border-slate-200">
-              {faqs.map((faq, i) => (
+              {faqs.slice(0, 3).map((faq, i) => (
                 <FAQItem
                   key={faq.question}
                   faq={faq}
@@ -612,6 +647,14 @@ export default function Home() {
                 />
               ))}
             </div>
+            {faqs.length > 3 && (
+              <div className="mt-8">
+                <Link to="/faq" className="group inline-flex items-center gap-2 text-base font-medium text-ink transition-colors hover:text-amber">
+                  See all FAQs
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </Link>
+              </div>
+            )}
           </div>
         </section>
       )}

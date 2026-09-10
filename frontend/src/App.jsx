@@ -16,6 +16,11 @@ const Contact = lazy(() => import('./pages/Contact.jsx'))
 const Blog = lazy(() => import('./pages/Blog.jsx'))
 const BlogPost = lazy(() => import('./pages/BlogPost.jsx'))
 const CaseStudyDetail = lazy(() => import('./pages/CaseStudyDetail.jsx'))
+const Industries = lazy(() => import('./pages/Industries.jsx'))
+const CaseStudies = lazy(() => import('./pages/CaseStudies.jsx'))
+const TechStack = lazy(() => import('./pages/TechStack.jsx'))
+const OurProcess = lazy(() => import('./pages/OurProcess.jsx'))
+const FAQPage = lazy(() => import('./pages/FAQPage.jsx'))
 const BlogSubmit = lazy(() => import('./pages/BlogSubmit.jsx'))
 const Login = lazy(() => import('./pages/Login.jsx'))
 const Overview = lazy(() => import('./pages/admin/Overview.jsx'))
@@ -103,7 +108,12 @@ export default function App() {
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/submit" element={<BlogSubmit />} />
                 <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/case-studies" element={<CaseStudies />} />
                 <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
+                <Route path="/industries" element={<Industries />} />
+                <Route path="/technology" element={<TechStack />} />
+                <Route path="/process" element={<OurProcess />} />
+                <Route path="/faq" element={<FAQPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route
                   path="/admin"
