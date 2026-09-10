@@ -6,6 +6,7 @@ import Footer from './components/Footer.jsx'
 import FloatingContact from './components/FloatingContact.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import RequireAuth from './components/RequireAuth.jsx'
+import SwarmCursor from './components/SwarmCursor.jsx'
 
 const AdminLayout = lazy(() => import('./components/admin/AdminLayout.jsx'))
 const Home = lazy(() => import('./pages/Home.jsx'))
@@ -65,6 +66,21 @@ export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
+      {!isBareLayout && (
+        <SwarmCursor
+          global
+          color="#2F6FED"
+          accentColor="#8B5CF6"
+          count={8}
+          size={5}
+          speed={2.5}
+          spread={100}
+          wander={0.25}
+          trail={0.75}
+          scatterOnClick
+          style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}
+        />
+      )}
       {!isBareLayout && <Navbar />}
       <main className="flex-1">
         <AnimatePresence mode="wait" initial={false}>
